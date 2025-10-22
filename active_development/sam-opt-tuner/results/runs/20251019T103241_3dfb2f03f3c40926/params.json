@@ -1,0 +1,7 @@
+{
+  "IC_T_offset": 1.0,
+  "IC_mdot_scale": 1.0,
+  "BC_T_cold_off": -1.0,
+  "HTC_scale": 1.0,
+  "notes": "example parameters"
+}

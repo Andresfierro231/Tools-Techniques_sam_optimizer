@@ -1,0 +1,20 @@
+# Ignore outputs and temp files
+*.csv
+*.png
+*.e
+*.e-*
+*.gz
+data
+header
+sam-opt
+*.so
+.jitcache
+
+
+# Python
+.venv/
+venv/
+**/__pycache__/
+*.py[\cod]
+
+*.code-workspace

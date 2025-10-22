@@ -1,0 +1,35 @@
+# Central configuration for an experiment batch.
+# Contents:
+
+# Path to SAM executable (sam_exe).
+
+# Base input template path (base_input).
+
+# Timeout and convergence/divergence thresholds.
+
+# Bounds on tunable parameters (IC/BC/HTC multipliers).
+
+# Objective and penalty settings for optimization.
+
+
+sam_exe: /home/andresfierro231/miniforge/envs/SAM/sam/bin/sam-opt  
+base_input: ./configs/base_input_template.i     
+timeout_s: 3600
+signals:
+  - name: T_outlet
+    csv: /path/to/experiment_T.csv
+
+bounds:
+  IC_T_offset: [-10, 10]
+  IC_mdot_scale: [0.9, 1.1]
+  BC_T_cold_off: [-5, 5]
+  HTC_scale: [0.7, 1.5]
+
+divergence:
+  residual_factor: 10.0
+  max_nl_divergences: 50
+  max_rejected_steps: 50
+
+objective:
+  rmse_T_weight: 1.0
+  fail_penalty: 1.0e6

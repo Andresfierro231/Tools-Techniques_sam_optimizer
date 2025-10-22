@@ -1,0 +1,46 @@
+# --- Core system tools ---
+numpy>=1.26
+scipy>=1.13
+pandas>=2.2
+psutil>=5.9
+pyyaml>=6.0
+tqdm>=4.66        # progress bars
+rich>=13.7        # pretty CLI output
+click>=8.1        # optional CLI helper
+
+# --- Experiment control & persistence ---
+sqlalchemy>=2.0   # optional ORM for SQLite
+optuna>=3.5       # optimization / hyperparameter search
+joblib>=1.4       # lightweight parallelism, caching
+filelock>=3.15    # concurrency safety for registry
+jinja2>=3.1       # input template rendering for .i files
+
+# --- Machine learning / regression for rule-of-thumb learning ---
+scikit-learn>=1.5
+xgboost>=2.1      # optional tree-based regressor
+lightgbm>=4.3     # optional, faster alternative
+# torch>=2.4       # optional if you plan to test neural models
+
+# --- Data visualization & reporting ---
+matplotlib>=3.9
+seaborn>=0.13
+plotly>=5.23      # for interactive plots
+tabulate>=0.9     # nice ASCII tables in logs
+notebook>=7.2     # optional, for exploratory analysis
+ipywidgets>=8.1   # interactive notebooks
+
+# --- Validation & numerical utilities ---
+numba>=0.60       # optional JIT acceleration for heavy loops
+sympy>=1.13       # symbolic checks / expressions
+pytest>=8.3       # testing
+pytest-cov>=5.0   # coverage reports
+
+# --- Versioning / reproducibility ---
+gitpython>=3.1
+mlflow>=2.15      # optional, if you want full experiment tracking
+docker>=7.1       # optional, for container builds
+
+# --- Optional HPC / profiling utilities ---
+line_profiler>=4.1
+py-spy>=0.3
+memory_profiler>=0.61
