@@ -1,16 +1,20 @@
 ################## MSFL Draft Script
-### First Created: 18 Oct 25
-# ⭐⭐ Today editing: 18 Oct 25
+### First Created: 29 Mayo 2025
+# ⭐⭐ Today editing: 3 Junio Mayo 2025
 # 
 # 
-#                             SALT Base Case - Using for parameter tuning
-#  
-# Initially copied from jsalt_base_case.i
+#                             SALT 1 SAM - Detailed Build
+
+# This is the detailed 
+# - Goals -
+# [] Remove more heat...
+# [] Get higher quadrature order running too
+# [] Replace current convective cooling surface with the heat exchanger
+# 
 ## Overview questions
-#  
+#  - Adding convective ht BC really slowed down the simulation. Starting to instantly diverge again. 
 # 
-#### 
-# Jadyn's Paper https://docs.google.com/document/d/1_5Ws5vh5xfU7X6hZ7Zhk28DTL38MUvc8Ca32jG6ZShs/edit?usp=sharing
+# 
 #############################  Experimental Prameters  ######################################################
 # 
 
@@ -22,54 +26,47 @@
 # airTempIn = 300 # Kelvin
 # avg_air_vel_in = 0.4057 # 2.0612 # # m/s # Not used for now
 
-
-fric_factor = 0.612
-T_c = 441.37 # Pin the temperature you want the cooler to cool fluid to #${fparse 168.22 + 273.15} # Use measured temp at TP1  # 168.22 + 273.15 = 441.37
-q_net = 189.26 # W # Note, I don't think she is using Q_heater
-
-
-T_h = 446  # Turns out simulation stability is incredibly sensitive to value chosen here, but not numerical result for some strange reason # Maybe not highest temp, but avg temp of loop? 
 p_0 = 1.1e5 # 1.01e5 # try change to 1.5 or 2 # Initial pressure, and ambient
-T_0 = 442 # T_0 = T_c # 441.37 # 430 # Kelvin # Initial System, start a bit warmer than T_c
+T_0 = 440 # Kelvin # Initial System 
+v_0 = 1
 
 
-v_0 = 0.02 # 0.0185
-h_amb = 1e5  # Arbitrarily large, as specified in paper
-p_out = 1.1e5
 
-# TS Const
-const_TS = 10 # s
+watts_input = 232.3 # W
 
-# Quadrature Settings
-p_order_quadPnts = 2 # 1
-quad_type = GAUSS # TRAP
-quad_order = SECOND # FIRST
-scheme =  implicit-euler # BDF2 #    # # crank-nicolson # 
+T_amb = 342.53
+h_amb = 12.224
+
 
 ###### Under the hood -- Making usable ########
-heater_power = ${fparse ${q_net} / (0.0003835 * 36 * 0.0254)} # # Volumetric # Watts / m^3 # m^3 = area * length_inches * conversion # SI units # Can use ipython as calc
+heater_power = ${fparse ${watts_input} / (0.0003835 * 36 * 0.0254)} # # Volumetric, trying to move away from this # Watts / m^3 # m^3 = area * length_inches * conversion # SI units # Can use ipyhon as calc
+
 
 ##############################################################################################################
 
 # Geometry  and Positions
-end_pipe_up =        '0  0      ${fparse (36) * 0.0254}'
-end_cooling_jacket = '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse (36 - 36 * sin(0.349)) * 0.0254}'
-ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 36 * sin(0.349)) * 0.0254}'
+ts_in_loc =       '0 0 ${fparse 14.34 * 0.0254}'
+ts_out_loc =      '0 0 ${fparse (14.34 + 7.32) * 0.0254}'
+ch1_entry_loc =   '0 0      ${fparse (36) * 0.0254}'
+pipe3_entry_loc = '0  ${fparse (1.5) * 0.0254}          ${fparse (36) * 0.0254}'
+cooling_jacket_entrance_loc =  '0  ${fparse (1.5 + 12* cos(0.349)) * 0.0254}     ${fparse (36 - 12 * sin(0.349)) * 0.0254}'
+pipe4_entrance_loc =  '0  ${fparse (1.5 + 24* cos(0.349)) * 0.0254}       ${fparse (36 - 24 * sin(0.349)) * 0.0254}'
+downcomer_entry_loc = '0  ${fparse (3 + 36* cos(0.349)) * 0.0254}      ${fparse (36 - 36 * sin(0.349)) * 0.0254}'
+ch3_entry_loc =   '0  ${fparse (3 + 36* cos(0.349)) * 0.0254}      ${fparse (- 36 * sin(0.349)) * 0.0254}'
+ht_entry_loc =    '0  ${fparse (1.5 + 36* cos(0.349)) * 0.0254}      ${fparse ( - 36 * sin(0.349)) * 0.0254}'
+ch4_entry_loc =   '0  ${fparse (1.5) * 0.0254}     0'
 
-# How do I add temperature probes at these locations??
-# ts_in_loc =          '0  0      ${fparse 14.34 * 0.0254}' 
-# ts_out_loc =         '0  0      ${fparse (14.34 + 7.32) * 0.0254}' # Will keep ts locations for postprocessors
 
 [GlobalParams]
-  global_init_P = ${p_0}                      # I think this is ambient pressure # Global initial fluid pressure # --> Depends on problem, IC to make problem converge, changing IC and scaling factor to make converge
+  global_init_P =  ${p_0}                      # I think this is ambient pressure # Global initial fluid pressure # --> Depends on problem, IC to make problem converge, changing IC and scaling factor to make converge
   global_init_V = ${v_0} # Probably shouldn't start with zero velocity, and in loop they defined 1.5 originally             # Global initial fluid velocity
   global_init_T = ${T_0} # Kelvin # Starting water luke-warm           # I am pretty sure SAM uses Kelvin          # Global initial temperature for fluid and solid
 
-  p_order = ${p_order_quadPnts} # 1 # Specifies the order of mesh... How many quadrature points in FE sol # P order 1 runs faster but not as accurate
+  p_order = 1 # Specifies the order of mesh... How many quadrature points in FE sol # P order 1 runs faster but not as accurate
   gravity = '0 0 -9.8' # switched sign gravity
 
   # Trying debug
-  f = ${fric_factor} #6.5 # Use global friction factor
+  f = 0 #6.5 
 []
 
 [EOS] 
@@ -115,167 +112,351 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     A = 0.0003835 # m^2# ${fparse pi* 0.87^2 / 4 * 0.0254} # I think cross-sectional area. Does this need to match test section? Can rest be same diameter except for TS?
     Dh = 0.022098 # m ${fparse 0.87*.0254} #  Hydraulic diameter, 4*A / p = D
     hs_type = cylinder
-    n_wall_elems = '1' # '3' # num of radial elements in the pipe wall, not the fluid    
+    n_wall_elems = '3' # numb of radial elements in the pipe wall, not the fluid    
     wall_thickness = '0.003302' # 
     material_wall = 'ss-mat'
 
-  []
-  [flow_channel]
-    type = PBOneDFluidComponentParameters
-    eos = eos
-    A = 0.0003835 # m^2# ${fparse pi* 0.87^2 / 4 * 0.0254} # I think cross-sectional area. Does this need to match test section? Can rest be same diameter except for TS?
-    Dh = 0.022098 # m ${fparse 0.87*.0254} #  Hydraulic diameter, 4*A / p = D
   []
 []  # Can adjust heat loss and heat input by pinning temp and having varying heat input # Look at Jadyn's approach, compare 
     # Putting the reference paper above the upcomer, it seems to help and hit large time steps with 
 
 [Components]
-
   # Switch from PBOneDFluidComponent to PBPipe if you want to simulate the pipe wall, insulation, and ambient heat loss
   [up1]
-    type = PBOneDFluidComponent # PBPipe # Updating with what Jadyn used
-    input_parameters = flow_channel # this may need to be removed bc no longer pipe # Meaning I would heed to add A and Dh back in probably
-    eos = eos # should be able to comment this out
+    type = PBPipe # I think this is just basic pipe
+    input_parameters = ss_pipe
+    eos = eos
     position = '0 0 0'
     orientation = '0 0 1'
-    length = ${fparse 36 * 0.0254}  # 14.34 inches up z # 0.364 # Meters
-    n_elems = 10 # number of axial elements in direction of flow # If you change this, change postprocessor TS_TP
+    length = ${fparse 14.34 * 0.0254}  # 14.34 inches up z # 0.364 # Meters
+    n_elems = 14 # number of axial elements in direction of flow
+
+    
+  []
+
+  [TS] # Test Section
+    type = PBPipe 
+    eos = eos
+    input_parameters = ss_pipe
+    position = ${ts_in_loc} # '0 0 ${fparse 14.34 * 0.0254}'# '0 0 0.364' # 0 + 0.364
+    orientation = '0 0 1'
+
+    length = '${fparse 7.32 * 0.0254}' # 7.32 inches # 0.185928 # Meters
+    n_elems = 7 # Won't change for now
+
    
   []
 
-  [CoolingJacket]
-    type = PBPipe # Jadyn coupled a heat tructure on pipe wall... why not just use pipe? 
+  [up2]
+    type = PBPipe 
     eos = eos
-    position =   ${end_pipe_up}
+    position = ${ts_out_loc}
+    orientation = '0 0 1'
+    input_parameters = ss_pipe
+    length = ${fparse 14.34 * 0.0254} # 0.364 # Meters # Should end up at 36 inches
+    n_elems = 14 # Won't change for now
+  []
+
+  [CH1]
+    type = PBPipe
+    eos = eos
+    position =   ${ch1_entry_loc}   # '0    0      ${fparse (36) * 0.0254}'
+    orientation = '0    1      0'
+    input_parameters = ss_pipe
+
+    length = ${fparse (1.5) * 0.0254} # 1.5 inches right
+    n_elems = 2
+
+    # f = 0.02
+    # heat_source = 6.4125e8
+  []
+
+
+  [pipe3]
+    type = PBPipe 
+    eos = eos
+    position =   ${pipe3_entry_loc} # '0  ${fparse (1.5) * 0.0254}          ${fparse (36) * 0.0254}'
+    orientation = '0  ${fparse cos(0.349)}              ${fparse -1 * sin(0.349)}' # Assuming in radians, 20*
+    input_parameters = ss_pipe
+
+    length = ${fparse 12 * 0.0254} # meters
+    n_elems = 12 # Won't change for now
+  []
+
+  [CoolingJacket]
+    type = PBPipe
+    eos = eos
+    position =   ${cooling_jacket_entrance_loc}
     orientation =  '0  ${fparse cos(0.349)}  ${fparse -1 * sin(0.349)}' # Assuming in radians, 20*
     input_parameters = ss_pipe
 
-    length = ${fparse 36 * 0.0254} 
-    n_elems = 10 # She used 10, I want to use 12 for each
+    length = ${fparse 12 * 0.0254} 
+    n_elems = 12
 
     # f = 0.02 # FIXME: Use convective flux BC to have a temp pin
      # in sourcecode  can go to SAM/tests/ --> regression tests have ex of diff model and components; can look at PBPipe tests for more examples 
     # heat_source = '${fparse -1 * ${heater_power} / 2}' # Instead of heat source, want BC on outside of wall;  # Change to flux BC
     HS_BC_type = 'Convective' # 'Adiabatic'
-    T_amb = ${T_c}
+    T_amb = ${T_amb}
     h_amb = ${h_amb} # HTC
-    Hw = ${h_amb} # can be const or function of space and time
   []
- 
-  [Melter] # Provides a pressure pin of sorts.. should help with stability
-    type = PBOneDFluidComponent
+
+  ### Real Cooling jacket commented out while debugging to reduce unknowns. 
+  # [CoolingJacket] # This is going to need some work... but we can start with the position and orientation
+    #   type = PBHeatExchanger
+    #   eos = eos
+    #   eos_secondary = eos # secondary needs to be changed to air... work in progress
+
+    #   HX_type = Countercurrent # I feel like I need to define temp of incoming 
+
+    #   position =     ${cooling_jacket_entrance_loc}
+    #   orientation =   '0  ${fparse cos(0.349)}                          ${fparse -1 * sin(0.349)}' # Assuming in radians, 20*
+    #   A = 0.0003835 # m^2# ${fparse pi* 0.87^2 / 4 * 0.0254} # I think cross-sectional area. Does this need to match test section? Can rest be same diameter except for TS? # Phys-Page 63 User manual says cross sectional area (via reference to PBoneDFluidComp)
+    #   Dh = 0.022098 # m ${fparse 0.87*.0254} #  Hydraulic diameter, 4*A / p = D
+
+    #   A_secondary = 0.0003835 # Assuming same as primary
+    #   Dh_secondary = 0.0254   # Ends up also being 1 inch ...  
+
+    #   length = ${fparse 12 * 0.0254} # Not sure if I need to change length elsewhere as well # What if this weren't 
+    #   n_elems = 10
+    #   # f = 0.02 # friction factor # I don't think this is required... I think Dr. Mui said that it was calculated behind the scenes for us...
+
+    #   HT_surface_area_density = 1e3 # Primary Heat transfer surface area / volume.... I haven't done this 
+    #   HT_surface_area_density_secondary = 1e3 # Secondary
+
+    #   # ph Heated parameter - optional input, look it up
+
+    #   wall_thickness = 0.003302 # 0.3 cm #                              Really would appreciate a second pair of eyes on looking over my best guesses
+    #   Twall_init = ${overall_initial_temp} #445 # 445 K for salt runs and 314 K for water runs    # Initial temperature of the wall should be initial temperature of the fluid ideally... I would love for it to reset each time
+    #   dim_wall = 2 # I am not sure I need walls to be 2D... please advise
+    #   n_wall_elems = 1
+    #   material_wall = ss-mat # SS 316? 
+
+    #   ### Things that aren't required but probably should be
+    #   initial_T_secondary = ${airTempIn} # 300 # Kelvin # If initial guess too far away, won't converge # try average inlet and outlet values
+    #   # My air Mass Flow rate is too low...   
+    # []
+
+  
+  
+  
+    [pipe4]
+    type = PBPipe 
     eos = eos
-    position = ${end_pipe_up} # '${end_cooling_jacket}' # Travis moved melter to top left... not what is in experiment, but might help stabilize pressure
-    orientation = '0 0 1'
-    input_parameters = flow_channel
+    position =    ${pipe4_entrance_loc}
+    orientation = '0  ${fparse cos(0.349)}   ${fparse -1 * sin(0.349)}' # Assuming in radians, 20*
+    input_parameters = ss_pipe
 
-    length = ${fparse 6 * sin(0.349) * 0.0254} # Made the outlet much smaller
-    n_elems = 2
-    A = ${fparse 0.0003835} # m^2 # ${fparse pi* 0.87^2 / 4 * 0.0254}
+    length = ${fparse 12 * 0.0254} # meters
+    n_elems = 10 # Won't change for now
   []
 
+  [pipe5] # Provides a pressure pin of sorts.. should help with stability
+    type = PBPipe
+    eos = eos
+    position = '${ch1_entry_loc}'
+    orientation = '0 0 1'
+    input_parameters = ss_pipe
+
+    length = 0.1 # 10 cm is about 4 inches
+    n_elems = 4
+  []
+
+  [CH2]
+    type = PBPipe
+    eos = eos
+    position =      '0  ${fparse (1.5 + 36* cos(0.349)) * 0.0254}      ${fparse (36 - 36 * sin(0.349)) * 0.0254}'
+    orientation = '0    1      0'
+    input_parameters = ss_pipe
+
+    length = ${fparse (1.5) * 0.0254} # 1.5 inches right
+    n_elems = 2
+
+    # f = 0.02
+    # heat_source = 6.4125e8 
+  []
 
   [downcomer]
-    type = PBOneDFluidComponent
+    type = PBPipe
     eos = eos
-    position = ${end_cooling_jacket}
+    position = ${downcomer_entry_loc}
     orientation = '0 0 -1'
 
-    input_parameters = flow_channel
+    input_parameters = ss_pipe
 
     length =  ${fparse (36) * 0.0254}
-    n_elems = 10 
+    n_elems = 36
+  []
+
+  [CH3]
+    type = PBPipe
+    eos = eos
+    position =    ${ch3_entry_loc}  
+    orientation = '0    -1      0'
+    input_parameters = ss_pipe
+
+    length = ${fparse (1.5) * 0.0254} # 1.5 inches right
+    n_elems = 2
   []
 
 
   [Heater] # For an external heating, consider changing to wall heat flux; 
-    type = PBOneDFluidComponent 
+    type = PBPipe 
     eos = eos
     position =    ${ht_entry_loc}
-    orientation = '0  ${fparse -1*cos(0.349)}   ${fparse sin(0.349)}' # Assuming in radians, 20*
-    input_parameters = flow_channel
+    orientation = '0  ${fparse -1*cos(0.349)}              ${fparse sin(0.349)}' # Assuming in radians, 20*
+    input_parameters = ss_pipe
 
     length = ${fparse 36 * 0.0254} # meters
-    n_elems = 10
+    n_elems = 36 # Won't change for now
 
-    # f = 0.02     # 
+    # f = 0.02     # Need to learn how to submit this correctly
 
-    heat_source = ${heater_power} # volumetric heat source # average over fluid volume 👁️👁️
+    heat_source = ${heater_power} # volumetric heat source, need to divide by m^3 # average over fluid volume 👁️👁️
   []
 
+  [CH4]
+    type = PBPipe
+    eos = eos
+    position =  ${ch4_entry_loc}    
+    orientation = '0    -1      0'
+    input_parameters = ss_pipe
 
+    length = ${fparse (1.5) * 0.0254} # 1.5 inches right
+    n_elems = 2 # ${fparse ${Components/CH4/length} %  # Try using modulo to make integr
+  []
 
-  [TopLeft]  # It looks like it connects pipes... 
-      type = PBBranch
+  [Branch1]  # It looks like it connects pipes... 
+      type = PBSingleJunction
       inputs = 'up1(out)'
-      outputs = 'CoolingJacket(in) Melter(in)'
+      outputs = 'TS(in) '
       eos = eos
-      K = '0.0 1.8 1.8' 
+  []
+
+  [Branch2]   
+      type = PBSingleJunction
+      inputs = 'TS(out)'
+      outputs = 'up2(in) '
+      eos = eos
+  []
+
+  [Branch3]   
+      type = PBBranch
+      inputs = 'up2(out)'
+      outputs = 'CH1(in) pipe5(in)'
+      K = '0.0 0.0 10.0' # Had k loss coef huge for pipe 5 to limit the flow that leaves the system. Make sure most flow stays in loop
+
+      eos = eos
       Area = 0.0003835 # This area is the pipe CS area
 
   []
 
-  [TopRight]   
-      type = PBSingleJunction
-      inputs = 'CoolingJacket(out)'
-      outputs = 'downcomer(in)'
-      K = 1.8
-
-      eos = eos
-      
-  []
-
   [pipe5_out_pressure_pin]
     type = PBTDV
-    input = 'Melter(out)'
+    input = 'pipe5(out)'
     eos = eos
-    p_bc = ${p_out} # Pressure pin at same P as initial of system... Hopefully no more salt flowing out of system
-    T_bc = ${T_h} 
+    p_bc = 1.1e5 # Pressure pin at same P as initial of system... Hopefully no more salt flowing out of system
+    T_bc = ${T_0}
   []
 
-  [BottomRight]   
+  [Branch4]   
+      type = PBSingleJunction
+      inputs = 'CH1(out)'
+      outputs = 'pipe3(in)'
+      eos = eos
+  []
+
+  [Branch5] 
+    type = PBSingleJunction
+    inputs = 'pipe3(out)'
+    outputs = 'CoolingJacket(in)'
+
+    eos = eos
+  []
+  [Branch6] 
+    type = PBSingleJunction
+    inputs = 'CoolingJacket(out)'
+    outputs = 'pipe4(in)'
+
+    eos = eos
+  [] # Does a branch need to be defined for the cooling parts of Heat Exchanger? Need to read example more carefully
+
+  [Branch7]   
+      type = PBSingleJunction
+      inputs = 'pipe4(out)'
+      outputs = 'CH2(in)'
+      eos = eos
+  []
+
+  [Branch8]   
+      type = PBSingleJunction
+      inputs = 'CH2(out)'
+      outputs = 'downcomer(in)'
+      eos = eos
+  []
+
+  [Branch9]   
       type = PBSingleJunction
       inputs = 'downcomer(out)'
-      outputs = 'Heater(in)'
+      outputs = 'CH3(in)'
       eos = eos
-      K = 1.8
-
   []
 
-  [BottomLeft] 
+  [Branch10]   
+      type = PBSingleJunction
+      inputs = 'CH3(out)'
+      outputs = 'Heater(in)' 
+      eos = eos 
+  []
+
+  [Branch11]   
       type = PBSingleJunction
       inputs = 'Heater(out)'
-      outputs = 'up1(in)'
-
-      eos = eos
-      K = 1.8
-
+      outputs = 'CH4(in)' 
+      eos = eos 
   []
 
+  [Branch12]   
+      type = PBSingleJunction
+      inputs = 'CH4(out)'
+      outputs = 'up1(in)' 
+      eos = eos 
+  []
+
+#   [inlet2]
+#     type = PBTDJ # Flow velocity and temp input for PBTDJ
+#     input = 'CoolingJacket(secondary_in)'
+#     eos = eos
+#     v_bc = ${avg_air_vel_in}  # m/s avg salt test 1 # 2.0612 # m/s for water # I am not using negative as I already indicated counterflow
+#     T_bc = ${airTempIn} # Kelvin, most tests hover around this value
+#   []
+
+#   [outlet2]
+#     type = PBTDV # velocity in automatically equals velocity out # Talk to Dr. Rui if air is modeled as compressible
+#     input = 'CoolingJacket(secondary_out)'
+#     eos = eos
+#     p_bc = 1.0e5 # ambient pressure; but if you don't know the inlet pressure, why would outlet pressure matter? Pressure diff needs to be defined, right? 
+
+#   []
+  
 []
 
 
 
+
+
+
+
 [Postprocessors] # Will need to fix all of these... 
-  [massFlowRate]                                      # Output mass flow rate at inlet of TS
+  [TS_flow]                                      # Output mass flow rate at inlet of TS
     type = ComponentBoundaryFlow
-    input = CoolingJacket(in)
+    input = TS(in)
   []
 
-  [TopL_velocity]                                  # Output velocity at inlet of CH1
+  [TS_velocity]                                  # Output velocity at inlet of CH1
     type = ComponentBoundaryVariableValue
     variable = velocity
-    input = CoolingJacket(in)
-  []
-  #  [Vel_downcomer_in]                                  # Output velocity at inlet of CH1
-  #   type = ComponentBoundaryVariableValue
-  #   variable = velocity
-  #   input = downcomer(in) #                             The difference in vel topL vel and downcomer in vel is the vel input from the branched element. It is mass that flows into or out of the system. 
-  # []
-   [downcomer_out_velocity]                                  # Output velocity at inlet of CH1
-    type = ComponentBoundaryVariableValue
-    variable = velocity
-    input = downcomer(out)
+    input = TS(in)
   []
   [TP1]                                  # Temperature 
     type = ComponentBoundaryVariableValue
@@ -285,52 +466,64 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
   [TP2]                                  # Temperature Probe
     type = ComponentBoundaryVariableValue
     variable = temperature
-    input = Heater(in)
+    input = CH3(in)
   []
   [TP3]                                  # Temperature Probe
     type = ComponentBoundaryVariableValue
     variable = temperature
     input = up1(in)
   []
-  [TS_TP]
-    type = ComponentNodalVariableValue                               # Temperature Probe
-    input = up1(4) # this needs to update with discretization of up1
-
+  [TP4]                                  # Temperature Probe
+    type = ComponentBoundaryVariableValue
     variable = temperature
+    input = TS(in)
   []
-
-  [TS_vel]                    # Was not able to get this running :(              
-    type = ComponentNodalVariableValue
-
-    input = up1(4) # this needs to update with discretization of up1 # unrecognized "end" but I am trying to put a node number
-
-    variable = velocity
+  [TP5]                                  # Temperature Probe
+    type = ComponentBoundaryVariableValue
+    variable = temperature
+    input = TS(out)
   []
-  
   [TP6]                                  # Temperature at inlet of TP6
     type = ComponentBoundaryVariableValue
     variable = temperature
-    input = CoolingJacket(in)
+    input = CH1(in)
   []
  
-  [delta_t]
-    type = ParsedPostprocessor
-    pp_names = 'TP6 TP2'
-    function = 'TP6 - TP2'
-  []
-
-  [coolingJacket_T_in_primary]                                  # Temperature at IHX inlet
+  [CoolingJacket_T_in_primary]                                  # Temperature at IHX inlet
     type = ComponentBoundaryVariableValue
     variable = temperature
     input = CoolingJacket(in)
   []
-
-  [coolingJacket_T_out_primary]                                  # Temperature at IHX outlet
+  [CoolingJacket_T_out_primary]                                  # Temperature at IHX outlet
     type = ComponentBoundaryVariableValue
     variable = temperature
     input = CoolingJacket(out)
   []
 
+  [./0_P_res_l2]
+    type = VariableResidual
+    variable = pressure
+  [../]
+
+  [1_salt_loss]                                  # vel of salt at exit
+    type = ComponentBoundaryVariableValue
+    variable = velocity
+    input = pipe5(out)
+  []
+  [./0_v_res_l2]
+    type = VariableResidual
+    variable = velocity
+  [../]
+
+  [./0_t_solid_res_l2]
+    type = VariableResidual
+    variable = T_solid
+  [../]
+
+  [./0_Temp_res_l2]
+    type = VariableResidual
+    variable = temperature
+  [../]
 []
 
 [Preconditioning] # Advised not to touch these 
@@ -351,42 +544,43 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
   type =  Transient #  SAMSegregatedTransient #
   # solve_type = 'PJFNK'  # PJFNK JFNK NEWTON FD LINEAR # no n
   # start_time = 0
-  end_time = 1e6 # 1e3 used by Travis 
+  end_time = 1e8 
   dtmin = 1e-7 # after this point starts diverging
   automatic_scaling = false
   
-  scheme = ${scheme}
 
-  dt = ${const_TS}
+  dt = 1
 
-  dtmax = 3600
-  [TimeStepper]
-    type = IterationAdaptiveDT
-    optimal_iterations = 10
-    iteration_window = 4
-    dt = 0.01 # 100
-    growth_factor = 1.15     # Step size multiplier if solve is good
-    cutback_factor = 0.8     # Step size divisor if solve is poor    
+#   dtmax = 25
+#   [TimeStepper]
+#     type = IterationAdaptiveDT
+#     optimal_iterations = 15 
+#     iteration_window = 2
+#     dt = 25
+#     growth_factor = 1.5     # Step size multiplier if solve is good
+#     cutback_factor = 0.5     # Step size divisor if solve is poor    
     
-  []
+#   []
+  # scheme = 'implicit-euler'
+
 
   # These values are a good starting point
-  nl_rel_tol = 1e-7 # -6
-  nl_abs_tol = 1e-6 # -7 # e-6 could be too high, want abs to be couple order magn below rel, charlie suggests e-8
-  nl_max_its = 12 # Consider increasing to 20
-  l_tol =      1e-5
+  nl_rel_tol = 1e-5 # -6
+  nl_abs_tol = 1e-8 # -7 # e-6 could be too high, want abs to be couple order magn below rel, charlie suggests e-8
+  nl_max_its = 10 # Consider increasing to 20
+  l_tol =      1e-4 # -5
   l_max_its = 100
 
   [Quadrature]
-    type =  ${quad_type}  # GAUSS # # For second, do Gauss or simpson # For first, do Trap 
-    order = ${quad_order} # SECOND # Needs to be same order as p_order at the very top 
+    type =  TRAP  # GAUSS # # For secondSometimes we do Trap and first order, 
+    order = FIRST # SECOND # Needs to be same order as p_order at the very top 
   []
 []
 
 
 
 [Outputs]
-  print_linear_residuals = false
+  print_linear_residuals = true
   perf_graph = true
   checkpoint = true
   # show_var_residual_norms = true
@@ -408,3 +602,4 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
 
 
 # PB means Primitive Based - Like based on values P, T, v --> Comes from Relap 
+
