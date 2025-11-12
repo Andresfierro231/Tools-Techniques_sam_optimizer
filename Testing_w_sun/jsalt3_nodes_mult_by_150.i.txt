@@ -1,3 +1,0 @@
-/bin/sh: 1: sam-opt: not found
-
-# Script runtime: 0.114 seconds

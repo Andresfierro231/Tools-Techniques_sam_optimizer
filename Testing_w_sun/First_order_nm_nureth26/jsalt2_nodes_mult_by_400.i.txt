@@ -1,0 +1,1125 @@
+
+[33m
+*** Warning, This code is deprecated and will be removed in future versions:
+jsalt_base_case.i:330: (Postprocessors/delta_Temp_TP6-TP2/function):
+'function' has been deprecated and will be removed on 05/01/2025. Please use 'expression' instead.
+[39m
+Add SAM Component: PBOneDFluidComponent up1
+Add SAM Component: PBPipe CoolingJacket
+Add SAM Component: PBOneDFluidComponent Melter
+Add SAM Component: PBOneDFluidComponent downcomer
+Add SAM Component: PBOneDFluidComponent Heater
+Add SAM Component: PBBranch TopLeft
+Add SAM Component: PBSingleJunction TopRight
+Add SAM Component: PBTDV pipe5_out_pressure_pin
+Add SAM Component: PBSingleJunction BottomRight
+Add SAM Component: PBSingleJunction BottomLeft
+Initialize SAM SAMSimulation:
+SAM Version: derived from v0.9.5.1, git commit 97dc275d5 on 2025-07-18
+Create mesh...   Building internal mesh...OK
+Build SAM Displaced Mesh... OK
+Checking system connections... Add Variables... OK
+Initialize Variable Values... OK
+Add SAM Component Physics... OK
+                                                                               [[33m  5.15 s[39m] [[33m  673 MB[39m]
+Framework Information:
+MOOSE Version:           git commit 32c337dfcc on 2025-07-17
+LibMesh Version:         
+PETSc Version:           3.23.0
+SLEPc Version:           3.23.0
+Current Time:            Sat Nov  1 12:40:03 2025
+Executable Timestamp:    Mon Jul 21 10:23:52 2025
+
+Input File(s):
+  /home/andresfierro231/projects/bubble_flow_loop_tamu/sam/Physor2026/active_development/sam-opt-tuner/Testing_w_sun/First_order_nm_nureth26/jsalt2_nodes_mult_by_400.i
+
+Checkpoint:
+  Wall Time Interval:      Every 3600 s
+  User Checkpoint:         Outputs/checkpoint
+  # Checkpoints Kept:      2
+  Execute On:              TIMESTEP_END 
+
+Parallelism:
+  Num Processors:          1
+  Num Threads:             1
+
+Mesh: 
+  Parallel Type:           replicated
+  Mesh Dimension:          2
+  Spatial Dimension:       3
+  Nodes:                   35208
+  Elems:                   12800
+  Num Subdomains:          6
+
+Nonlinear System:
+  Num DOFs:                71231
+  Num Local DOFs:          71231
+  Variables:               { "BottomLeft:pressure" "BottomLeft:temperature" "BottomLeft:velocity" "BottomRight:pressure" 
+                             "BottomRight:temperature" "BottomRight:velocity" } "T_solid" { "TopLeft:pressure" 
+                             "TopLeft:temperature" "TopLeft:velocity" "TopRight:pressure" "TopRight:temperature" 
+                             "TopRight:velocity" } "Tw" { "pressure" "temperature" } "velocity" 
+  Finite Element Types:    "SCALAR" "LAGRANGE" "SCALAR" "LAGRANGE" "LAGRANGE" "LAGRANGE" 
+  Approximation Orders:    "FIRST" "SECOND" "FIRST" "SECOND" "SECOND" "FIRST" 
+
+Auxiliary System:
+  Num DOFs:                46415
+  Num Local DOFs:          46415
+  Variables:               { "BottomLeft:rho" "BottomRight:rho" } "JxW" { "TopLeft:rho" "TopRight:rho" 
+                             } "heat_transfer_coefficient" "rho" 
+  Finite Element Types:    "SCALAR" "LAGRANGE" "SCALAR" "LAGRANGE" "LAGRANGE" 
+  Approximation Orders:    "FIRST" "SECOND" "FIRST" "SECOND" "SECOND" 
+
+Execution Information:
+  Executioner:             Transient
+  TimeStepper:             IterationAdaptiveDT
+  TimeIntegrator(s):       ImplicitEuler
+  Solver Mode:             Preconditioned JFNK 
+  MOOSE Preconditioner:    SMP 
+[31mLEGACY MODES ENABLED:[39m
+ This application uses the legacy material output option: material properties are output only on TIMESTEP_END, not INITIAL. To remove this message, set 'use_legacy_material_output' to false in this application. If there are gold output files that contain material property output for which output occurs on INITIAL, then these will generate diffs due to zero values being stored, and these tests should be re-golded.
+[39m
+[31mLEGACY MODES ENABLED:[39m
+ This application uses the legacy initial residual evaluation behavior. The legacy behavior performs an often times redundant residual evaluation before the solution modifying objects are executed prior to the initial (0th nonlinear iteration) residual evaluation. The new behavior skips that redundant residual evaluation unless the parameter Executioner/use_pre_smo_residual is set to true. To remove this message and enable the new behavior, set the parameter 'use_legacy_initial_residual_evaluation_behavior' to false in *App.C. Some tests that rely on the side effects of the legacy behavior may fail/diff and should be re-golded.
+[39m
+
+Time Step 0, time = 0
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            |
++----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   4.408507e+01 |   4.500000e+02 |
++----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+
+| time           | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   4.500000e+02 |   4.500000e+02 |   4.500000e+02 |
++----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  |
++----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   4.500000e+02 |   2.000000e-02 |   2.000000e-02 |
++----------------+----------------+----------------+----------------+
++----------------+----------------------------+
+| time           | coolingJacket_T_in_primary |
++----------------+----------------------------+
+|   0.000000e+00 |               4.500000e+02 |
++----------------+----------------------------+
++----------------+-----------------------------+--------------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 |
++----------------+-----------------------------+--------------------+
+|   0.000000e+00 |                4.500000e+02 |       0.000000e+00 |
++----------------+-----------------------------+--------------------+
++----------------+------------------------+----------------+----------------+
+| time           | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+------------------------+----------------+----------------+
+|   0.000000e+00 |           2.000000e-02 |   0.000000e+00 |   1.500252e-02 |
++----------------+------------------------+----------------+----------------+
+
+
+Time Step 1, time = 0.01, dt = 0.01
+ * Nonlinear |R| = [32m7.793325e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.793325e+00[39m
+ 1 Nonlinear |R| = [33m7.786067e+00[39m
+ 2 Nonlinear |R| = [33m7.776968e+00[39m
+ 3 Nonlinear |R| = [33m7.767591e+00[39m
+ 4 Nonlinear |R| = [33m7.757859e+00[39m
+ 5 Nonlinear |R| = [33m7.748266e+00[39m
+ 6 Nonlinear |R| = [33m7.738343e+00[39m
+ 7 Nonlinear |R| = [33m7.729370e+00[39m
+ 8 Nonlinear |R| = [33m7.720151e+00[39m
+ 9 Nonlinear |R| = [33m7.710541e+00[39m
+10 Nonlinear |R| = [33m7.701459e+00[39m
+11 Nonlinear |R| = [33m7.692429e+00[39m
+12 Nonlinear |R| = [33m7.682979e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+Currently Executing
+  Finished Solving                                                                       [[33m 42.34 s[39m] [[33m  776 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 0.005, dt = 0.005
+ * Nonlinear |R| = [32m7.776776e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.776776e+00[39m
+ 1 Nonlinear |R| = [33m7.769754e+00[39m
+ 2 Nonlinear |R| = [33m7.760738e+00[39m
+ 3 Nonlinear |R| = [33m7.751111e+00[39m
+ 4 Nonlinear |R| = [33m7.741331e+00[39m
+ 5 Nonlinear |R| = [33m7.732251e+00[39m
+ 6 Nonlinear |R| = [33m7.722800e+00[39m
+ 7 Nonlinear |R| = [33m7.713397e+00[39m
+ 8 Nonlinear |R| = [33m7.704225e+00[39m
+ 9 Nonlinear |R| = [33m7.694730e+00[39m
+10 Nonlinear |R| = [33m7.684958e+00[39m
+11 Nonlinear |R| = [33m7.676035e+00[39m
+12 Nonlinear |R| = [33m7.666110e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 41.91 s[39m] [[33m  776 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 0.0025, dt = 0.0025
+ * Nonlinear |R| = [32m7.711646e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.711646e+00[39m
+ 1 Nonlinear |R| = [33m7.703201e+00[39m
+ 2 Nonlinear |R| = [33m7.691996e+00[39m
+ 3 Nonlinear |R| = [33m7.680656e+00[39m
+ 4 Nonlinear |R| = [33m7.668467e+00[39m
+ 5 Nonlinear |R| = [33m7.656586e+00[39m
+ 6 Nonlinear |R| = [33m7.644187e+00[39m
+ 7 Nonlinear |R| = [33m7.632354e+00[39m
+ 8 Nonlinear |R| = [33m7.620501e+00[39m
+ 9 Nonlinear |R| = [33m7.608570e+00[39m
+10 Nonlinear |R| = [33m7.597401e+00[39m
+11 Nonlinear |R| = [33m7.585907e+00[39m
+12 Nonlinear |R| = [33m7.573266e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 44.19 s[39m] [[33m  776 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 0.00125, dt = 0.00125
+ * Nonlinear |R| = [32m7.466988e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.466988e+00[39m
+ 1 Nonlinear |R| = [33m7.457033e+00[39m
+ 2 Nonlinear |R| = [33m7.443321e+00[39m
+ 3 Nonlinear |R| = [33m7.429787e+00[39m
+ 4 Nonlinear |R| = [33m7.417061e+00[39m
+ 5 Nonlinear |R| = [33m7.403386e+00[39m
+ 6 Nonlinear |R| = [33m7.390447e+00[39m
+ 7 Nonlinear |R| = [33m7.377362e+00[39m
+ 8 Nonlinear |R| = [33m7.364320e+00[39m
+ 9 Nonlinear |R| = [33m7.351126e+00[39m
+10 Nonlinear |R| = [33m7.336883e+00[39m
+11 Nonlinear |R| = [33m7.322240e+00[39m
+12 Nonlinear |R| = [33m7.309039e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 44.70 s[39m] [[33m  776 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 0.000625, dt = 0.000625
+ * Nonlinear |R| = [32m6.683789e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.683789e+00[39m
+ 1 Nonlinear |R| = [33m6.671686e+00[39m
+ 2 Nonlinear |R| = [33m6.654102e+00[39m
+ 3 Nonlinear |R| = [33m6.642061e+00[39m
+ 4 Nonlinear |R| = [33m6.634048e+00[39m
+ 5 Nonlinear |R| = [33m6.615786e+00[39m
+ 6 Nonlinear |R| = [33m6.613942e+00[39m
+ 7 Nonlinear |R| = [33m6.603952e+00[39m
+ 8 Nonlinear |R| = [33m6.591416e+00[39m
+ 9 Nonlinear |R| = [33m6.575846e+00[39m
+10 Nonlinear |R| = [33m6.559778e+00[39m
+11 Nonlinear |R| = [33m6.541458e+00[39m
+12 Nonlinear |R| = [33m6.522555e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 44.32 s[39m] [[33m  776 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 0.0003125, dt = 0.0003125
+ * Nonlinear |R| = [32m5.017402e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m5.017402e+00[39m
+ 1 Nonlinear |R| = [33m5.001025e+00[39m
+ 2 Nonlinear |R| = [33m4.977745e+00[39m
+ 3 Nonlinear |R| = [33m4.953490e+00[39m
+ 4 Nonlinear |R| = [33m4.928573e+00[39m
+ 5 Nonlinear |R| = [33m4.903913e+00[39m
+ 6 Nonlinear |R| = [33m4.877092e+00[39m
+ 7 Nonlinear |R| = [33m4.850814e+00[39m
+ 8 Nonlinear |R| = [33m4.825761e+00[39m
+ 9 Nonlinear |R| = [33m4.799597e+00[39m
+10 Nonlinear |R| = [33m4.773143e+00[39m
+11 Nonlinear |R| = [33m4.747718e+00[39m
+12 Nonlinear |R| = [33m4.721680e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 44.01 s[39m] [[33m  776 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 0.00015625, dt = 0.00015625
+ * Nonlinear |R| = [32m3.115823e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m3.115823e+00[39m
+ 1 Nonlinear |R| = [33m3.111640e+00[39m
+ 2 Nonlinear |R| = [33m3.106356e+00[39m
+ 3 Nonlinear |R| = [33m3.101172e+00[39m
+ 4 Nonlinear |R| = [33m3.095920e+00[39m
+ 5 Nonlinear |R| = [33m3.090719e+00[39m
+ 6 Nonlinear |R| = [33m3.085181e+00[39m
+ 7 Nonlinear |R| = [33m3.080093e+00[39m
+ 8 Nonlinear |R| = [33m3.074962e+00[39m
+ 9 Nonlinear |R| = [33m3.069716e+00[39m
+10 Nonlinear |R| = [33m3.064366e+00[39m
+11 Nonlinear |R| = [33m3.059137e+00[39m
+12 Nonlinear |R| = [33m3.053974e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 47.86 s[39m] [[33m  776 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 7.8125e-05, dt = 7.8125e-05
+ * Nonlinear |R| = [32m1.824956e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m1.824956e+00[39m
+ 1 Nonlinear |R| = [33m1.824641e+00[39m
+ 2 Nonlinear |R| = [33m1.824597e+00[39m
+ 3 Nonlinear |R| = [33m1.824239e+00[39m
+ 4 Nonlinear |R| = [33m1.823862e+00[39m
+ 5 Nonlinear |R| = [33m1.823491e+00[39m
+ 6 Nonlinear |R| = [33m1.823097e+00[39m
+ 7 Nonlinear |R| = [33m1.822923e+00[39m
+ 8 Nonlinear |R| = [33m1.822537e+00[39m
+ 9 Nonlinear |R| = [33m1.822147e+00[39m
+10 Nonlinear |R| = [33m1.821770e+00[39m
+11 Nonlinear |R| = [33m1.821401e+00[39m
+12 Nonlinear |R| = [33m1.821017e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 55.64 s[39m] [[33m  776 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 3.90625e-05, dt = 3.90625e-05
+ * Nonlinear |R| = [32m1.136801e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m1.136801e+00[39m
+ 1 Nonlinear |R| = [33m1.136754e+00[39m
+ 2 Nonlinear |R| = [33m1.136718e+00[39m
+ 3 Nonlinear |R| = [33m1.136656e+00[39m
+ 4 Nonlinear |R| = [33m1.136588e+00[39m
+ 5 Nonlinear |R| = [33m1.136532e+00[39m
+ 6 Nonlinear |R| = [33m1.136484e+00[39m
+ 7 Nonlinear |R| = [33m1.136426e+00[39m
+ 8 Nonlinear |R| = [33m1.136369e+00[39m
+ 9 Nonlinear |R| = [33m1.136309e+00[39m
+10 Nonlinear |R| = [33m1.136258e+00[39m
+11 Nonlinear |R| = [33m1.136193e+00[39m
+12 Nonlinear |R| = [33m1.136121e+00[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 63.77 s[39m] [[33m  738 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1.95313e-05, dt = 1.95313e-05
+ * Nonlinear |R| = [32m8.286623e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m8.286623e-01[39m
+ 1 Nonlinear |R| = [33m8.286488e-01[39m
+ 2 Nonlinear |R| = [33m8.286358e-01[39m
+ 3 Nonlinear |R| = [33m8.286146e-01[39m
+ 4 Nonlinear |R| = [33m8.286036e-01[39m
+ 5 Nonlinear |R| = [33m8.285843e-01[39m
+ 6 Nonlinear |R| = [33m8.285720e-01[39m
+ 7 Nonlinear |R| = [33m8.285536e-01[39m
+ 8 Nonlinear |R| = [33m8.285456e-01[39m
+ 9 Nonlinear |R| = [33m8.285267e-01[39m
+10 Nonlinear |R| = [33m8.285054e-01[39m
+11 Nonlinear |R| = [33m8.284901e-01[39m
+12 Nonlinear |R| = [33m8.284797e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 70.46 s[39m] [[33m  738 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 9.76563e-06, dt = 9.76563e-06
+ * Nonlinear |R| = [32m7.227879e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.227879e-01[39m
+ 1 Nonlinear |R| = [33m7.227788e-01[39m
+ 2 Nonlinear |R| = [33m7.227659e-01[39m
+ 3 Nonlinear |R| = [33m7.227566e-01[39m
+ 4 Nonlinear |R| = [33m7.227463e-01[39m
+ 5 Nonlinear |R| = [33m7.227374e-01[39m
+ 6 Nonlinear |R| = [33m7.227272e-01[39m
+ 7 Nonlinear |R| = [33m7.227245e-01[39m
+ 8 Nonlinear |R| = [33m7.227216e-01[39m
+ 9 Nonlinear |R| = [33m7.227189e-01[39m
+10 Nonlinear |R| = [33m7.227178e-01[39m
+11 Nonlinear |R| = [33m7.227149e-01[39m
+12 Nonlinear |R| = [33m7.227119e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 70.09 s[39m] [[33m  738 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 4.88281e-06, dt = 4.88281e-06
+ * Nonlinear |R| = [32m6.930340e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.930340e-01[39m
+ 1 Nonlinear |R| = [33m6.930328e-01[39m
+ 2 Nonlinear |R| = [33m6.930326e-01[39m
+ 3 Nonlinear |R| = [33m6.930324e-01[39m
+ 4 Nonlinear |R| = [33m6.930322e-01[39m
+ 5 Nonlinear |R| = [33m6.930322e-01[39m
+ 6 Nonlinear |R| = [33m6.930321e-01[39m
+ 7 Nonlinear |R| = [33m6.930319e-01[39m
+ 8 Nonlinear |R| = [33m6.930318e-01[39m
+ 9 Nonlinear |R| = [33m6.930317e-01[39m
+10 Nonlinear |R| = [33m6.930316e-01[39m
+11 Nonlinear |R| = [33m6.930315e-01[39m
+12 Nonlinear |R| = [33m6.930314e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 83.35 s[39m] [[33m  738 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 2.44141e-06, dt = 2.44141e-06
+ * Nonlinear |R| = [32m6.853414e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.853414e-01[39m
+ 1 Nonlinear |R| = [33m6.853414e-01[39m
+ 2 Nonlinear |R| = [33m6.853414e-01[39m
+ 3 Nonlinear |R| = [33m6.853414e-01[39m
+ 4 Nonlinear |R| = [33m6.853413e-01[39m
+ 5 Nonlinear |R| = [33m6.853413e-01[39m
+ 6 Nonlinear |R| = [33m6.853413e-01[39m
+ 7 Nonlinear |R| = [33m6.853413e-01[39m
+ 8 Nonlinear |R| = [33m6.853413e-01[39m
+ 9 Nonlinear |R| = [33m6.853413e-01[39m
+10 Nonlinear |R| = [33m6.853413e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_LINE_SEARCH iterations 10
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m135.00 s[39m] [[33m  754 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1.2207e-06, dt = 1.2207e-06
+ * Nonlinear |R| = [32m6.834013e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.834013e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+  Nonlinear solve did not converge due to DIVERGED_LINE_SEARCH iterations 0
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 34.56 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 6.10352e-07, dt = 6.10352e-07
+ * Nonlinear |R| = [32m6.829152e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.829152e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.829152e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m320.49 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 3.05176e-07, dt = 3.05176e-07
+ * Nonlinear |R| = [32m6.827936e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827936e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827936e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m324.23 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1.52588e-07, dt = 1.52588e-07
+ * Nonlinear |R| = [32m6.827632e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827632e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827632e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m324.80 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 7.62939e-08, dt = 7.62939e-08
+ * Nonlinear |R| = [32m6.827556e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827556e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827556e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m325.62 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 3.8147e-08, dt = 3.8147e-08
+ * Nonlinear |R| = [32m6.827537e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827537e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827537e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m315.60 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1.90735e-08, dt = 1.90735e-08
+ * Nonlinear |R| = [32m6.827533e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827533e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827533e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m306.16 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 9.53674e-09, dt = 9.53674e-09
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827531e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m307.68 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 4.76837e-09, dt = 4.76837e-09
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827531e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m307.57 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 2.38419e-09, dt = 2.38419e-09
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827531e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m303.65 s[39m] [[33m  767 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1.19209e-09, dt = 1.19209e-09
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827531e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m311.73 s[39m] [[33m  767 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 5.96046e-10, dt = 5.96046e-10
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827531e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m317.82 s[39m] [[33m  767 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 2.98023e-10, dt = 2.98023e-10
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827531e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m322.73 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1.49012e-10, dt = 1.49012e-10
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827530e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827530e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827530e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827530e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m322.25 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 7.45058e-11, dt = 7.45058e-11
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827530e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827530e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827530e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827530e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827530e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827530e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m323.57 s[39m] [[33m  767 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 3.72529e-11, dt = 3.72529e-11
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827527e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827521e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827521e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827521e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827521e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827517e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827517e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827517e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827516e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827516e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827515e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m319.25 s[39m] [[33m  767 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1.86265e-11, dt = 1.86265e-11
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827527e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827526e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827524e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827522e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827521e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827520e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827519e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827519e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827517e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827517e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+  Finished Solving                                                                       [[33m337.58 s[39m] [[33m  767 MB[39m]
+[31m Solve Did NOT Converge![39m
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 9.31323e-12, dt = 9.31323e-12
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827511e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+  Nonlinear solve did not converge due to DIVERGED_LINE_SEARCH iterations 2
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m 86.56 s[39m] [[33m  767 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 4.65661e-12, dt = 4.65661e-12
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827506e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827470e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827442e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827441e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827380e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827373e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827367e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [32m6.197075e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.197039e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.197037e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.196644e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.196638e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m317.76 s[39m] [[33m  767 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 2.32831e-12, dt = 2.32831e-12
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827490e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827479e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827457e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827408e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827364e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827323e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827311e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827278e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+  Nonlinear solve did not converge due to DIVERGED_LINE_SEARCH iterations 8
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m243.02 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1.16415e-12, dt = 1.16415e-12
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827514e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827486e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827422e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827138e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827110e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827109e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.826904e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.826897e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.826893e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.826885e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.826882e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.826879e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m318.13 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 1, time = 1e-12, dt = 1e-12
+ * Nonlinear |R| = [32m6.827531e-01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m6.827531e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m6.827516e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m6.827403e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.827273e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.827216e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.827193e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.827181e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.827161e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.827131e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.827120e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.827103e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.827094e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.827070e-01[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m322.04 s[39m] [[33m  766 MB[39m]
+Aborting as solve did not converge
+
+[31m
+*** ERROR ***
+jsalt_base_case.i:391.3:
+The following error occurred in the TimeStepper 'IterationAdaptiveDT' of type IterationAdaptiveDT.
+
+Solve failed and timestep already at dtmin, cannot continue![39m
+
+Stack frames: 13
+0: libMesh::print_trace(std::ostream&)
+1: moose::internal::mooseErrorRaw(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+2: MooseBase::callMooseError(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool) const
+3: /home/andresfierro231/miniforge/envs/sam-o715/sam/bin/../lib/sam/libmoose-opt.so.0(+0x11fa5dd) [0x7954655fa5dd]
+4: IterationAdaptiveDT::computeFailedDT()
+5: TimeStepper::computeStep()
+6: TransientBase::execute()
+7: MooseApp::executeExecutioner()
+8: MooseApp::run()
+9: sam-opt(+0x60ee) [0x56cc1bb6b0ee]
+10: /lib/x86_64-linux-gnu/libc.so.6(+0x29d90) [0x795443029d90]
+11: __libc_start_main
+12: sam-opt(+0x63de) [0x56cc1bb6b3de]
+Abort(1) on node 0 (rank 0 in comm 0): application called MPI_Abort(MPI_COMM_WORLD, 1) - process 0
+
+# Script runtime: 7209.743 seconds
