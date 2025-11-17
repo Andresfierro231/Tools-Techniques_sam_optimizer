@@ -1,6 +1,6 @@
 ########## CSV Maker
 ## First made: 23 Oct 25
-## Today editing: 23 Oct 25
+## Today editing: 17 Nov 25
 
 # Purpose of this script: Analyze the results of the runs to try and get useful insights. 
 
@@ -8,7 +8,22 @@
 # [] Reporting paper
 #       [X] For each case, report how many succesful for each prefix, and how many failed. 
 #       [] make a cross comparison and how much difference from each other
-
+##############################################
+#Script does 2 main things
+# 1.  For each (case, prefix):
+    # Find all matching CSV files.
+    # Take only the last row of each CSV (the final time step), tag it with metadata, and write:
+    # One combined CSV per prefix: combined_last_lines_<prefix>.csv.
+# 2. For each case:
+    # Aggregate all those last rows (from all prefixes).
+    # Build a per-file report that answers:
+    # Did this file reach a valid end time?
+    # What was its final time?
+    # Which prefixes contributed?
+    # What was the average temperature, runtime, etc.?
+# 3. Save:
+    # analysis/{case}_analysis/case_report.csv (structured table).
+    # analysis/{case}_analysis/summary.txt (human-readable summary)
 
 ##############################################
 
@@ -25,20 +40,22 @@ prefixes = ["jsalt1", "jsalt2", "jsalt3", "jsalt4"] # Name of type of file you w
 end_times = [700, 850, 100000] # possible end times in your file. 
 
 def _find_time_col(df):
-    #  finding time col
+    #  finding time col. This column used elsewhere
     for col in df.columns:
         colName = str(col).lower()
         if colName == "time":
             return col 
 
-def _nearest_end_time(t, ends, tol): # Returns the nearest end value to one of the end times we expect
+def _nearest_end_time(t, ends, tol): 
+    # Returns the nearest end value to one of the end times we expect. Used to decide if run reached final time step/finished
     # Returns (matched_bool, matched_value or None)
     for e in ends:
         if abs(float(t) - float(e)) <= tol:
             return True, e
     return False, None
+
 def get_script_runtime(txt_path):
-    """Return runtime in seconds if found in text file, else None."""
+    """Return runtime in seconds if found in text file, else None. attaches runtime info from text log files to the CSV results."""
     try:
         with open(txt_path, "r") as f:
             lines = f.readlines()
@@ -54,20 +71,21 @@ def get_script_runtime(txt_path):
     return None
 
 # Main code
+    # Loops over all cases and prefixes
 for case in case_identifiers: 
     for prefix in prefixes:
         text_files = natsorted(glob.glob(os.path.expanduser(f"~/projects/physor2026_andrew/Testing_w_sun/{case}/{prefix}*.txt"))) # This is what searches for files
         runtime_by_source = {}        
 
-        for txt in text_files: # Adds data labels 
+        for txt in text_files: # Adds data labels # Gets runtime from output files
             runtime = get_script_runtime(txt)
 
             if runtime is not None:
                 runtime_by_source[os.path.basename(txt).replace(".i.txt", "_csv.csv")] = runtime
 
-        files = natsorted(glob.glob(os.path.expanduser(f"~/projects/physor2026_andrew/Testing_w_sun/{case}/{prefix}*.csv"))) # This is what searches for files
+        files = natsorted(glob.glob(os.path.expanduser(f"~/projects/physor2026_andrew/Testing_w_sun/{case}/{prefix}*.csv"))) # This is how to search for files
 
-        # What am I reading, and did it work? 
+        # Outputs What  I am reading, and did if it worked
         print("currently on file of case :",case, "; run :",prefix, "\n", )
         if not files:
             print(f"[WARN] No files for {prefix} \n")
@@ -80,8 +98,9 @@ for case in case_identifiers:
             try: # Read whole CSV 
                 df = pd.read_csv(file, engine="python", on_bad_lines="skip")
                 
-                ## Taking last row
+                ## Taking onlly last row last row
                 if df.empty: 
+                    # Skipping empty files
                     print(f"[SKIP] Empty file: {file}\n")
                     continue
                 last = df.tail(1).copy() # last is the last entry in csv
@@ -117,20 +136,18 @@ for case in case_identifiers:
         else:
             print(f"[WARN] No rows collected for {prefix} \n")
         
-                # ADD (per-case report once all prefixes processed):
+
+        ### ADD (per-case report once all prefixes processed):
         if case_records[case]:
             # Flatten rows into one DataFrame and sort
             case_df = pd.concat(case_records[case], ignore_index=True)
             case_df = case_df.sort_values(["case", "source_file"], ascending=[True, True])
 
-            # Identify plausible temperature columns
-            temp_cols = [c for c in case_df.columns
-                         if isinstance(c, str) and ("temp" in c.lower() or c.lower().startswith("t_") or c.lower().startswith("tp"))]
-            if not temp_cols:
-                temp_cols = [c for c in case_df.columns if str(c).lower() in ("temperature", "temp")]
+            
 
             if "script_runtime" not in case_df.columns:
                 case_df["script_runtime"] = pd.NA
+
             # Build a per-(case, source_file) report:
             # - reached_end_any: whether ANY run for that file reached an allowed end time
             # - last_time: max last_time seen for that file
@@ -159,13 +176,55 @@ for case in case_identifiers:
                                                     key=lambda col: col.map(keygen) if col.name == "source_file" else col
                                                 ).reset_index(drop=True)
             
+            ### TH_Output_cols for analysis case_report.csv ### 
+            # Identify useful TH output columns
+            cols = [c for c in case_df.columns if isinstance(c, str)]
+            def detect_cols(cols, contains=(), startswith=(), exact=(),
+                            exclude_contains=(), exclude_startswith=(), exclude_exact=()):
+                """Return list of columns whose names match include-rules 
+                but do NOT match exclude-rules."""
+                
+                out = []
+                for c in cols:
+                    if not isinstance(c, str):
+                        continue
+                    
+                    name = c.lower()
 
+                    # ---------- Exclusion rules ----------
+                    if any(bad in name for bad in exclude_contains):
+                        continue
+                    if any(name.startswith(bad) for bad in exclude_startswith):
+                        continue
+                    if any(name == bad for bad in exclude_exact):
+                        continue
+
+                    # ---------- Inclusion rules ----------
+                    if (
+                        any(sub in name for sub in contains) or
+                        any(name.startswith(pref) for pref in startswith) or
+                        any(name == ex for ex in exact)
+                    ):
+                        out.append(c)
+                return out
+            TH_Output_cols = detect_cols(
+                cols,
+                contains=("temp","vel", "pr"),
+                startswith=("t_", "tp"),
+                exact=("temperature", "temp"),
+                exclude_contains=("template", "attempt"),  # blocks template_id, attempt_count
+                exclude_startswith=("t_probe",),           # blocks t_probe_*
+                exclude_exact=("temp_flag",),             # blocks exactly "temp_flag"
+            )
+                        
+            
             # Attach mean of temperature columns per file (if present)
-            if temp_cols:
-                temp_means = (case_df.groupby(["case", "source_file"])[temp_cols]
+            if TH_Output_cols:
+                temp_means = (case_df.groupby(["case", "source_file"])[TH_Output_cols]
                               .mean(numeric_only=True)
                               .reset_index())
                 file_report = file_report.merge(temp_means, on=["case", "source_file"], how="left")
+       
 
             # Simple counts for the summary
             num_reached = int(file_report["reached_end_any"].sum())
