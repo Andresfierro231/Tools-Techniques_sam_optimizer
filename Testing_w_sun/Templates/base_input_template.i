@@ -1,13 +1,13 @@
 ################## MSFL Draft Script
-### First Created: 12 Jun 25 
-# ⭐⭐ Today editing: 30 Jun 25
+### First Created: 18 Oct 25
+# ⭐⭐ Today editing: 18 Oct 25
 # 
 # 
-#                             SALT 1 SAM - Base case for single Phase
-
-# - Goals -
-#  Use the two-phase base case (of identical name) to enhace this one with the cool postprocessor and different set-up
+#                             SALT Base Case - Using for parameter tuning
 #  
+# Initially copied from jsalt_base_case.i
+
+######    --> I don't know if I am using this anywhere 12 Nov 25
 ## Overview questions
 #  
 # 
@@ -39,7 +39,6 @@ v_0 = 0.02 # 0.0185
 h_amb = 1e5  # Arbitrarily large, as specified in paper
 p_out = 1.1e5
 
-
 # TS Const
 const_TS = 10 # s
 
@@ -48,14 +47,7 @@ p_order_quadPnts = 2 # 1
 quad_type = GAUSS # TRAP
 quad_order = SECOND # FIRST
 scheme =  implicit-euler # BDF2 #    # # crank-nicolson # 
-node_multiplier = 6 # 6 corresponds to about a node per inch. 
 
-nodes =          ${fparse 6 * node_multiplier} # 30 #
-nodes_melter =   ${fparse 2 * node_multiplier} # 10 #
-midnode =        ${fparse 3 * node_multiplier} # 15 # 
-
-# target_Pr = 50
-# target_vel = 
 ###### Under the hood -- Making usable ########
 heater_power = ${fparse ${q_net} / (0.0003835 * 36 * 0.0254)} # # Volumetric # Watts / m^3 # m^3 = area * length_inches * conversion # SI units # Can use ipython as calc
 
@@ -109,7 +101,7 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
   [ss-mat] # my HX is SS 315, manual says ss HT9 and D9 are implemented, but I don't see an example on how to use D9... D9 looks like closest to SS-316... constant is probably faster though 
     type = SolidMaterialProps
     k = 15 # K ranges from (13 - 17) https://www.azom.com/properties.aspx?ArticleID=863
-    Cp = 500 # 638 # Ranges from 490 - 530
+    Cp = 500 #638 # Ranges from 490 - 530
     rho = 7.7e3 # Density is reported to range from 7.87e3 to 8.07e3... 
   []
 
@@ -149,7 +141,7 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     position = '0 0 0'
     orientation = '0 0 1'
     length = ${fparse 36 * 0.0254}  # 14.34 inches up z # 0.364 # Meters
-    n_elems = ${nodes} # number of axial elements in direction of flow # If you change this, change postprocessor TS_TP
+    n_elems = 10 # number of axial elements in direction of flow # If you change this, change postprocessor TS_TP
    
   []
 
@@ -161,7 +153,7 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     input_parameters = ss_pipe
 
     length = ${fparse 36 * 0.0254} 
-    n_elems = ${nodes} # She used 10, I want to use 12 for each
+    n_elems = 10 # She used 10, I want to use 12 for each
 
     # f = 0.02 # FIXME: Use convective flux BC to have a temp pin
      # in sourcecode  can go to SAM/tests/ --> regression tests have ex of diff model and components; can look at PBPipe tests for more examples 
@@ -180,7 +172,7 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     input_parameters = flow_channel
 
     length = ${fparse 6 * sin(0.349) * 0.0254} # Made the outlet much smaller
-    n_elems = ${nodes_melter}
+    n_elems = 2
     A = ${fparse 0.0003835} # m^2 # ${fparse pi* 0.87^2 / 4 * 0.0254}
   []
 
@@ -194,7 +186,7 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     input_parameters = flow_channel
 
     length =  ${fparse (36) * 0.0254}
-    n_elems = ${nodes}
+    n_elems = 10 
   []
 
 
@@ -206,7 +198,7 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     input_parameters = flow_channel
 
     length = ${fparse 36 * 0.0254} # meters
-    n_elems = ${nodes}
+    n_elems = 10
 
     # f = 0.02     # 
 
@@ -287,9 +279,6 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     variable = velocity
     input = downcomer(out)
   []
-  [dt]
-    type = TimestepSize
-  []
   [TP1]                                  # Temperature 
     type = ComponentBoundaryVariableValue
     variable = temperature
@@ -305,26 +294,28 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     variable = temperature
     input = up1(in)
   []
-  [TP_TS]
+  [TS_TP]
     type = ComponentNodalVariableValue                               # Temperature Probe
-    input = up1(${midnode}) # this needs to update with discretization of up1
+    input = up1(4) # this needs to update with discretization of up1
+
     variable = temperature
   []
 
-  [TS_vel]                    # Was not able to get this running :(
+  [TS_vel]                    # Was not able to get this running :(              
     type = ComponentNodalVariableValue
-    input = up1(${midnode}) # this needs to update with discretization of up1 # unrecognized "end" but I am trying to put a node number
+
+    input = up1(4) # this needs to update with discretization of up1 # unrecognized "end" but I am trying to put a node number
+
     variable = velocity
   []
-
   
   [TP6]                                  # Temperature at inlet of TP6
     type = ComponentBoundaryVariableValue
     variable = temperature
     input = CoolingJacket(in)
   []
-
-  [delta_Temp_TP6-TP2]
+ 
+  [delta_t]
     type = ParsedPostprocessor
     pp_names = 'TP6 TP2'
     function = 'TP6 - TP2'
@@ -340,19 +331,6 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
     type = ComponentBoundaryVariableValue
     variable = temperature
     input = CoolingJacket(out)
-  []
-
-  [00_TS_Pr]
-    type = ParsedPostprocessor
-    expression = '(5806 - 10.83*T + 7.24e-3*T^2) * (0.4737 - 2.3e-3*T +3.73e-6*T^2 - 2.02e-9*T^3) / (0.78 - 1.25e-3*T +1.6e-6*T^2) '
-    pp_symbols = 'T'
-    pp_names = 'TP_TS'
-  []
-
-  [00_DeltaT]
-    type = ParsedPostprocessor
-    pp_names = 'TP6 TP2'
-    function = 'TP6 - TP2'
   []
 
 []
@@ -415,12 +393,12 @@ ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 3
   checkpoint = true
   # show_var_residual_norms = true
   # show_top_residuals = 3
-  # [out_displaced] # don't need it for these runs
-  #   type = Exodus
-  #   use_displaced = true # always keep true to let mesh look good
-  #   execute_on = 'initial timestep_end'
-  #   sequence = false
-  # []
+  [out_displaced]
+    type = Exodus
+    use_displaced = true # always keep true to let mesh look good
+    execute_on = 'initial timestep_end'
+    sequence = false
+  []
   [csv]
     type = CSV
   []
