@@ -1,0 +1,25 @@
+Case: second_order_nm_exp_nureth26
+Files reaching allowed end_time: 20/42
+Successful files by matched_end_time:
+
+Average script runtime (s): 1542.57
+  - jsalt1_nodes_mult_by_2_csv.csv @ 700 (prefixes: jsalt1)  		runtime: 16.40 s
+  - jsalt1_nodes_mult_by_6_csv.csv @ 700 (prefixes: jsalt1)  		runtime: 29.66 s
+  - jsalt1_nodes_mult_by_24_csv.csv @ 700 (prefixes: jsalt1)  		runtime: 220.75 s
+  - jsalt1_nodes_mult_by_48_csv.csv @ 700 (prefixes: jsalt1)  		runtime: 772.54 s
+  - jsalt1_nodes_mult_by_100_csv.csv @ 700 (prefixes: jsalt1)  		runtime: 4028.70 s
+  - jsalt2_nodes_mult_by_6_csv.csv @ 700 (prefixes: jsalt2)  		runtime: 167.31 s
+  - jsalt2_nodes_mult_by_24_csv.csv @ 700 (prefixes: jsalt2)  		runtime: 72.94 s
+  - jsalt2_nodes_mult_by_48_csv.csv @ 700 (prefixes: jsalt2)  		runtime: 1410.30 s
+  - jsalt2_nodes_mult_by_80_csv.csv @ 700 (prefixes: jsalt2)  		runtime: 1888.80 s
+  - jsalt2_nodes_mult_by_100_csv.csv @ 700 (prefixes: jsalt2)  		runtime: 3336.12 s
+  - jsalt3_nodes_mult_by_6_csv.csv @ 700 (prefixes: jsalt3)  		runtime: 244.31 s
+  - jsalt3_nodes_mult_by_24_csv.csv @ 700 (prefixes: jsalt3)  		runtime: 58.69 s
+  - jsalt3_nodes_mult_by_48_csv.csv @ 700 (prefixes: jsalt3)  		runtime: 134.29 s
+  - jsalt4_nodes_mult_by_2_csv.csv @ 700 (prefixes: jsalt4)  		runtime: 9.90 s
+  - jsalt4_nodes_mult_by_6_csv.csv @ 700 (prefixes: jsalt4)  		runtime: 186.78 s
+  - jsalt4_nodes_mult_by_24_csv.csv @ 700 (prefixes: jsalt4)  		runtime: 286.46 s
+  - jsalt4_nodes_mult_by_48_csv.csv @ 700 (prefixes: jsalt4)  		runtime: 109.96 s
+  - jsalt4_nodes_mult_by_80_csv.csv @ 700 (prefixes: jsalt4)  		runtime: 2138.14 s
+  - jsalt4_nodes_mult_by_100_csv.csv @ 700 (prefixes: jsalt4)  		runtime: 2500.02 s
+  - jsalt4_nodes_mult_by_150_csv.csv @ 700 (prefixes: jsalt4)  		runtime: 5255.13 s
