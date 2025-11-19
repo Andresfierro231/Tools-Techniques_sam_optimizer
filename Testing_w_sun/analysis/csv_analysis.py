@@ -1,22 +1,22 @@
 #!/usr/bin/env python3
 """
-Make validation CSVs comparing SAM vs experiment.
+    Make validation CSVs comparing SAM vs experiment. Or SAM against finely refined versions of SAM 
 
-Inputs (defaults are aligned with your repo layout):
-  - Experimental data: Validation_Data/validation_data.csv
-  - SAM case reports:
-        /First_order_nm_nureth26_analysis/case_report.csv
-        /second_order_nm_exp_nureth26_analysis/case_report.csv
+    Inputs (defaults are aligned with your repo layout):
+    - Experimental data: Validation_Data/validation_data.csv
+    - SAM case reports:
+            /First_order_nm_nureth26_analysis/case_report.csv
+            /second_order_nm_exp_nureth26_analysis/case_report.csv
 
-Outputs (saved under analysis/ by default):
-  - /validation_analysis_full.csv         (detailed per-run errors)
-  - /validation_analysis_paper_table.csv  (short paper-style table)
-  - /validation_analysis_summary.csv      (per-prefix “best” row)
+    Outputs (saved under analysis/ by default):
+    - /validation_analysis_full.csv         (detailed per-run errors)
+    - /validation_analysis_paper_table.csv  (short paper-style table)
+    - /validation_analysis_summary.csv      (per-prefix “best” row)
 
-Run like so (from physor2026_andrew/Testing_w_sun/analysis):
-    python csv_analysis.py
+    Run like so (from physor2026_andrew/Testing_w_sun/analysis):
+        python csv_analysis.py
 
-[] Make sure to change so that you can more easily change default search to be specified, not ctrl f and replace /First_order_nm.... 
+    [] Make sure to change so that you can more easily change default search to be specified, not ctrl f and replace /First_order_nm.... 
 
 """
 
@@ -26,6 +26,7 @@ import numpy as np
 import pandas as pd
 import matplotlib
 matplotlib.use("Agg")   
+from matplotlib.ticker import MaxNLocator, NullLocator
 import matplotlib.pyplot as plt 
 
 # ---------- User "control panel" ----------
@@ -37,12 +38,10 @@ make_plots = True
 
 # Which TP locations to compare between SAM and experiment
 #       # Script will automatically compute exp_value, sam_value, error, abs_error, rel_error
-COMPARISON_SITES = ["TS_vel"] # ["TP1", "TP2", "TP3", "TP6", "TS_vel", "massFlowRate"]  # add "TP4", "TP5" here as needed
+COMPARISON_SITES = ["TP1", "TP2", "TP3", "TP6", "TS_vel"] #  "massFlowRate"]  # ["TS_vel"] # add "TP4", "TP5" here as needed
 
 csv_cases = ["analysis/coarse_first_order_nm_physor_not_nureth26_analysis/case_report.csv",
-             "analysis/coarse_second_order_nm_nureth26_analysis/case_report.csv",
-             "analysis/Fine_first_order_nm_nureth26_analysis/case_report.csv", 
-             "analysis/Fine_second_order_nm_exp_nureth26_analysis/case_report.csv"]
+             "analysis/coarse_second_order_nm_nureth26_analysis/case_report.csv","analysis/Fine_first_order_nm_nureth26_analysis/case_report.csv", "analysis/Fine_second_order_nm_exp_nureth26_analysis/case_report.csv"]
 
 # Diagnostics & column-selection toggles
 # Turn these on/off or True/False to add/remove diagnostics from *all* outputs.
@@ -51,8 +50,66 @@ TOGGLE_DELTA_VALUES = True         # exp_delta_TP6_TP2, err_delta_TP6_TP2, etc.
 TOGGLE_RMSE = True                 # rmse_K
 TOGGLE_MAX_ABS = True              # max_abs_err_K
 
+# Error mode:
+#   "exp"                  -> compare against experimental data
+#   "self_ref"             -> compare each (prefix, order) vs its own finest mesh
+#   "self_ref_second_order"-> compare all runs vs finest *second-order* SAM per prefix
+ERROR_MODE = "self_ref_second_order"   # "exp" or "self_ref" or "self_ref_second_order"
+
+
 # If True, prints which columns were removed/kept when writing output files
 VERBOSE_COLUMN_FILTERING = True
+
+# ---- MAC NODES Plot refinement caps ----
+# Global cap on nodes_mult for plotting (None = no cap)
+MAX_NODES_GLOBAL = 30 # 30 # None      # or None if you don't want a global cap
+# Optional per-prefix cap (overrides global for that prefix if present # Example: only jsalt1 up to 30, others unlimited
+MAX_NODES_BY_PREFIX = {
+    # "jsalt1": 30,      "jsalt2": 20,     "jsalt3": None,    "jsalt4": 30,
+}
+
+############### Selecting output for summaries and csv ########################
+#           ##           ##           ##           ##           ##            # Outputs can be: case,source_file,reached_end_any,last_time,matched_end_time,prefixes,script_runtime,    TP1,TP2,TP3,TP6,    ref_TS_vel,sam_TS_vel,err_TS_vel,abs_err_TS_vel,rel_err_TS_vel_pct,     rmse_K,max_abs_err_K,   massFlowRate,order,nodes_mult,ref_TP1,sam_TP1,err_TP1,abs_err_TP1,rel_err_TP1_pct,ref_TP2,sam_TP2,err_TP2,abs_err_TP2,rel_err_TP2_pct,ref_TP3,sam_TP3,err_TP3,abs_err_TP3,rel_err_TP3_pct,ref_TP6,sam_TP6,err_TP6,abs_err_TP6,rel_err_TP6_pct,    TP_TS,TS_vel,TopL_velocity,delta_Temp_TP6-TP2,downcomer_out_velocity,   ref_delta_TP6_TP2,sam_delta_TP6_TP2,err_delta_TP6_TP2,abs_err_delta_TP6_TP2,rel_err_delta_TP6_TP2_pct
+# For the summaries and outputs
+#       Summary is used for the validation of the most refined run and the experimental data when in error mode self_ref*
+
+SUMMARY_COLS = [
+    "prefixes",
+    "order",
+    "nodes_mult",
+    # "source_file",
+    "script_runtime",
+    "rmse_K",
+    "max_abs_err_K",
+
+    # comparison quantities (SAM vs reference or SAM vs experiment)
+    "ref_TP2","sam_TP2",
+    "rel_err_TP2_pct",
+
+    "ref_TP6","sam_TP6",
+    "rel_err_TP6_pct",
+
+    "ref_TS_vel,sam_TS_vel", 
+    "rel_err_TS_vel_pct",
+]
+PAPER_COLS = [
+    "prefixes",
+    "order",         # see first_order vs second_order
+    "nodes_mult",
+    "source_file",
+    "script_runtime",
+    "rmse_K",
+    "max_abs_err_K",
+    "ref_TP2",
+    "sam_TP2",
+    "rel_err_TP2_pct",
+    "ref_TP6",
+    "sam_TP6",
+    "rel_err_TP6_pct",
+    "ref_delta_TP6_TP2",
+    "sam_delta_TP6_TP2",
+    "rel_err_delta_TP6_TP2_pct",
+]
 
 
 # ---------- Helpers ----------
@@ -72,10 +129,10 @@ def filter_columns(df, paper=False):
 
     remove = []
 
-    if not TOGGLE_TP_VALUES: # if turned off: 
+    if not TOGGLE_TP_VALUES:
         for site in ["TP1", "TP2", "TP3", "TP6"]:
             remove += [
-                f"exp_{site}",
+                f"ref_{site}",
                 f"sam_{site}",
                 f"err_{site}",
                 f"abs_err_{site}",
@@ -84,7 +141,7 @@ def filter_columns(df, paper=False):
 
     if not TOGGLE_DELTA_VALUES:
         remove += [
-            "exp_delta_TP6_TP2",
+            "ref_delta_TP6_TP2",
             "sam_delta_TP6_TP2",
             "err_delta_TP6_TP2",
             "abs_err_delta_TP6_TP2",
@@ -108,6 +165,7 @@ def filter_columns(df, paper=False):
 
     return trimmed
 
+
 def parse_nodes_mult(source_file: str) -> float:
     """
     Extract the nodes_mult factor from a filename like:
@@ -123,13 +181,13 @@ def parse_nodes_mult(source_file: str) -> float:
 
 def infer_order_label(path: pathlib.Path) -> str:
     """
-    Renames files. 
-    Infer a clean 'order' label from the parent folder name, e.g.
+        Renames files. 
+        Infer a clean 'order' label from the parent folder name, e.g.
 
-      'analysis/coarse_first_order_nm_physor_not_nureth26_analysis'     -> 'First_order'
-      'analysis/coarse_second_order_nm_nureth26_analysis'-> 'second_order'
+        'analysis/coarse_first_order_nm_physor_not_nureth26_analysis'     -> 'First_order'
+        'analysis/coarse_second_order_nm_nureth26_analysis'-> 'second_order'
 
-    Falls back to the full parent name if no pattern is found.
+        Falls back to the full parent name if no pattern is found.
     """
     parent_name = path.parent.name
     m = re.search(r"(first_order|second_order)", parent_name, re.IGNORECASE)
@@ -137,13 +195,185 @@ def infer_order_label(path: pathlib.Path) -> str:
         return m.group(1)  # 'First_order' or 'second_order' (as in the folder)
     return parent_name or "unknown_order"
 
-
-def compute_errors_for_row(row, exp_df):
+def build_reference_table(case_df, mode):
     """
-    Given one SAM row and the experimental DataFrame,
-    compute error metrics and return as a dict of new columns.
+    Build a reference table for SAM-based reference modes.
 
-    Uses TP1, TP2, TP3, TP6 and delta_T (TP6-TP2).
+    mode == "self_ref":
+        Reference is the finest mesh for *each (prefixes, order)*.
+        ref_map key: (prefixes, order)
+
+    mode == "self_ref_second_order":
+        Reference is the finest mesh among rows with order == "second_order"
+        for each prefix.
+        ref_map key: prefix (string)
+    """
+    if "nodes_mult" not in case_df.columns:
+        raise RuntimeError("nodes_mult column not present when building reference table.")
+
+    ref_map = {}
+
+    if mode == "self_ref":
+        grouped = case_df.groupby(["prefixes", "order"], dropna=False)
+
+        for (prefix, order), grp in grouped:
+            idx = grp["nodes_mult"].idxmax()
+            ref_row = grp.loc[idx]
+
+            entry = {}
+            for site in COMPARISON_SITES:
+                entry[site] = float(ref_row[site])
+
+            entry["delta_T"] = float(ref_row["delta_Temp_TP6-TP2"])
+            ref_map[(prefix, order)] = entry
+
+    elif mode == "self_ref_second_order":
+        # Only second-order rows
+        df_second = case_df[case_df["order"] == "second_order"].copy()
+        grouped = df_second.groupby("prefixes", dropna=False)
+
+        for prefix, grp in grouped:
+            idx = grp["nodes_mult"].idxmax()
+            ref_row = grp.loc[idx]
+
+            entry = {}
+            for site in COMPARISON_SITES:
+                entry[site] = float(ref_row[site])
+
+            entry["delta_T"] = float(ref_row["delta_Temp_TP6-TP2"])
+            ref_map[prefix] = entry
+
+    else:
+        raise ValueError(f"build_reference_table: unsupported mode {mode}")
+
+    return ref_map
+
+def compute_errors_for_row(row, exp_df=None, ref_map=None, mode="exp"):
+    """
+    Given one SAM row, compute error metrics and return as a dict of new columns.
+
+    mode == "exp":
+        - Uses experimental DataFrame exp_df via PREFIX_TO_EXP_COLUMN.
+        - "ref_*" columns correspond to experimental values.
+
+    mode == "self_ref":
+        - Uses reference SAM from ref_map[(prefix, order)],
+          where that reference is the highest nodes_mult for that (prefix, order).
+
+    mode == "self_ref_second_order":
+        - Uses reference SAM from ref_map[prefix],
+          where reference is highest nodes_mult among second-order runs for that prefix.
+
+    In all modes:
+        - ref_* is the reference value (experiment or SAM).
+        - sam_* is the current row.
+        - We compute per-site errors for COMPARISON_SITES,
+          plus RMSE, max_abs_err, and delta_T (TP6-TP2) errors.
+    """
+    prefix = row["prefixes"]
+
+    # ---- Pick reference values depending on mode ----
+    if mode == "exp":
+        if prefix not in PREFIX_TO_EXP_COLUMN:
+            return None
+        if exp_df is None:
+            raise RuntimeError("exp_df is None but ERROR_MODE == 'exp'.")
+
+        exp_col = PREFIX_TO_EXP_COLUMN[prefix]
+
+        def get_ref_site_value(site):
+            return float(exp_df.loc[site, exp_col])
+
+        ref_delta_T = float(exp_df.loc["TP6", exp_col] - exp_df.loc["TP2", exp_col])
+
+    elif mode == "self_ref":
+        if ref_map is None:
+            raise RuntimeError("ref_map is None but ERROR_MODE == 'self_ref'.")
+        key = (row["prefixes"], row["order"])
+        if key not in ref_map:
+            return None
+
+        ref_entry = ref_map[key]
+
+        def get_ref_site_value(site):
+            return float(ref_entry[site])
+
+        ref_delta_T = float(ref_entry["delta_T"])
+
+    elif mode == "self_ref_second_order":
+        if ref_map is None:
+            raise RuntimeError("ref_map is None but ERROR_MODE == 'self_ref_second_order'.")
+        if prefix not in ref_map:
+            # No second-order reference for this prefix
+            return None
+
+        ref_entry = ref_map[prefix]
+
+        def get_ref_site_value(site):
+            return float(ref_entry[site])
+
+        ref_delta_T = float(ref_entry["delta_T"])
+
+    else:
+        raise ValueError(f"Unknown error mode: {mode}")
+
+    # ---- Core error calculations ----
+    sites = COMPARISON_SITES
+    new_vals = {}
+
+    diffs_sq = []
+    abs_errs = []
+
+    for site in sites:
+        ref_val = get_ref_site_value(site)     # experiment or SAM reference
+        sam_val = float(row[site])
+
+        diff = sam_val - ref_val
+        abs_diff = abs(diff)
+        rel_pct = diff / ref_val * 100.0 if ref_val != 0 else np.nan
+
+        new_vals[f"ref_{site}"] = ref_val
+        new_vals[f"sam_{site}"] = sam_val
+        new_vals[f"err_{site}"] = diff
+        new_vals[f"abs_err_{site}"] = abs_diff
+        new_vals[f"rel_err_{site}_pct"] = rel_pct
+
+        diffs_sq.append(diff**2)
+        abs_errs.append(abs_diff)
+
+    # RMSE and max abs error across COMPARISON_SITES
+    if diffs_sq:
+        rmse = float(np.sqrt(np.mean(diffs_sq)))
+        max_abs = float(np.max(abs_errs))
+    else:
+        rmse = np.nan
+        max_abs = np.nan
+
+    new_vals["rmse_K"] = rmse
+    new_vals["max_abs_err_K"] = max_abs
+
+    # Delta T (TP6 - TP2) errors
+    sam_delta = float(row["delta_Temp_TP6-TP2"])
+
+    delta_diff = sam_delta - ref_delta_T
+    delta_abs = abs(delta_diff)
+    delta_rel_pct = delta_diff / ref_delta_T * 100.0 if ref_delta_T != 0 else np.nan
+
+    new_vals["ref_delta_TP6_TP2"] = ref_delta_T
+    new_vals["sam_delta_TP6_TP2"] = sam_delta
+    new_vals["err_delta_TP6_TP2"] = delta_diff
+    new_vals["abs_err_delta_TP6_TP2"] = delta_abs
+    new_vals["rel_err_delta_TP6_TP2_pct"] = delta_rel_pct
+
+    return new_vals
+
+def compute_exp_errors_for_row(row, exp_df):
+    """
+    Compute SAM-vs-experiment error metrics for a single row.
+
+    This ignores ERROR_MODE and always uses experimental data via PREFIX_TO_EXP_COLUMN.
+    Outputs columns named exp_*, sam_*, err_*, abs_err_*, rel_err_*_pct,
+    plus delta-T metrics and rmse_K / max_abs_err_K.
     """
     prefix = row["prefixes"]
 
@@ -152,14 +382,9 @@ def compute_errors_for_row(row, exp_df):
         return None
 
     exp_col = PREFIX_TO_EXP_COLUMN[prefix]
-
-    # Locations we will compare explicitly (from control panel)
     sites = COMPARISON_SITES
 
-
     new_vals = {}
-
-    # Per-TP errors
     diffs_sq = []
     abs_errs = []
 
@@ -180,7 +405,7 @@ def compute_errors_for_row(row, exp_df):
         diffs_sq.append(diff**2)
         abs_errs.append(abs_diff)
 
-    # RMSE and max abs error across TP1, TP2, TP3, TP6
+    # RMSE and max abs error across COMPARISON_SITES
     if diffs_sq:
         rmse = float(np.sqrt(np.mean(diffs_sq)))
         max_abs = float(np.max(abs_errs))
@@ -207,7 +432,8 @@ def compute_errors_for_row(row, exp_df):
 
     return new_vals
 
-def make_convergence_plots(full_df, out_dir):
+
+def make_convergence_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_prefix=None):
     """
     For each salt case (prefix jsalt1..4), make two plots:
 
@@ -241,6 +467,19 @@ def make_convergence_plots(full_df, out_dir):
         if df_p.empty:
             continue
 
+		
+        # ---- apply nodes_mult cap for this prefix ----
+        cap = None
+        if max_nodes_by_prefix and prefix in max_nodes_by_prefix:
+            cap = max_nodes_by_prefix[prefix]
+        elif max_nodes_global is not None:
+            cap = max_nodes_global
+        if cap is not None:
+            df_p = df_p[df_p["nodes_mult"] <= cap].copy()
+            if df_p.empty:
+                # nothing to plot for this prefix under this cap
+                continue
+
         # Sort by nodes_mult so lines look like proper trendlines
         df_p = df_p.sort_values("nodes_mult")
 
@@ -267,15 +506,25 @@ def make_convergence_plots(full_df, out_dir):
                 ax.plot(
                     x,
                     y,
+                    markersize=5,
                     marker=style["marker"],
                     linestyle=style["linestyle"],
                     label=label,
                 )
 
         ax.axhline(0.0, linestyle=":", linewidth=0.8)
+	
+        # x-axis ticks based on filtered data
+        ax.minorticks_off()
+        xmin = int(df_p["nodes_mult"].min())
+        xmax = int(df_p["nodes_mult"].max())
+        step = 2  # or 5 depending on density
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())  # turn off minor ticks
+
         ax.set_xlabel("nodes_mult")
         ax.set_ylabel("Relative error [%]")
-        ax.set_title(f"{prefix}: signed relative errors vs mesh refinement")
+        ax.set_title(f"{prefix}: signed relative errors vs mesh refinement\n{ERROR_MODE}")
         ax.legend(fontsize=7, ncol=2)
         fig.tight_layout()
 
@@ -283,7 +532,7 @@ def make_convergence_plots(full_df, out_dir):
         fig.savefig(signed_path, dpi=200)
         plt.close(fig)
 
-        # ---- 2) Absolute relative errors ----
+        # ---- 2) Absolute relative errors  (log) plot ----
         fig, ax = plt.subplots(figsize=(7, 5))
 
         for order in sorted(df_p["order"].unique()):
@@ -306,15 +555,20 @@ def make_convergence_plots(full_df, out_dir):
                     x,
                     y,
                     marker=style["marker"],
+                    markersize=5,
                     linestyle=style["linestyle"],
                     label=label,
                 )
 
         ax.set_xlabel("nodes_mult")
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())  # turn off minor ticks
+
+
         ax.set_ylabel("Absolute relative error [%]")
         ax.set_yscale("log")
 
-        ax.set_title(f"{prefix}: log(|relative error|) vs mesh refinement")
+        ax.set_title(f"{prefix}: log(|relative error|) vs mesh refinement\n{ERROR_MODE}")
         ax.legend(fontsize=7, ncol=2)
         fig.tight_layout()
 
@@ -353,29 +607,26 @@ def main():
     out_dir = pathlib.Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    #### --- Load experimental data --- #####
-    exp_df = pd.read_csv(args.exp_csv)
+    #### --- Load experimental data (if needed) --- #####
+    if ERROR_MODE == "exp":
+        exp_df = pd.read_csv(args.exp_csv)
 
-    # Strip whitespace from column names
-    exp_df.columns = exp_df.columns.str.strip()
+        # Strip whitespace from column names
+        exp_df.columns = exp_df.columns.str.strip()
 
-    if "Kelvin" not in exp_df.columns:
-        raise RuntimeError(
-            f"Expected a 'Kelvin' column in {args.exp_csv}, got columns: {list(exp_df.columns)}"
-        )
+        if "Kelvin" not in exp_df.columns:
+            raise RuntimeError(
+                f"Expected a 'Kelvin' column in {args.exp_csv}, got columns: {list(exp_df.columns)}"
+            )
 
-    # Strip whitespace from the Kelvin labels (TP1, TP2, ...)
-    exp_df["Kelvin"] = exp_df["Kelvin"].astype(str).str.strip()
+        exp_df["Kelvin"] = exp_df["Kelvin"].astype(str).str.strip()
+        exp_df = exp_df.set_index("Kelvin")
+        exp_df.index = exp_df.index.astype(str).str.strip()
 
-    # Use 'Kelvin' labels (TP1, TP2, ...) as the index
-    exp_df = exp_df.set_index("Kelvin")
-
-    # Make sure index is clean
-    exp_df.index = exp_df.index.astype(str).str.strip()
-
-    # Convert all data columns to numeric (coerce non-numerics / blanks to NaN)
-    for col in exp_df.columns:
-        exp_df[col] = pd.to_numeric(exp_df[col], errors="coerce")
+        for col in exp_df.columns:
+            exp_df[col] = pd.to_numeric(exp_df[col], errors="coerce")
+    else:
+        exp_df = None
 
 
     # --- Load and combine case report data ---
@@ -411,10 +662,17 @@ def main():
     case_df = case_df.dropna(subset=["nodes_mult"])
     case_df["nodes_mult"] = case_df["nodes_mult"].astype(int)
 
+    # Build reference table if comparing SAM vs refined SAM
+    if ERROR_MODE in ("self_ref", "self_ref_second_order"):
+        ref_map = build_reference_table(case_df, mode=ERROR_MODE)
+    else:
+        ref_map = None
+
+
     # --- Compute error metrics for each row ---
     all_rows = []
     for _, row in case_df.iterrows():
-        extra = compute_errors_for_row(row, exp_df)
+        extra = compute_errors_for_row(row, exp_df=exp_df, ref_map=ref_map, mode=ERROR_MODE)
         if extra is None:
             # No experimental mapping for this prefix, just skip it.
             continue
@@ -432,8 +690,7 @@ def main():
     full_df = full_df.sort_values(sort_cols).reset_index(drop=True)
     # ---- MAKE PLOTS (optional) ----
     if make_plots:
-        make_convergence_plots(full_df, out_dir)
-
+        make_convergence_plots(full_df, out_dir, max_nodes_global=MAX_NODES_GLOBAL, max_nodes_by_prefix=MAX_NODES_BY_PREFIX)
 
     # --- Output 1: Full analysis CSV ---
     
@@ -445,24 +702,7 @@ def main():
 
     # --- Output 2: Short paper-style table ---
     if write_paper:
-        paper_cols = [
-            "prefixes",
-            "order",         # see first_order vs second_order
-            "nodes_mult",
-            "source_file",
-            "script_runtime",
-            "rmse_K",
-            "max_abs_err_K",
-            "exp_TP2",
-            "sam_TP2",
-            "rel_err_TP2_pct",
-            "exp_TP6",
-            "sam_TP6",
-            "rel_err_TP6_pct",
-            "exp_delta_TP6_TP2",
-            "sam_delta_TP6_TP2",
-            "rel_err_delta_TP6_TP2_pct",
-        ]
+        paper_cols = PAPER_COLS
         paper_cols = [c for c in paper_cols if c in full_df.columns]  # safety
         paper_df = full_df[paper_cols].copy()
         paper_df = filter_columns(paper_df, paper=True)
@@ -470,34 +710,99 @@ def main():
         paper_path = out_dir / "validation_analysis_paper_table.csv"
         paper_df.to_csv(paper_path, index=False)
         print(f"Wrote paper table to: {paper_path}")
-
-    # --- Output 3: Summary for another script ---
-    # For each prefix (jsalt1..4), take the row with minimum rmse_K across ALL orders
+    # --- Output 3: Summary for another script / paper table ---
+    # For ERROR_MODE == "exp":
+    #     - keep existing behavior: best (min rmse_K) vs experiment per prefix.
+    #
+    # For ERROR_MODE in {"self_ref", "self_ref_second_order"}:
+    #     - take *only* the refined reference case(s) and compare those to experiment.
+    #
     if write_summary:
 
-        summary_df = (
-            full_df.sort_values(["prefixes", "rmse_K"])
-            .groupby("prefixes", as_index=False)
-            .first()
-        )
+        # Ensure experimental data is available for summary, regardless of ERROR_MODE
+        if exp_df is None:
+            exp_df_local = pd.read_csv(args.exp_csv)
+            exp_df_local.columns = exp_df_local.columns.str.strip()
 
-        # Keep just a small set of columns as the "summary"
-        summary_cols = [
-            "prefixes",
-            "order",        # which order produced the best row
-            "nodes_mult",
-            "source_file",
-            "script_runtime",
-            "rmse_K",
-            "max_abs_err_K",
-        ]
-        summary_cols = [c for c in summary_cols if c in summary_df.columns]
-        summary_df = summary_df[summary_cols].copy()
+            if "Kelvin" not in exp_df_local.columns:
+                raise RuntimeError(
+                    f"Expected a 'Kelvin' column in {args.exp_csv}, got columns: {list(exp_df_local.columns)}"
+                )
+
+            exp_df_local["Kelvin"] = exp_df_local["Kelvin"].astype(str).str.strip()
+            exp_df_local = exp_df_local.set_index("Kelvin")
+            exp_df_local.index = exp_df_local.index.astype(str).str.strip()
+            for col in exp_df_local.columns:
+                exp_df_local[col] = pd.to_numeric(exp_df_local[col], errors="coerce")
+        else:
+            exp_df_local = exp_df
+
+        # ---- Case 1: ERROR_MODE == "exp" (already comparing vs experiment) ----
+        if ERROR_MODE == "exp":
+            summary_df = (
+                full_df.sort_values(["prefixes", "rmse_K"])
+                .groupby("prefixes", as_index=False)
+                .first()
+            )
+            summary_cols = [c for c in SUMMARY_COLS if c in summary_df.columns]
+            summary_df = summary_df[summary_cols].copy()
+
+        # ---- Case 2: SAM-vs-SAM modes -> summary is refined SAM vs experiment ----
+        else:
+            summary_rows = []
+
+            if ERROR_MODE == "self_ref_second_order":
+                # One reference per prefix: finest second-order row
+                df_second = case_df[case_df["order"] == "second_order"].copy()
+                grouped = df_second.groupby("prefixes", dropna=False)
+
+                for prefix, grp in grouped:
+                    idx = grp["nodes_mult"].idxmax()
+                    base_row = grp.loc[idx]
+                    extra = compute_exp_errors_for_row(base_row, exp_df_local)
+                    if extra is None:
+                        continue
+                    combined = dict(base_row)
+                    combined.update(extra)
+                    summary_rows.append(combined)
+
+            elif ERROR_MODE == "self_ref":
+                # One reference per (prefix, order): finest mesh of that family
+                grouped = case_df.groupby(["prefixes", "order"], dropna=False)
+
+                for (prefix, order), grp in grouped:
+                    idx = grp["nodes_mult"].idxmax()
+                    base_row = grp.loc[idx]
+                    extra = compute_exp_errors_for_row(base_row, exp_df_local)
+                    if extra is None:
+                        continue
+                    combined = dict(base_row)
+                    combined.update(extra)
+                    summary_rows.append(combined)
+
+            else:
+                raise ValueError(f"Unexpected ERROR_MODE in summary block: {ERROR_MODE}")
+
+            if not summary_rows:
+                raise RuntimeError(
+                    "No rows could be matched to experimental data for summary. "
+                    "Check prefix->column mapping and ERROR_MODE."
+                )
+
+            summary_df = pd.DataFrame(summary_rows)
+
+            # Nice, paper-ready columns: refined SAM vs experiment
+            summary_cols = [c for c in SUMMARY_COLS if c in summary_df.columns]
+            summary_df = summary_df[summary_cols].copy()    
+
+        # Apply column toggles (note: filter_columns is written for ref_*,
+        # so it will generally leave exp_* columns alone, which is what we want)
         summary_df = filter_columns(summary_df)
 
         summary_path = out_dir / "validation_analysis_summary.csv"
         summary_df.to_csv(summary_path, index=False)
         print(f"Wrote summary to: {summary_path}")
+
 
 
 if __name__ == "__main__":
