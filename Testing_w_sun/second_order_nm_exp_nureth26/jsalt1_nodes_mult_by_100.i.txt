@@ -1,2 +1,0 @@
-
-# Script runtime: 4028.699 seconds

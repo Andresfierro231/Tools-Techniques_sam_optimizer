@@ -1,33 +1,62 @@
+#########################
+#  Super short script, just runs and records runtimes in a file called sam_runtimes.txt
+
+#  [] Make sam_runtimes and all of the output be put in a folder with an identifier name, not just dumped in templates
+#########################
+
 import subprocess
+from pathlib import Path
 import pandas as pd
-import time, os, tempfile, shutil
+import time, os, tempfile, shutil, csv
 # import pyhit
 # import moosetree
 
-node_mult_list = [2, 6, 12, 24, 48, 80, 100, 150, 300, 400, 600]
+
+### -------------------- Small Control Panel -------------------- ###
+node_mult_list = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+ORDER = "FIRST" # SECOND
+csv_path = Path("Templates/sam_runtimes.csv") # output_dir / "sam_runtimes.csv"
+
+### ------------------------------------------------------------  ###
+
+if ORDER == "FIRST":
+    ordr = 1
+else: 
+    ordr = 2
+
 
 for node_mult in node_mult_list:
 
     for i in [1,2,3,4]:
         
         #Takes input file template and creates file name to be used, call it file
-        inputfile = f"jsalt{i}.i"
-        file = f"jsalt{i}_nodes_mult_by_{node_mult}.i"
+        
+        inputfile = f"Templates/jsalt{i}.i"
+        file = f"Templates/jsalt{i}_nodes_mult_by_{node_mult}.i"
         
         with open(inputfile, "r") as f_in:
             lines = f_in.readlines() 
             # substitutes lines for node multiplier
 
-            with open(file, "w") as f_out:
-                for line in lines:
-                    if "node_multiplier" in line:
-                        f_out.write(f"node_multiplier := {node_mult}\n")
-                    else: 
-                        f_out.write(line)
+        replacements = {
+            "node_multiplier": f"node_multiplier := {node_mult}\n",
+            "quad_order":     f"quad_order := {ORDER}\n",
+            "p_order_quadPnts": f"p_order_quadPnts := {ordr}\n"
+        }
+
+        with open(file, "w") as f_out:
+            for line in lines:
+                for key, replacement in replacements.items():
+                    if key in line:
+                        line = replacement
+                        break
+                f_out.write(line)
+
 
 
         # Run SAM
         start_time = time.time()
+
 
         with tempfile.NamedTemporaryFile(delete=False, suffix =".log") as tmp:
             tmp_path = tmp.name
@@ -37,15 +66,45 @@ for node_mult in node_mult_list:
                 proc.wait() # waits for command to finish, as Popen lets you do things asynchronously and in parallel
         # result = subprocess.run(f'sam-opt -i {file} 2>&1 | tee {file}.txt', shell=True, check=True)
 
+
+        # Need to fix output file path so it is automatic
+        # output_dir = Path("../analysis")      # your folder name        
+        # output_dir.mkdir(parents=True, exist_ok=True)  # makes folder if it doesn't exist
+        # summary_path = output_dir / "sam_runtimes.txt"
+        # with open(summary_path, "a") as summary:
+        #     summary.write(f"{file}, returncode={proc.returncode}, runtime={elapsed:.3f} seconds\n")
+
+
+        ####################################################
+        # Always record runtime in a summary file
+                # output_dir = Path("analysis_outputs")
+                # output_dir.mkdir(parents=True, exist_ok=True)
+
+        
+
         elapsed = time.time() - start_time
 
-        if proc.returncode ==0: 
-            os.remove(tmp_path) # Succesful run, no log kept
-        else: 
+        # Write header only if file does not exist
+        write_header = not csv_path.exists()
+
+        with open(csv_path, "a", newline="") as f:
+            writer = csv.writer(f)
+            
+            if write_header:
+                writer.writerow(["file", "returncode", "runtime_seconds"])
+            
+            writer.writerow([file, proc.returncode, f"{elapsed:.3f}"])
+        ####################################################
+        # Only keep detailed log if it failed
+        if proc.returncode == 0:
+            os.remove(tmp_path)
+        else:
             final_log = f"{file}.txt"
             with open(tmp_path, "a") as logf:
                 logf.write(f"\n# Script runtime: {elapsed:.3f} seconds\n")
-            shutil.move(tmp_path, final_log) # keeps the log, has the descriptive name
+                logf.write("# Run FAILED\n")
+            shutil.move(tmp_path, final_log)
+
 
 
 
