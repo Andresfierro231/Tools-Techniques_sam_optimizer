@@ -16,7 +16,7 @@
     Run like so (from physor2026_andrew/Testing_w_sun/analysis):
         python csv_analysis.py
 
-    [] Make sure to change so that you can more easily change default search to be specified, not ctrl f and replace /First_order_nm.... 
+    [] Fix issue with compilation of source documents: https://chatgpt.com/c/691cc205-fbe4-8331-816d-29e8d43973da 
 
 """
 
@@ -41,7 +41,9 @@ make_plots = True
 COMPARISON_SITES = ["TP1", "TP2", "TP3", "TP6", "TS_vel"] #  "massFlowRate"]  # ["TS_vel"] # add "TP4", "TP5" here as needed
 
 csv_cases = ["analysis/coarse_first_order_nm_physor_not_nureth26_analysis/case_report.csv",
-             "analysis/coarse_second_order_nm_nureth26_analysis/case_report.csv","analysis/Fine_first_order_nm_nureth26_analysis/case_report.csv", "analysis/Fine_second_order_nm_exp_nureth26_analysis/case_report.csv"]
+             "analysis/coarse_second_order_nm_nureth26_analysis/case_report.csv",
+             "analysis/Fine_first_order_nm_nureth26_analysis/case_report.csv", 
+             "analysis/Fine_second_order_nm_exp_nureth26_analysis/case_report.csv"]
 
 # Diagnostics & column-selection toggles
 # Turn these on/off or True/False to add/remove diagnostics from *all* outputs.
@@ -54,15 +56,19 @@ TOGGLE_MAX_ABS = True              # max_abs_err_K
 #   "exp"                  -> compare against experimental data
 #   "self_ref"             -> compare each (prefix, order) vs its own finest mesh
 #   "self_ref_second_order"-> compare all runs vs finest *second-order* SAM per prefix
-ERROR_MODE = "self_ref_second_order"   # "exp" or "self_ref" or "self_ref_second_order"
+ERROR_MODE = "exp"   # "exp" or "self_ref" or "self_ref_second_order"
 
 
-# If True, prints which columns were removed/kept when writing output files
-VERBOSE_COLUMN_FILTERING = True
+
+Debug = [ #"Long", 
+         "tracking_cols_keeping",
+        #  "infer_order_debug",
+        #  "col_filter", # If True, prints which columns were removed/kept when writing output files
+        ]
 
 # ---- MAC NODES Plot refinement caps ----
 # Global cap on nodes_mult for plotting (None = no cap)
-MAX_NODES_GLOBAL = 30 # 30 # None      # or None if you don't want a global cap
+MAX_NODES_GLOBAL = 45 # 30 # None      # or None if you don't want a global cap
 # Optional per-prefix cap (overrides global for that prefix if present # Example: only jsalt1 up to 30, others unlimited
 MAX_NODES_BY_PREFIX = {
     # "jsalt1": 30,      "jsalt2": 20,     "jsalt3": None,    "jsalt4": 30,
@@ -86,13 +92,14 @@ SUMMARY_COLS = [
     "ref_TP2","sam_TP2",
     "rel_err_TP2_pct",
 
-    "ref_TP6","sam_TP6",
+    "ref_TP6", "sam_TP6",
     "rel_err_TP6_pct",
 
-    "ref_TS_vel,sam_TS_vel", 
+    "ref_TS_vel", "sam_TS_vel", 
     "rel_err_TS_vel_pct",
 ]
 PAPER_COLS = [
+    # "reached_end_any", # always true
     "prefixes",
     "order",         # see first_order vs second_order
     "nodes_mult",
@@ -106,9 +113,9 @@ PAPER_COLS = [
     "ref_TP6",
     "sam_TP6",
     "rel_err_TP6_pct",
-    "ref_delta_TP6_TP2",
-    "sam_delta_TP6_TP2",
-    "rel_err_delta_TP6_TP2_pct",
+    # "ref_delta_TP6_TP2",
+    # "sam_delta_TP6_TP2",
+    # "rel_err_delta_TP6_TP2_pct",
 ]
 
 
@@ -158,7 +165,7 @@ def filter_columns(df, paper=False):
     remove = [c for c in remove if c in df.columns]
     trimmed = df.drop(columns=remove, errors="ignore")
 
-    if VERBOSE_COLUMN_FILTERING:
+    if "col_filter" in Debug:
         print("\nColumn filter summary:")
         print("Removed:", remove)
         print("Remaining:", list(trimmed.columns))
@@ -181,18 +188,18 @@ def parse_nodes_mult(source_file: str) -> float:
 
 def infer_order_label(path: pathlib.Path) -> str:
     """
-        Renames files. 
-        Infer a clean 'order' label from the parent folder name, e.g.
+    Infer a clean 'order' label from the parent folder name, e.g.
 
-        'analysis/coarse_first_order_nm_physor_not_nureth26_analysis'     -> 'First_order'
-        'analysis/coarse_second_order_nm_nureth26_analysis'-> 'second_order'
+      'analysis/coarse_first_order_nm_physor_not_nureth26_analysis'  -> 'first_order'
+      'analysis/Fine_second_order_nm_nureth26_analysis'              -> 'second_order'
 
-        Falls back to the full parent name if no pattern is found.
+    Always returns 'first_order' or 'second_order' in lowercase if found.
+    Falls back to the full parent name if no pattern is found.
     """
     parent_name = path.parent.name
     m = re.search(r"(first_order|second_order)", parent_name, re.IGNORECASE)
     if m:
-        return m.group(1)  # 'First_order' or 'second_order' (as in the folder)
+        return m.group(1).lower()   # <-- normalize to 'first_order' or 'second_order'
     return parent_name or "unknown_order"
 
 def build_reference_table(case_df, mode):
@@ -214,7 +221,7 @@ def build_reference_table(case_df, mode):
     ref_map = {}
 
     if mode == "self_ref":
-        grouped = case_df.groupby(["prefixes", "order"], dropna=False)
+        grouped = case_df.groupby(["prefixes", "order"])
 
         for (prefix, order), grp in grouped:
             idx = grp["nodes_mult"].idxmax()
@@ -432,6 +439,19 @@ def compute_exp_errors_for_row(row, exp_df):
 
     return new_vals
 
+def get_nodes_cap_for_prefix(prefix: str):
+    """
+    Return the effective nodes_mult cap for a given prefix.
+
+    Priority:
+      1) MAX_NODES_BY_PREFIX[prefix] if defined (even if None)
+      2) MAX_NODES_GLOBAL if not None
+      3) None (no cap)
+    """
+    if MAX_NODES_BY_PREFIX and prefix in MAX_NODES_BY_PREFIX:
+        return MAX_NODES_BY_PREFIX[prefix]
+    return MAX_NODES_GLOBAL
+
 
 def make_convergence_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_prefix=None):
     """
@@ -467,18 +487,13 @@ def make_convergence_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by
         if df_p.empty:
             continue
 
-		
         # ---- apply nodes_mult cap for this prefix ----
-        cap = None
-        if max_nodes_by_prefix and prefix in max_nodes_by_prefix:
-            cap = max_nodes_by_prefix[prefix]
-        elif max_nodes_global is not None:
-            cap = max_nodes_global
+        cap = get_nodes_cap_for_prefix(prefix)
         if cap is not None:
             df_p = df_p[df_p["nodes_mult"] <= cap].copy()
             if df_p.empty:
-                # nothing to plot for this prefix under this cap
                 continue
+
 
         # Sort by nodes_mult so lines look like proper trendlines
         df_p = df_p.sort_values("nodes_mult")
@@ -490,7 +505,7 @@ def make_convergence_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by
             df_po = df_p[df_p["order"] == order]
             if df_po.empty:
                 continue
-
+            
             style = order_styles.get(order, {"marker": "o", "linestyle": "-"})
 
             for metric in metrics:
@@ -580,6 +595,100 @@ def make_convergence_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by
         print(f"       {signed_path}")
         print(f"       {abs_path}")
 
+def make_runtime_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_prefix=None):
+    """
+    For each salt case (prefix jsalt1..4), make ONE runtime plot per prefix:
+
+        jsaltX_runtime_vs_nodes_mult.png
+
+    The plot shows script_runtime [s] vs nodes_mult with BOTH orders overlain.
+    The x-axis is shared for both orders, but we do NOT artificially
+    truncate to the min(max(nodes_mult)) of each order; only the user caps
+    (global/per-prefix) are applied.
+    """
+    plot_dir = out_dir / "plots" / "Runtime_plots"
+    plot_dir.mkdir(parents=True, exist_ok=True)
+
+    if "script_runtime" not in full_df.columns:
+        print("[RUNTIME PLOTS] 'script_runtime' column not found, skipping runtime plots.")
+        return
+
+    prefixes = sorted(full_df["prefixes"].unique())
+
+    # Marker styles (can tweak if you like)
+    order_styles = {
+        "first_order":  {"marker": "o", "linestyle": "-",  "label": "1st order"},
+        "second_order": {"marker": "s", "linestyle": "--", "label": "2nd order"},
+    }
+
+    for prefix in prefixes:
+        df_p = full_df[full_df["prefixes"] == prefix].copy()
+        if df_p.empty:
+            continue
+
+        # ---- 1) Apply global/per-prefix cap on nodes_mult (ONLY user caps) ----
+        cap = None
+        if max_nodes_by_prefix and prefix in max_nodes_by_prefix:
+            cap = max_nodes_by_prefix[prefix]
+        elif max_nodes_global is not None:
+            cap = max_nodes_global
+
+        if cap is not None:
+            df_p = df_p[df_p["nodes_mult"] <= cap].copy()
+            if df_p.empty:
+                continue
+
+        # Sort once by nodes_mult
+        df_p = df_p.sort_values("nodes_mult")
+
+        fig, ax = plt.subplots(figsize=(7, 5))
+
+        # ---- 2) Plot both orders overlain on same axes ----
+                
+        # --- Defensive fix: ensure script_runtime is numeric ---
+        if "script_runtime" in df_p.columns:
+            df_p["script_runtime"] = pd.to_numeric(df_p["script_runtime"], errors="coerce")
+            df_p = df_p.dropna(subset=["script_runtime"])
+
+        for order, df_po in df_p.groupby("order"):
+            if df_po.empty:
+                continue
+
+            style = order_styles.get(order, {"marker": "o", "linestyle": "-", "label": order})
+
+            x = df_po["nodes_mult"]
+            y = df_po["script_runtime"]
+
+            ax.plot(
+                x,
+                y,
+                marker=style["marker"],
+                markersize=5,
+                linestyle=style["linestyle"],
+                label=style["label"],
+            )
+
+        # integer ticks, no minor ticks
+        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
+        ax.xaxis.set_minor_locator(NullLocator())
+
+        # optional: explicitly set limits with a little padding
+        xmin = int(df_p["nodes_mult"].min())
+        xmax = int(df_p["nodes_mult"].max())
+        ax.set_xlim(xmin - 0.5, xmax + 0.5)
+
+        ax.set_xlabel("nodes_mult")
+        ax.set_ylabel("Script runtime [s]")
+        ax.set_title(f"{prefix}: runtime vs mesh refinement\n{ERROR_MODE}")
+        ax.legend(fontsize=8)
+
+        fig.tight_layout()
+        out_path = plot_dir / f"{prefix}_runtime_vs_nodes_mult.png"
+        fig.savefig(out_path, dpi=200)
+        plt.close(fig)
+
+        print(f"[PLOT] Saved runtime plot (overlaid orders): {out_path}")
+
 
 
 # ---------- Main ----------
@@ -630,41 +739,145 @@ def main():
 
 
     # --- Load and combine case report data ---
+    # --- Load and combine case report data ---
     case_frames = []
     for path_str in args.case_csv:
         path = pathlib.Path(path_str)
         df = pd.read_csv(path)
 
-        # Tag with 'order' based on the parent folder name (e.g. 'First_order', 'second_order')
+        # 1) Strip whitespace from column names
+        df.columns = df.columns.str.strip()
+
+        if "tracking_cols_keeping" in Debug:        
+            print("\n--- LOADED FILE:", path_str, "---")
+            print(df.columns.tolist())
+            print("Num rows:", len(df))
+
+        # 2) Strip whitespace from critical string columns if they exist
+        for col in ["case", "source_file", "prefixes", "reached_end_any"]:
+            if col in df.columns:
+                df[col] = df[col].astype(str).str.strip()
+
+        # 3) FIX DUPLICATE COLUMNS (if any)
+        if df.columns.duplicated().any():
+            new_cols = []
+            seen = {}
+            for col in df.columns:
+                if col not in seen:
+                    seen[col] = 0
+                    new_cols.append(col)
+                else:
+                    seen[col] += 1
+                    new_cols.append(f"{col}.{seen[col]}")
+            df.columns = new_cols
+
+        # 4) Tag with 'order' based on parent folder name
         df["order"] = infer_order_label(path)
 
+        # 5) Save this frame
         case_frames.append(df)
+
 
     if not case_frames:
         raise RuntimeError("No case_report CSVs were loaded. Check --case_csv paths.")
 
+    ### ----- Building case_df ----- ###
+
     case_df = pd.concat(case_frames, ignore_index=True)
+    # Normalize prefixes once again (just in case)
+    if "prefixes" in case_df.columns:
+        case_df["prefixes"] = case_df["prefixes"].astype(str).str.strip()
+
+
+    # Extract nodes_mult from source_file
+    case_df["nodes_mult"] = case_df["source_file"].apply(parse_nodes_mult)
+
+    # Saving full to file
+    debug_path = out_dir / "full_cases.csv"
+    case_df.to_csv(debug_path, index=False)
+
+    if "tracking_cols_keeping" in Debug:
+        # ---------- DEBUG BLOCK 1 ----------
+        print("\nDEBUG BEFORE reached_end_any FILTER:")
+        print("Second-order nodes_mult available (raw CSVs):")
+        debug_before = (
+            case_df[case_df["order"] == "second_order"]
+                .groupby("prefixes")["nodes_mult"]
+        )
+
+        # Print min, max, and how many unique values per prefix
+        print("  min / max / nunique by prefix:")
+        print(debug_before.agg(['min', 'max', 'nunique']))
+
+        # Print the full sorted unique list per prefix (no '...')
+        print("\n  full unique nodes_mult by prefix:")
+        print(debug_before.apply(lambda s: sorted(s.unique())))
+        print("---------------------------------------")
+        # -----------------------------------------
+
 
     # Keep only rows where reached_end_any is True
     # (skip failed/incomplete runs)
     if case_df["reached_end_any"].dtype == bool:
         good_mask = case_df["reached_end_any"]
     else:
-        # In case it's "True"/"False" as strings
-        good_mask = case_df["reached_end_any"].astype(str).str.lower() == "true"
+        # Robust: handle "True", " true ", "TRUE", etc.
+        good_mask = (
+            case_df["reached_end_any"]
+            .astype(str).str.strip().str.lower() == "true"
+        )
 
     case_df = case_df[good_mask].copy()
 
-    # Extract nodes_mult from source_file
-    case_df["nodes_mult"] = case_df["source_file"].apply(parse_nodes_mult)
+    if "tracking_cols_keeping" in Debug: 
+        # ---------- DEBUG BLOCK 2 ----------
+        print("\nDEBUG AFTER reached_end_any FILTER:")
+        debug_after = (
+            case_df[case_df["order"] == "second_order"]
+                .groupby("prefixes")["nodes_mult"]
+        )
+
+        print("  min / max / nunique by prefix:")
+        print(debug_after.agg(['min', 'max', 'nunique']))
+
+        print("\n  full unique nodes_mult by prefix:")
+        print(debug_after.apply(lambda s: sorted(s.unique())))
+        print("---------------------------------------")
+        # -----------------------------------------
+
+
+    
+    if "tracking_cols_keeping" in Debug: 
+        # ---------- DEBUG BLOCK 3 ----------
+        print("\nDEBUG nodes_mult PARSING — NaN rows:")
+        nan_rows = case_df[case_df["nodes_mult"].isna()]
+        print(nan_rows[["prefixes", "order", "source_file"]].head(20))
+        print("Total NaN rows:", len(nan_rows))
+        print("---------------------------------------")
+        # -----------------------------------------
+
+    # Extract nodes_mult...
+    case_df = case_df.dropna(subset=["nodes_mult"])
+    case_df["nodes_mult"] = case_df["nodes_mult"].astype(int)
+    
+    # Save a pristine copy BEFORE plotting filters
+    case_df_full = case_df.copy()
+
 
     # Drop rows without nodes_mult (if any)
     case_df = case_df.dropna(subset=["nodes_mult"])
     case_df["nodes_mult"] = case_df["nodes_mult"].astype(int)
+    
+    # Sanity check 
+    if "infer_order_debug" in Debug:
+        print("Unique inferred orders:", case_df["order"].unique())
+        print(case_df[["source_file", "order"]]) # .head(20)
+   
 
+   
     # Build reference table if comparing SAM vs refined SAM
     if ERROR_MODE in ("self_ref", "self_ref_second_order"):
-        ref_map = build_reference_table(case_df, mode=ERROR_MODE)
+        ref_map = build_reference_table(case_df_full, mode=ERROR_MODE)
     else:
         ref_map = None
 
@@ -684,6 +897,26 @@ def main():
         raise RuntimeError("No rows could be matched to experimental data. Check prefix->column mapping.")
 
     full_df = pd.DataFrame(all_rows)
+    # Force script_runtime to numeric (important!)
+    full_df["script_runtime"] = pd.to_numeric(full_df["script_runtime"], errors="coerce")
+
+
+    if "tracking_cols_keeping" in Debug: 
+        # ---------- DEBUG BLOCK 4 ----------
+        print("\nDEBUG second-order nodes_mult that reached FULL_DF:")
+        debug_full = (
+            full_df[full_df["order"] == "second_order"]
+                .groupby("prefixes")["nodes_mult"]
+        )
+
+        print("  min / max / nunique by prefix:")
+        print(debug_full.agg(['min', 'max', 'nunique']))
+
+        print("\n  full unique nodes_mult by prefix:")
+        print(debug_full.apply(lambda s: sorted(s.unique())))
+        print("---------------------------------------")
+        # -----------------------------------------
+
 
     # Sort nicely by prefix, order, and nodes_mult
     sort_cols = [c for c in ["prefixes", "order", "nodes_mult"] if c in full_df.columns]
@@ -691,7 +924,7 @@ def main():
     # ---- MAKE PLOTS (optional) ----
     if make_plots:
         make_convergence_plots(full_df, out_dir, max_nodes_global=MAX_NODES_GLOBAL, max_nodes_by_prefix=MAX_NODES_BY_PREFIX)
-
+        make_runtime_plots(full_df,out_dir,max_nodes_global=MAX_NODES_GLOBAL,max_nodes_by_prefix=MAX_NODES_BY_PREFIX)
     # --- Output 1: Full analysis CSV ---
     
     full_path = out_dir / "validation_analysis_full.csv"
@@ -753,10 +986,17 @@ def main():
 
             if ERROR_MODE == "self_ref_second_order":
                 # One reference per prefix: finest second-order row
-                df_second = case_df[case_df["order"] == "second_order"].copy()
+                df_second = case_df_full[case_df_full["order"] == "second_order"].copy()
                 grouped = df_second.groupby("prefixes", dropna=False)
 
                 for prefix, grp in grouped:
+                    cap = get_nodes_cap_for_prefix(prefix)
+                    if cap is not None:
+                        grp = grp[grp["nodes_mult"] <= cap]
+                    if grp.empty:
+                        # no rows for this prefix under the cap, skip
+                        continue
+
                     idx = grp["nodes_mult"].idxmax()
                     base_row = grp.loc[idx]
                     extra = compute_exp_errors_for_row(base_row, exp_df_local)
@@ -765,12 +1005,19 @@ def main():
                     combined = dict(base_row)
                     combined.update(extra)
                     summary_rows.append(combined)
+
 
             elif ERROR_MODE == "self_ref":
                 # One reference per (prefix, order): finest mesh of that family
-                grouped = case_df.groupby(["prefixes", "order"], dropna=False)
+                grouped = case_df_full.groupby(["prefixes", "order"])
 
                 for (prefix, order), grp in grouped:
+                    cap = get_nodes_cap_for_prefix(prefix)
+                    if cap is not None:
+                        grp = grp[grp["nodes_mult"] <= cap]
+                    if grp.empty:
+                        continue
+
                     idx = grp["nodes_mult"].idxmax()
                     base_row = grp.loc[idx]
                     extra = compute_exp_errors_for_row(base_row, exp_df_local)
@@ -779,6 +1026,7 @@ def main():
                     combined = dict(base_row)
                     combined.update(extra)
                     summary_rows.append(combined)
+
 
             else:
                 raise ValueError(f"Unexpected ERROR_MODE in summary block: {ERROR_MODE}")
