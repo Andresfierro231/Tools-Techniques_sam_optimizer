@@ -4,7 +4,7 @@
 *.e
 *.e-*
 *.gz
-data
+# data
 header
 sam-opt
 *.so
@@ -18,3 +18,7 @@ venv/
 *.py[\cod]
 
 *.code-workspace
+
+
+# Exceptions to include 
+!Validation_Data/*
