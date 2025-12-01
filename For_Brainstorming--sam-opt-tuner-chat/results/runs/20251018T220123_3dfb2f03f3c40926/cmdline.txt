@@ -1,1 +1,0 @@
-conda run -n sam-o715 --no-capture-output /home/andresfierro231/miniforge/envs/SAM/sam/bin/sam-opt -i case.i
