@@ -6,7 +6,7 @@
 #                             SALT 1 SAM - Base case for single Phase
 
 # - Goals -
-#  Using real HTC BC, not fixed outlet temperature
+#  Use the two-phase base case (of identical name) to enhace this one with the cool postprocessor and different set-up
 #  
 ## Overview questions
 #  
@@ -66,6 +66,7 @@ end_pipe_up =        '0  0      ${fparse (36) * 0.0254}'
 end_cooling_jacket = '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse (36 - 36 * sin(0.349)) * 0.0254}'
 ht_entry_loc =       '0  ${fparse (36* cos(0.349)) * 0.0254}      ${fparse ( - 36 * sin(0.349)) * 0.0254}'
 
+# How do I add temperature probes at these locations??
 # ts_in_loc =          '0  0      ${fparse 14.34 * 0.0254}' 
 # ts_out_loc =         '0  0      ${fparse (14.34 + 7.32) * 0.0254}' # Will keep ts locations for postprocessors
 

@@ -3,7 +3,7 @@
     Make validation CSVs comparing SAM vs experiment. Or SAM against finely refined versions of SAM 
 
     Inputs (defaults are aligned with your repo layout):
-    - Experimental data: Validation_Data/validation_data.csv
+    - Experimental data: ../Validation_Data/validation_data.csv
     - SAM case reports:
             /First_order_nm_nureth26_analysis/case_report.csv
             /second_order_nm_exp_nureth26_analysis/case_report.csv
@@ -697,7 +697,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--exp_csv",
-        default="Validation_Data/validation_data.csv",
+        default="../Validation_Data/validation_data.csv",
         help="CSV with experimental data (Kelvin, Salt Test 1..4, Water Test 1..4)",
     )
     parser.add_argument(
