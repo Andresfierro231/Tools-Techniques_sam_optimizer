@@ -32,8 +32,8 @@ import matplotlib.pyplot as plt
 # ---------- User "control panel" ----------
 
 # Which output files to generate
-write_paper = True
-write_summary = True
+write_paper = False
+write_summary = False
 make_plots = True 
 
 # Which TP locations to compare between SAM and experiment
