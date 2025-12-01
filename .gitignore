@@ -22,3 +22,4 @@ venv/
 
 # Exceptions to include 
 !Validation_Data/*
+!*case_report.csv
