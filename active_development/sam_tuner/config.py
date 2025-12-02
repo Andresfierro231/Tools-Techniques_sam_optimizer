@@ -25,10 +25,17 @@ CONFIG = {
         "htc": (100.0, 5000.0),
 
         # Node multiplier used in your existing scripts.
-        "node_multiplier": [1, 2, 4, 8, 16, 24, 32],
+        # IMPORTANT: use the same name as in validation_analysis_full.csv (nodes_mult)
+        # so the optimizer can generate candidates correctly.
+        "nodes_mult": [1, 2, 4, 6, 8, 12, 16, 24],
+
+        # You can keep this as a legacy alias for now if you still use it elsewhere:
+        # "node_multiplier": [1, 2, 4, 8, 16, 24, 32],
 
         # Finite volume order / quad order (1 = first, 2 = second).
-        "order": [1, 2],
+        # We'll plug this back into the models once 'order' in the CSV is actually 1/2,
+        # not "temp_test_analysis".
+        # "order": [1, 2],
     },
 
     # Weights for a future combined objective:

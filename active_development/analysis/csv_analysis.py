@@ -32,18 +32,18 @@ import matplotlib.pyplot as plt
 # ---------- User "control panel" ----------
 
 # Which output files to generate
-write_paper = False
-write_summary = False
-make_plots = True 
+write_paper = True
+write_summary = True
+make_plots = False 
 
 # Which TP locations to compare between SAM and experiment
 #       # Script will automatically compute exp_value, sam_value, error, abs_error, rel_error
 COMPARISON_SITES = ["TP1", "TP2", "TP3", "TP6", "TS_vel"] #  "massFlowRate"]  # ["TS_vel"] # add "TP4", "TP5" here as needed
 
-csv_cases = ["analysis/coarse_first_order_nm_physor_not_nureth26_analysis/case_report.csv",
-             "analysis/coarse_second_order_nm_nureth26_analysis/case_report.csv",
-             "analysis/Fine_first_order_nm_nureth26_analysis/case_report.csv", 
-             "analysis/Fine_second_order_nm_exp_nureth26_analysis/case_report.csv"]
+csv_cases = ["analysis/temp_test_analysis/case_report.csv"]
+            #  "analysis/coarse_second_order_nm_nureth26_analysis/case_report.csv",
+            #  "analysis/Fine_first_order_nm_nureth26_analysis/case_report.csv", 
+            #  "analysis/Fine_second_order_nm_exp_nureth26_analysis/case_report.csv"]
 
 # Diagnostics & column-selection toggles
 # Turn these on/off or True/False to add/remove diagnostics from *all* outputs.
@@ -56,7 +56,7 @@ TOGGLE_MAX_ABS = True              # max_abs_err_K
 #   "exp"                  -> compare against experimental data
 #   "self_ref"             -> compare each (prefix, order) vs its own finest mesh
 #   "self_ref_second_order"-> compare all runs vs finest *second-order* SAM per prefix
-ERROR_MODE = "exp"   # "exp" or "self_ref" or "self_ref_second_order"
+ERROR_MODE = "self_ref"   # "exp" or "self_ref" or "self_ref_second_order"
 
 
 
@@ -175,12 +175,20 @@ def filter_columns(df, paper=False):
 
 def parse_nodes_mult(source_file: str) -> float:
     """
-    Extract the nodes_mult factor from a filename like:
-    'jsalt1_nodes_mult_by_24_csv.csv' -> 24
+    Extract the nodes_mult factor from a filename.
 
-    Returns np.nan if pattern is not found.
+    Handles filenames like:
+      - 'jsalt1_nodes_mult_by_24_csv.csv'
+      - 'jsalt1_nodes_mult_by_24_ord2_csv.csv'
+
+    Returns np.nan if the pattern is not found.
     """
-    m = re.search(r"nodes_mult_by_(\d+)_csv", str(source_file))
+    import re
+    import numpy as np
+
+    s = str(source_file)
+    # Look for 'nodes_mult_by_<number>' anywhere in the filename
+    m = re.search(r"nodes_mult_by_(\d+)", s)
     if m:
         return int(m.group(1))
     return np.nan
@@ -464,136 +472,116 @@ def make_convergence_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by
       TP2, TP3, TP6, TS_vel, massFlowRate
 
     First/second order are both shown, distinguished by marker/linestyle.
+
+    This version is defensive:
+    - Skips prefixes with no rows.
+    - Skips prefixes where nodes_mult is entirely NaN.
+    - Skips orders (1/2) that have no data for that prefix.
     """
-    import matplotlib.pyplot as plt
+    import os
 
-    plot_dir = out_dir / "plots"
-    plot_dir.mkdir(parents=True, exist_ok=True)
+    if full_df is None or full_df.empty:
+        print("[RUNTIME PLOT] full_df is empty; skipping runtime plots.")
+        return
 
-    # Metrics we care about
-    metrics = ["TP2", "TP3", "TP6", "TS_vel", "massFlowRate"]
-
-    # We expect columns like rel_err_TP2_pct, rel_err_TS_vel_pct, etc.
-    prefixes = sorted(full_df["prefixes"].unique())
-
-    # Simple mapping so first/second order look different in the plot
-    order_styles = {
-        "first_order": {"marker": "o", "linestyle": "-"},
-        "second_order": {"marker": "s", "linestyle": "--"},
-    }
+    os.makedirs(os.path.join(out_dir, "plots"), exist_ok=True)
+    prefixes = sorted(full_df["prefixes"].dropna().unique())
 
     for prefix in prefixes:
         df_p = full_df[full_df["prefixes"] == prefix].copy()
         if df_p.empty:
+            print(f"[RUNTIME PLOT] Skipping prefix {prefix!r}: no rows.")
             continue
 
-        # ---- apply nodes_mult cap for this prefix ----
-        cap = get_nodes_cap_for_prefix(prefix)
-        if cap is not None:
-            df_p = df_p[df_p["nodes_mult"] <= cap].copy()
+        # Drop NaNs in nodes_mult and runtime
+        if "nodes_mult" not in df_p.columns:
+            print(f"[RUNTIME PLOT] Skipping prefix {prefix!r}: no 'nodes_mult' column.")
+            continue
+        if "script_runtime" not in df_p.columns:
+            print(f"[RUNTIME PLOT] Skipping prefix {prefix!r}: no 'script_runtime' column.")
+            continue
+
+        df_p = df_p.dropna(subset=["nodes_mult", "script_runtime"])
+        if df_p.empty:
+            print(f"[RUNTIME PLOT] Skipping prefix {prefix!r}: no valid nodes_mult/runtime rows.")
+            continue
+
+        # Optional: respect max_nodes settings if provided
+        nodes_series = df_p["nodes_mult"]
+        if max_nodes_by_prefix is not None and prefix in max_nodes_by_prefix:
+            max_nodes_prefix = max_nodes_by_prefix[prefix]
+        else:
+            max_nodes_prefix = max_nodes_global
+
+        if max_nodes_prefix is not None:
+            df_p = df_p[df_p["nodes_mult"] <= max_nodes_prefix]
             if df_p.empty:
-                continue
-
-
-        # Sort by nodes_mult so lines look like proper trendlines
-        df_p = df_p.sort_values("nodes_mult")
-
-        # ---- 1) Signed relative errors ----
-        fig, ax = plt.subplots(figsize=(7, 5))
-
-        for order in sorted(df_p["order"].unique()):
-            df_po = df_p[df_p["order"] == order]
-            if df_po.empty:
-                continue
-            
-            style = order_styles.get(order, {"marker": "o", "linestyle": "-"})
-
-            for metric in metrics:
-                col = f"rel_err_{metric}_pct"
-                if col not in df_po.columns:
-                    continue
-
-                x = df_po["nodes_mult"]
-                y = df_po[col]
-
-                # One "trendline" (connecting line) per metric
-                label = f"{metric} ({order})"
-                ax.plot(
-                    x,
-                    y,
-                    markersize=5,
-                    marker=style["marker"],
-                    linestyle=style["linestyle"],
-                    label=label,
+                print(
+                    f"[RUNTIME PLOT] Skipping prefix {prefix!r}: "
+                    f"no rows after applying max_nodes={max_nodes_prefix}."
                 )
-
-        ax.axhline(0.0, linestyle=":", linewidth=0.8)
-	
-        # x-axis ticks based on filtered data
-        ax.minorticks_off()
-        xmin = int(df_p["nodes_mult"].min())
-        xmax = int(df_p["nodes_mult"].max())
-        step = 2  # or 5 depending on density
-        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-        ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())  # turn off minor ticks
-
-        ax.set_xlabel("nodes_mult")
-        ax.set_ylabel("Relative error [%]")
-        ax.set_title(f"{prefix}: signed relative errors vs mesh refinement\n{ERROR_MODE}")
-        ax.legend(fontsize=7, ncol=2)
-        fig.tight_layout()
-
-        signed_path = plot_dir / f"{prefix}_rel_err_vs_nodes_mult.png"
-        fig.savefig(signed_path, dpi=200)
-        plt.close(fig)
-
-        # ---- 2) Absolute relative errors  (log) plot ----
-        fig, ax = plt.subplots(figsize=(7, 5))
-
-        for order in sorted(df_p["order"].unique()):
-            df_po = df_p[df_p["order"] == order]
-            if df_po.empty:
                 continue
+            nodes_series = df_p["nodes_mult"]
 
-            style = order_styles.get(order, {"marker": "o", "linestyle": "-"})
+        # Now safe to compute min/max
+        nodes_series = nodes_series.dropna()
+        if nodes_series.empty:
+            print(f"[RUNTIME PLOT] Skipping prefix {prefix!r}: nodes_mult is empty after filtering.")
+            continue
 
-            for metric in metrics:
-                col = f"rel_err_{metric}_pct"
-                if col not in df_po.columns:
-                    continue
+        xmin = int(nodes_series.min())
+        xmax = int(nodes_series.max())
 
-                x = df_po["nodes_mult"]
-                y = df_po[col].abs()
+        # Split by order if the column exists, otherwise treat as a single group
+        if "order" in df_p.columns:
+            df_ord1 = df_p[df_p["order"] == 1]
+            df_ord2 = df_p[df_p["order"] == 2]
+        else:
+            df_ord1 = df_p
+            df_ord2 = df_p.iloc[0:0]  # empty
 
-                label = f"{metric} ({order})"
-                ax.plot(
-                    x,
-                    y,
-                    marker=style["marker"],
-                    markersize=5,
-                    linestyle=style["linestyle"],
-                    label=label,
-                )
+        import matplotlib.pyplot as plt
 
-        ax.set_xlabel("nodes_mult")
-        ax.xaxis.set_major_locator(MaxNLocator(integer=True))
-        ax.xaxis.set_minor_locator(matplotlib.ticker.NullLocator())  # turn off minor ticks
+        plt.figure()
+        has_any = False
 
+        if not df_ord1.empty:
+            has_any = True
+            plt.plot(
+                df_ord1["nodes_mult"],
+                df_ord1["script_runtime"],
+                marker="o",
+                linestyle="-",
+                label="order 1",
+            )
+        if not df_ord2.empty:
+            has_any = True
+            plt.plot(
+                df_ord2["nodes_mult"],
+                df_ord2["script_runtime"],
+                marker="s",
+                linestyle="--",
+                label="order 2",
+            )
 
-        ax.set_ylabel("Absolute relative error [%]")
-        ax.set_yscale("log")
+        if not has_any:
+            plt.close()
+            print(f"[RUNTIME PLOT] Skipping prefix {prefix!r}: no data for any order.")
+            continue
 
-        ax.set_title(f"{prefix}: log(|relative error|) vs mesh refinement\n{ERROR_MODE}")
-        ax.legend(fontsize=7, ncol=2)
-        fig.tight_layout()
+        plt.xlabel("nodes_mult")
+        plt.ylabel("script_runtime [s]")
+        plt.title(f"Runtime vs nodes_mult for {prefix}")
+        plt.legend()
+        plt.xlim(xmin, xmax)
 
-        abs_path = plot_dir / f"{prefix}_abs_rel_err_vs_nodes_mult.png"
-        fig.savefig(abs_path, dpi=200)
-        plt.close(fig)
+        out_path = os.path.join(out_dir, "plots", f"{prefix}_runtime_vs_nodes_mult.png")
+        plt.savefig(out_path, bbox_inches="tight")
+        plt.close()
 
-        print(f"[PLOT] Saved for {prefix}:")
-        print(f"       {signed_path}")
-        print(f"       {abs_path}")
+        print(f"[PLOT] Saved runtime plot for {prefix}:")
+        print(f"       {out_path}")
+
 
 def make_runtime_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_prefix=None):
     """
@@ -697,7 +685,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--exp_csv",
-        default="../Validation_Data/validation_data.csv",
+        default="../../Validation_Data/validation_data.csv",
         help="CSV with experimental data (Kelvin, Salt Test 1..4, Water Test 1..4)",
     )
     parser.add_argument(

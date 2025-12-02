@@ -8,16 +8,26 @@ Run with:
     python -m sam_tuner.data_handler_demo
 """
 
-from sam_tuner.data_handler import build_basic_dataset, FEATURE_COLUMNS, ERROR_COLUMN, RUNTIME_COLUMN
+from sam_tuner.data_handler import (
+    build_basic_dataset,
+    FEATURE_COLUMNS,
+    ERROR_COLUMN,
+    RUNTIME_COLUMN_DEFAULT,
+)
 
 
 def main():
-    X, y_err, y_rt = build_basic_dataset()
+    X, y_err, y_rt = build_basic_dataset(
+        error_col=ERROR_COLUMN,
+        runtime_col=RUNTIME_COLUMN_DEFAULT,
+        drop_na_targets=False,   # for now, let us inspect everything
+        merge_runtime=True,
+    )
 
     print("=== Data handler demo ===")
     print(f"Feature columns: {FEATURE_COLUMNS}")
     print(f"Error column   : {ERROR_COLUMN}")
-    print(f"Runtime column : {RUNTIME_COLUMN}")
+    print(f"Runtime column : {RUNTIME_COLUMN_DEFAULT}")
     print()
     print(f"X shape       : {X.shape}")
     print(f"y_error shape : {y_err.shape}")

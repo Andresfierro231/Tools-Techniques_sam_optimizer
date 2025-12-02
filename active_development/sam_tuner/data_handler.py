@@ -18,14 +18,15 @@ For now, we keep this simple and opinionated:
 
   - We expect this file to contain at least:
       * 'rmse_K'              (main error metric)
-      * 'script_runtime'      (runtime in seconds, from csv_maker/csv_analysis)
       * 'nodes_mult'          (node multiplier)
-      * 'order'               (FE/FV order)
+      * 'order'               (FE/FV order or some order label)
     plus other columns (prefix, case, per-TP errors, etc.).
 
-  - We do NOT yet rely on runtimes_master.csv for runtime, because your
-    current csv_maker/csv_analysis pipeline already propagates
-    script_runtime from earlier runs. We can merge runtimes_master later.
+  - Runtime:
+      * If 'script_runtime' is present and non-NaN, we can use it.
+      * Otherwise, we try to merge runtime_sec from runtimes_master.csv
+        using the input filename as a key, and expose it as
+        'runtime_merged_sec'.
 
 You can adapt FEATURE_COLUMNS and TARGET_COLUMNS below once you inspect
 your actual 'validation_analysis_full.csv' content.
@@ -45,16 +46,18 @@ from .config import CONFIG
 VALIDATION_ANALYSIS_FILENAME = "validation_analysis_full.csv"
 
 # Names of the default target columns in the validation analysis CSV.
-ERROR_COLUMN = "rmse_K"          # main accuracy metric
-RUNTIME_COLUMN = "script_runtime"  # runtime in seconds (as used in csv_analysis)
+ERROR_COLUMN = "rmse_K"  # main accuracy metric
+
+# For runtime, we now prefer 'runtime_merged_sec' (from runtimes_master.csv).
+RUNTIME_COLUMN_DEFAULT = "runtime_merged_sec"
 
 # Minimal feature set we know should exist (based on csv_analysis.py):
 #   - nodes_mult: discretization parameter (node multiplier)
-#   - order:      discretization order (1 or 2)
+#   - order:      discretization order (1 or 2 or label)
 # You can add more (e.g., 'case', 'prefix', 'htc', etc.) as needed.
 FEATURE_COLUMNS: List[str] = [
     "nodes_mult",
-    "order",
+    # "order",  # we'll add 'order' later when the analysis CSV actually has 1/2 here
 ]
 
 
@@ -66,8 +69,34 @@ def _results_root() -> Path:
 
 
 def _validation_analysis_path() -> Path:
-    """Compute the expected path to 'validation_analysis_full.csv'."""
-    return _results_root() / VALIDATION_ANALYSIS_FILENAME
+    """
+    Compute the expected path to 'validation_analysis_full.csv'.
+
+    We try a couple of locations:
+      1) <results_root>/validation_analysis_full.csv
+      2) <results_root>/analysis/validation_analysis_full.csv
+
+    This covers both:
+      - CONFIG["paths"]["results_root"] = "active_development/analysis"
+      - csv_analysis.py writing into "analysis/analysis/..."
+    """
+    root = _results_root()
+    direct = root / VALIDATION_ANALYSIS_FILENAME
+    nested = root / "analysis" / VALIDATION_ANALYSIS_FILENAME
+
+    if direct.exists():
+        return direct
+    if nested.exists():
+        return nested
+
+    # If not found, raise a detailed error
+    raise FileNotFoundError(
+        "Validation analysis CSV not found in expected locations:\n"
+        f"  1) {direct}\n"
+        f"  2) {nested}\n"
+        "Make sure you have run csv_analysis.py and that CONFIG['paths']['results_root'] "
+        "matches where those files are written."
+    )
 
 
 def _runtime_log_path() -> Path:
@@ -80,17 +109,6 @@ def _runtime_log_path() -> Path:
 def load_validation_analysis() -> pd.DataFrame:
     """
     Load the validation analysis CSV (full table of runs + error metrics).
-
-    Returns
-    -------
-    pd.DataFrame
-        DataFrame with one row per SAM run, including columns like:
-        'nodes_mult', 'order', 'rmse_K', 'script_runtime', etc.
-
-    Raises
-    ------
-    FileNotFoundError
-        If the expected CSV is not found.
     """
     path = _validation_analysis_path()
     if not path.exists():
@@ -100,6 +118,8 @@ def load_validation_analysis() -> pd.DataFrame:
             "'validation_analysis_full.csv'."
         )
     df = pd.read_csv(path)
+    print(f"[data_handler] Loaded validation analysis from: {path}")
+    print(f"[data_handler] Shape: {df.shape}")
     return df
 
 
@@ -114,17 +134,105 @@ def load_runtime_log() -> Optional[pd.DataFrame]:
     """
     path = _runtime_log_path()
     if not path.exists():
+        print(f"[data_handler] No runtime log found at: {path}")
         return None
-    return pd.read_csv(path)
+    df = pd.read_csv(path)
+    print(f"[data_handler] Loaded runtime log from: {path}")
+    print(f"[data_handler] Runtime log shape: {df.shape}")
+    return df
+
+
+# === RUNTIME MERGE HELPERS =================================================
+
+def _derive_input_basename_from_source_file(source_file: str) -> str:
+    """
+    Map a validation 'source_file' to an input basename used in runtimes_master.
+
+    Example:
+      source_file = 'jsalt1_nodes_mult_by_6_ord2_csv.csv'
+      -> 'jsalt1_nodes_mult_by_6_ord2.i'
+
+    This matches the basename of sam_input_path in runtimes_master.csv.
+    """
+    s = str(source_file)
+    # Strip trailing '_csv.csv' or '.csv' if present
+    if s.endswith("_csv.csv"):
+        base = s[:-len("_csv.csv")]
+    elif s.endswith(".csv"):
+        base = s[:-len(".csv")]
+    else:
+        base = s
+    return base + ".i"
+
+
+def _merge_runtime_from_log(df_val: pd.DataFrame) -> pd.DataFrame:
+    """
+    Merge runtime information from runtimes_master.csv into the validation DataFrame.
+
+    We:
+      - compute 'input_basename' from 'source_file' in df_val
+      - compute 'input_basename' from sam_input_path in runtimes_master
+      - group runtimes by input_basename (taking median runtime_sec over successes)
+      - left-merge onto df_val as 'runtime_merged_sec'
+
+    Returns
+    -------
+    pd.DataFrame
+        The validation DataFrame with an extra 'runtime_merged_sec' column (may have NaNs).
+    """
+    rt = load_runtime_log()
+    if rt is None:
+        print("[data_handler] No runtime log available; skipping runtime merge.")
+        df_val["runtime_merged_sec"] = pd.NA
+        return df_val
+
+    # Derive basename from sam_input_path
+    rt = rt.copy()
+    rt["input_basename"] = rt["sam_input_path"].astype(str).map(
+        lambda p: Path(p).name
+    )
+
+    # Prefer successful runs; if none, fall back to all
+    if "status" in rt.columns:
+        rt_success = rt[rt["status"] == "success"]
+        if rt_success.empty:
+            rt_success = rt
+    else:
+        rt_success = rt
+
+    # Aggregate: median runtime_sec per input_basename
+    grouped = (
+        rt_success.groupby("input_basename", as_index=False)["runtime_sec"]
+        .median()
+        .rename(columns={"runtime_sec": "runtime_merged_sec"})
+    )
+
+    print("[data_handler] Runtime aggregation by input_basename:")
+    print(grouped.head())
+
+    df = df_val.copy()
+    if "source_file" not in df.columns:
+        print("[data_handler] WARNING: 'source_file' column missing in validation data; "
+              "cannot merge runtime. Creating runtime_merged_sec as NaN.")
+        df["runtime_merged_sec"] = pd.NA
+        return df
+
+    df["input_basename"] = df["source_file"].astype(str).map(
+        _derive_input_basename_from_source_file
+    )
+
+    df = df.merge(grouped, on="input_basename", how="left")
+    return df
 
 
 # === DATASET BUILDER =======================================================
 
 def build_basic_dataset(
     error_col: str = ERROR_COLUMN,
-    runtime_col: str = RUNTIME_COLUMN,
+    runtime_col: str = RUNTIME_COLUMN_DEFAULT,
     feature_cols: Optional[list] = None,
     drop_na_targets: bool = True,
+    merge_runtime: bool = True,
 ) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """
     Build a basic (X, y_error, y_runtime) dataset from validation_analysis_full.csv.
@@ -134,24 +242,30 @@ def build_basic_dataset(
     error_col : str
         Column name to use as the main error target (default: 'rmse_K').
     runtime_col : str
-        Column name to use as the runtime target (default: 'script_runtime').
-        NOTE: For now, this comes from the validation analysis CSV, not the
-        centralized runtimes_master.csv, to stay compatible with your existing
-        pipeline. We can merge in runtimes_master later.
+        Column name to use as the runtime target (default: 'runtime_merged_sec').
+        You can override this to 'script_runtime' if you want to use the
+        values computed inside csv_analysis.py instead.
     feature_cols : list or None
         List of column names to use as features. If None, uses FEATURE_COLUMNS
         defined at the top of this module.
     drop_na_targets : bool
         If True, drop rows where either error_col or runtime_col is NaN.
+    merge_runtime : bool
+        If True, attempt to merge runtime_sec from runtimes_master.csv
+        into the validation DataFrame before building the dataset.
 
     Returns
     -------
     (X, y_error, y_runtime) : (pd.DataFrame, pd.Series, pd.Series)
         - X: feature matrix
         - y_error: error target (e.g. rmse_K)
-        - y_runtime: runtime target (e.g. script_runtime)
+        - y_runtime: runtime target (e.g. runtime_merged_sec)
     """
     df = load_validation_analysis()
+
+    # Optionally merge runtime from the centralized log
+    if merge_runtime:
+        df = _merge_runtime_from_log(df)
 
     if feature_cols is None:
         feature_cols = FEATURE_COLUMNS
@@ -171,9 +285,24 @@ def build_basic_dataset(
             f"Available columns are:\n{list(df.columns)}"
         )
 
+    # Debug: how many rows have valid targets?
+    total_rows = len(df)
+    non_na_error = df[error_col].notna().sum()
+    non_na_runtime = df[runtime_col].notna().sum()
+    both_non_na = df[error_col].notna() & df[runtime_col].notna()
+    both_non_na_count = both_non_na.sum()
+
+    print(f"[data_handler] Total rows in validation_analysis_full: {total_rows}")
+    print(f"[data_handler] Rows with non-NaN {error_col}      : {non_na_error}")
+    print(f"[data_handler] Rows with non-NaN {runtime_col}   : {non_na_runtime}")
+    print(f"[data_handler] Rows with both non-NaN targets   : {both_non_na_count}")
+
     # Optionally drop rows with invalid targets
     if drop_na_targets:
-        df = df.dropna(subset=[error_col, runtime_col])
+        df = df[both_non_na].copy()
+        print(f"[data_handler] After drop_na_targets, rows kept: {len(df)}")
+    else:
+        print("[data_handler] drop_na_targets=False, keeping all rows.")
 
     X = df[feature_cols].copy()
     y_error = df[error_col].copy()

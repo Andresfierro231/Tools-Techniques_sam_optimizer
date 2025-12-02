@@ -2,6 +2,10 @@
 ## First made: 23 Oct 25
 ## Today editing: 17 Nov 25
 
+# ⭐️ BEFORE USING: make sure to ⭐️
+#       rm ../Templates/*_cp*
+#       mv ../Templates/*_nodes_mult_* ./analysis/<case_identifier_of_choice>/
+
 # Purpose of this script: 
 #   Makes case reports and summary from full run csv. 
 #       (Analyze the results of the runs to try and get useful insights). 
@@ -26,25 +30,29 @@
 # 3. Save:
     # analysis/{case}_analysis/case_report.csv (structured table).
     # analysis/{case}_analysis/summary.txt (human-readable summary)
-
+#~
 ##############################################
 
 import glob, os, re
 from natsort import natsorted, index_natsorted, natsort_keygen
 import pandas as pd
+from pathlib import Path
 
 from collections import defaultdict
 case_records = defaultdict(list)  # case -> list of dict rows (one per prefix file's last row)
 TOL = 1e-10
 
-case_identifiers = ["analysis/coarse_second_order_nm_nureth26", "analysis/coarse_first_order_nm_physor_not_nureth26"] #, "Fine_first_order_nm_nureth26_analysis", "Fine_second_order_nm_exp_nureth26_analysis"] #  # Where files are, name of directory you want to search # search uses: os.path.expanduser(f"~/projects/physor2026_andrew/Testing_w_sun/{case}/{prefix}*.txt"))
+case_identifiers = [ "analysis/temp_test"] # "analysis/coarse_second_order_nm_nureth26", "analysis/coarse_first_order_nm_physor_not_nureth26"] #, "Fine_first_order_nm_nureth26_analysis", "Fine_second_order_nm_exp_nureth26_analysis"] #  # Where files are, name of directory you want to search # search uses: os.path.expanduser(f"~/projects/physor2026_andrew/Testing_w_sun/{case}/{prefix}*.txt"))
 prefixes = ["jsalt1", "jsalt2", "jsalt3", "jsalt4"] # Name of type of file you want to parse csv
 end_times = [700, 850, 100000] # possible end times in your file. 
 
 RUNTIME_CSV = "sam_runtime.csv"
 RUNTIME_TXT = "sam_runtimes.txt"
 
-
+# Search in base directory
+THIS_DIR = Path(__file__).resolve().parent
+ANALYSIS = THIS_DIR.parents[1]
+BASE = THIS_DIR.parents[2]   # or parents[1], depending on where the file lives
 
 def _find_time_col(df):
     #  finding time col. This column used elsewhere
@@ -73,8 +81,7 @@ def load_runtime_map(case_identifiers):
     """
     runtime_by_source = {}
 
-    # Search in base directory
-    BASE = os.path.expanduser("~/projects/physor2026_andrew/Testing_w_sun/")
+
 
     # ---------- helper to record a row ----------
     def add_entry(file_path, runtime):
@@ -142,23 +149,16 @@ if not runtime_by_source:
     # Loops over all cases and prefixes
 for case in case_identifiers: 
     for prefix in prefixes:
-        files = natsorted(glob.glob(os.path.expanduser(
-            f"~/projects/physor2026_andrew/Testing_w_sun/{case}/{prefix}*.csv"
-        )))  # This is how to search for files
+        search_dir = THIS_DIR / case
+        files = natsorted(glob.glob(str(search_dir / f"{prefix}*.csv"))) # This is how to search for files
+
 
         # Outputs What  I am reading, and did if it worked
         print("currently on file of case :", case, "; run :", prefix, "\n", )
         if not files:
             print(f"[WARN] No files for {prefix} \n")
             continue
-
-        files = natsorted(glob.glob(os.path.expanduser(f"~/projects/physor2026_andrew/Testing_w_sun/{case}/{prefix}*.csv"))) # This is how to search for files
-
-        # Outputs What  I am reading, and did if it worked
-        print("currently on file of case :",case, "; run :",prefix, "\n", )
-        if not files:
-            print(f"[WARN] No files for {prefix} \n")
-            continue
+        
 
             
         ### Collecting outrows and making csv

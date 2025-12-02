@@ -1,6 +1,8 @@
 """
 quick_sweep.py
 
+Just a test file to check behavior of other solvers. System seems to be working well. 
+
 Minimal multi-run driver that uses sam_tuner.run_sam_case
 to sweep node_multiplier and order across jsalt templates.
 
