@@ -52,9 +52,10 @@ ERROR_COLUMN = "rmse_K"  # main accuracy metric
 RUNTIME_COLUMN_DEFAULT = "runtime_merged_sec"
 
 # Minimal feature set we know should exist (based on csv_analysis.py):
-#   - nodes_mult: discretization parameter (node multiplier)
+#   - nodes_mult: discretization parameter (node multiplier) from csv_analysis (parsed from filenames)
 #   - order:      discretization order (1 or 2 or label)
-# You can add more (e.g., 'case', 'prefix', 'htc', etc.) as needed.
+#   - h_amb     : from hyperparams_json in runtimes_master.csv
+# You can add more (e.g., 'case', 'prefix', etc.) as needed.
 FEATURE_COLUMNS: List[str] = [
     "nodes_mult",
     # "order",  # we'll add 'order' later when the analysis CSV actually has 1/2 here
@@ -68,12 +69,7 @@ ERROR_COLUMN = "rmse_K"                 # main accuracy metric
 RUNTIME_COLUMN_DEFAULT = "runtime_merged_sec"  # runtime from merged log
 
 # Minimal feature set:
-#   - nodes_mult: from csv_analysis (parsed from filenames)
-#   - h_amb     : from hyperparams_json in runtimes_master.csv
-FEATURE_COLUMNS: List[str] = [
-    "nodes_mult",
-    "h_amb",
-]
+
 
 # === PATH HELPERS ==========================================================
 

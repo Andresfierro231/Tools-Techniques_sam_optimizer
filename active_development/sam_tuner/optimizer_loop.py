@@ -82,32 +82,39 @@ def _default_feature_values(X: pd.DataFrame) -> Dict[str, Any]:
             defaults[col] = mode.iloc[0] if not mode.empty else None
     return defaults
 
-
 def _generate_candidates_from_config(X_train: pd.DataFrame) -> pd.DataFrame:
     """
     Generate a candidate grid of hyperparameters, focusing on the features in
     FEATURE_COLUMNS and the ranges defined in CONFIG["hyperparams_space"].
 
-    Strategy:
-      - For now, we actively vary only 'nodes_mult' if present in the config.
-      - All other features are held at a default value learned from X_train.
-
-    This keeps the grid simple and avoids NaNs for features we're not tuning yet.
+    Rules:
+      - If CONFIG["hyperparams_space"][feat] is a list/tuple of >2 elements:
+            use those values directly.
+      - If it's a 2-tuple (min, max):
+            create a small grid of values in [min, max].
+      - If feat is not in hyperparams_space:
+            hold it fixed at a default from X_train.
     """
     space = CONFIG["hyperparams_space"]
     defaults = _default_feature_values(X_train)
 
     feature_values: Dict[str, List[Any]] = {}
 
+    # how many grid points to use for continuous ranges
+    n_grid_default = 5
+
     for feat in FEATURE_COLUMNS:
-        if feat == "nodes_mult" and feat in space:
+        if feat in space:
             val = space[feat]
-            if isinstance(val, (list, tuple)):
-                feature_values[feat] = list(val)
+            # Range case: (min, max)
+            if isinstance(val, tuple) and len(val) == 2:
+                vmin, vmax = float(val[0]), float(val[1])
+                feature_values[feat] = np.linspace(vmin, vmax, n_grid_default).tolist()
             else:
-                feature_values[feat] = [val]
+                # Discrete set
+                feature_values[feat] = list(val) if isinstance(val, (list, tuple)) else [val]
         else:
-            # Hold all other features (e.g. 'order') fixed at their default.
+            # Not tunable yet: keep at default
             feature_values[feat] = [defaults.get(feat)]
 
     keys = list(feature_values.keys())
@@ -118,8 +125,7 @@ def _generate_candidates_from_config(X_train: pd.DataFrame) -> pd.DataFrame:
         row = {k: v for k, v in zip(keys, combo)}
         rows.append(row)
 
-    df_candidates = pd.DataFrame(rows)
-    return df_candidates
+    return pd.DataFrame(rows)
 
 
 def _compute_scores(
@@ -306,7 +312,6 @@ def run_optimizer_v0(
 # ---------------------------------------------------------------------------
 # suggest_and_run mode
 # ---------------------------------------------------------------------------
-
 def suggest_and_run_mode(
     top_k_suggest: int = 10,
     n_run: int = 3,
@@ -315,16 +320,6 @@ def suggest_and_run_mode(
     """
     Run optimizer v0 to get suggestions, then actually launch SAM runs for
     the top N feasible candidates.
-
-    Parameters
-    ----------
-    top_k_suggest : int
-        Number of top candidates to consider when choosing runs.
-    n_run : int
-        Number of candidates to actually run (max; fewer if less feasible).
-    cases : list of str or None
-        List of case names (e.g. ["jsalt1", "jsalt2"]). If None, defaults
-        to ["jsalt1"] for now.
     """
     if cases is None or len(cases) == 0:
         cases = ["jsalt1"]
@@ -357,6 +352,8 @@ def suggest_and_run_mode(
     for idx in range(n_actual):
         row = feasible.iloc[idx]
         nodes_mult = row.get("nodes_mult")
+        h_amb_val  = row.get("h_amb") if "h_amb" in row.index else None
+        T0_val     = row.get("T_0")   if "T_0" in row.index else None
 
         print("\n--------------------------------------------------")
         print(f"[suggest_and_run] Candidate #{idx+1}:")
@@ -366,18 +363,38 @@ def suggest_and_run_mode(
             print("[suggest_and_run] WARNING: nodes_mult is NaN for this candidate; skipping.")
             continue
 
-        # Map ML feature 'nodes_mult' -> run-time hyperparam 'node_multiplier'
-        hyperparams = {
-            "node_multiplier": int(nodes_mult),
-            # TODO: when 'order' becomes a real feature in the CSV,
-            #       map it here as well, e.g.:
-            # "order": int(row["order"]),
-        }
-
         for case in cases:
+            # Get case-specific baseline temps
+            temps_base = CONFIG["temps"]["base_by_case"].get(
+                case, CONFIG["temps"]["defaults"]
+            )
+            T_c_base = temps_base["T_c"]
+            T_h_base = temps_base["T_h"]
+            T0_base  = temps_base["T_0"]
+
+            # If the surrogate candidate has a T_0 column, use it; otherwise fall back to baseline
+            T0_used = float(T0_val) if T0_val is not None and not pd.isna(T0_val) else T0_base
+
+            # If candidate has h_amb, use it; otherwise fall back to some default
+            if h_amb_val is None or pd.isna(h_amb_val):
+                h_amb_used = CONFIG["hyperparams_space"]["h_amb"][0]  # first value if list; adjust if using range
+            else:
+                h_amb_used = float(h_amb_val)
+
+            hyperparams = {
+                "T_c": T_c_base,
+                "T_h": T_h_base,
+                "T_0": T0_used,
+                "h_amb": h_amb_used,
+                "node_multiplier": int(nodes_mult),
+                # later: "order": int(row["order"])
+            }
+
             template_name = f"{case}.i"
-            print(f"[suggest_and_run] Launching SAM run for case={case}, template={template_name}, "
-                  f"hyperparams={hyperparams}, timeout={runtime_cap:.1f}s")
+            print(
+                f"[suggest_and_run] Launching SAM run for case={case}, template={template_name}, "
+                f"hyperparams={hyperparams}, timeout={runtime_cap:.1f}s"
+            )
 
             try:
                 summary = run_sam_case(
@@ -391,7 +408,8 @@ def suggest_and_run_mode(
                     print(f"  {k}: {v}")
             except Exception as e:
                 print(f"[suggest_and_run] ERROR while running case={case}: {e}")
-    # --- NEW: rerun analysis after launching new runs --------------------
+
+    # --- Rerun analysis after launching new runs --------------------
     if n_actual > 0:
         _rerun_analysis_scripts()
 

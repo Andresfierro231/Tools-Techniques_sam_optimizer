@@ -21,24 +21,38 @@ CONFIG = {
     # Hyperparameter search space (just a starting point).
     # We will extend this as we formalize IC/BC knobs.
     "hyperparams_space": {
-        # Ambient HTC (h_amb) – choose a reasonable discrete set or range
-       
-        "h_amb": (100, 2.0e5),   # interpreted as (min, max)  # Continuous range instead of discrete list:
-        # "h_amb": [100, 15.0e4, 1.0e5, 2.0e5], # discrete set
+        # Ambient HTC (h_amb) – continuous range interpreted as (min, max)
+        "h_amb": (5.0e4, 2.0e5),
 
         # Node multiplier used in your existing scripts.
-        "nodes_mult": [1, 2, 4, 6, 8, 12, 16, 24],
+        "nodes_mult": [6, 8, 12, 16, 24],
 
-        # You can keep this as a legacy alias for now if you still use it elsewhere:
-        # "node_multiplier": [1, 2, 4, 8, 16, 24, 32],
-
-        # Finite volume order / quad order (1 = first, 2 = second).
-        # We'll plug this back into the models once 'order' in the CSV is actually 1/2,
-        # not "temp_test_analysis".
-        # "order": [1, 2],
+        # Optional: global T_0 range for optimizer candidates.
+        # For now we let script.py control T_0 via per-case T0_range,
+        # so we don't need to tune T_0 in the optimizer yet.
+        # "T_0": (438.0, 462.0),
     },
 
-    # Weights for a future combined objective:
+    # Per-case temperatures & T0 range for script.py
+    "temps": {
+        # Per-case baseline temperatures pulled from jsalt*.i
+        "base_by_case": {
+            "jsalt1": {"T_c": 442.15, "T_h": 444.0,  "T_0": 443.0},
+            "jsalt2": {"T_c": 446.63, "T_h": 452.0,  "T_0": 450.0},
+            "jsalt3": {"T_c": 459.0,  "T_h": 466.0,  "T_0": 460.0},
+            "jsalt4": {"T_c": 475.74, "T_h": 480.0,  "T_0": 478.0},
+        },
+        # Global defaults if a case isn’t in base_by_case
+        "defaults": {"T_c": 442.15, "T_h": 444.0, "T_0": 443.0},
+        # Instead of discrete offsets, define a range around T0_base:
+        #   T_0 ∈ [T0_base - half_width, T0_base + half_width]
+        "T0_range": {
+            "half_width": 5.0,   # +/- 5 K around the baseline
+            "n_points": 5,       # number of points in that range per case
+        },
+    },
+
+    # Weights for combined objective:
     # score = w_err * normalized_error + w_rt * normalized_runtime
     "objective_weights": {
         "error": 0.7,

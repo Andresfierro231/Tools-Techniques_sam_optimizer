@@ -26,7 +26,7 @@ MOOSE Version:           git commit 55e75e853e on 2025-01-29
 LibMesh Version:         
 PETSc Version:           3.22.1
 SLEPc Version:           3.22.1
-Current Time:            Mon Dec  1 14:49:41 2025
+Current Time:            Mon Dec  1 19:47:34 2025
 Executable Timestamp:    Tue Nov 25 17:43:31 2025
 
 Input File(s):
@@ -1110,13 +1110,13 @@ Stack frames: 12
 0: libMesh::print_trace(std::ostream&)
 1: moose::internal::mooseErrorRaw(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
 2: MooseBase::callMooseError(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool) const
-3: /work/09748/andresfierro231/ls6/miniforge/envs/SAM/sam/bin/../lib/sam/libmoose-opt.so.0(+0x10acf6d) [0x149967426f6d]
+3: /work/09748/andresfierro231/ls6/miniforge/envs/SAM/sam/bin/../lib/sam/libmoose-opt.so.0(+0x10acf6d) [0x14dd61b05f6d]
 4: IterationAdaptiveDT::computeFailedDT()
 5: TimeStepper::computeStep()
 6: TransientBase::execute()
 7: MooseApp::executeExecutioner()
 8: MooseApp::run()
-9: sam-opt(+0x60e8) [0x558edf92e0e8]
+9: sam-opt(+0x60e8) [0x55ba849840e8]
 10: __libc_start_main
-11: sam-opt(+0x63cf) [0x558edf92e3cf]
+11: sam-opt(+0x63cf) [0x55ba849843cf]
 Abort(1) on node 0 (rank 0 in comm 0): application called MPI_Abort(MPI_COMM_WORLD, 1) - process 0

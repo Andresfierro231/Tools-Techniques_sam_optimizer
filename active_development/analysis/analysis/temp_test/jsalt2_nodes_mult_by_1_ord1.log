@@ -26,7 +26,7 @@ MOOSE Version:           git commit 55e75e853e on 2025-01-29
 LibMesh Version:         
 PETSc Version:           3.22.1
 SLEPc Version:           3.22.1
-Current Time:            Mon Dec  1 14:36:52 2025
+Current Time:            Mon Dec  1 19:53:30 2025
 Executable Timestamp:    Tue Nov 25 17:43:31 2025
 
 Input File(s):
@@ -6306,25 +6306,25 @@ Performance Graph:
 --------------------------------------------------------------------------------------------------------------------------------------------------
 |                    Section                   | Calls |   Self(s)  |   Avg(s)   |    %   | Mem(MB) |  Total(s)  |   Avg(s)   |    %   | Mem(MB) |
 --------------------------------------------------------------------------------------------------------------------------------------------------
-| SamApp (main)                                |     1 |      0.006 |      0.006 |   0.09 |       2 |      7.164 |      7.164 | 100.00 |      38 |
+| SamApp (main)                                |     1 |      0.006 |      0.006 |   0.09 |       3 |      7.223 |      7.223 | 100.00 |      37 |
 |   SAMSimulation::computeUserObjects          |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
 |   SAMSimulation::computeUserObjects          |     3 |      0.001 |      0.000 |   0.01 |       1 |      0.001 |      0.000 |   0.01 |       1 |
-|   SAMSimulation::outputStep                  |   116 |      0.011 |      0.000 |   0.15 |       0 |      1.548 |      0.013 |  21.61 |       2 |
-|   Transient::PicardSolve                     |   123 |      0.066 |      0.001 |   0.93 |       0 |      5.442 |      0.044 |  75.96 |       3 |
-|     SAMSimulation::computeUserObjects        |   952 |      0.044 |      0.000 |   0.61 |       0 |      0.044 |      0.000 |   0.61 |       0 |
+|   SAMSimulation::outputStep                  |   116 |      0.010 |      0.000 |   0.15 |       0 |      1.578 |      0.014 |  21.85 |       1 |
+|   Transient::PicardSolve                     |   123 |      0.067 |      0.001 |   0.92 |       0 |      5.471 |      0.044 |  75.75 |       3 |
+|     SAMSimulation::computeUserObjects        |   952 |      0.043 |      0.000 |   0.59 |       0 |      0.043 |      0.000 |   0.59 |       0 |
 |     SAMSimulation::outputStep                |   369 |      0.010 |      0.000 |   0.14 |       0 |      0.011 |      0.000 |   0.15 |       0 |
-|     SAMSimulation::solve                     |   123 |      0.508 |      0.004 |   7.09 |       1 |      5.303 |      0.043 |  74.03 |       3 |
+|     SAMSimulation::solve                     |   123 |      0.505 |      0.004 |   7.00 |       1 |      5.334 |      0.043 |  73.85 |       3 |
 |       SAMSimulation::computeUserObjects      |  1056 |      0.002 |      0.000 |   0.02 |       0 |      0.002 |      0.000 |   0.02 |       0 |
 |       SAMSimulation::computeResidualInternal |   123 |      0.002 |      0.000 |   0.03 |       0 |      0.133 |      0.001 |   1.85 |       1 |
 |         SAMSimulation::computeUserObjects    |   246 |      0.005 |      0.000 |   0.07 |       0 |      0.005 |      0.000 |   0.07 |       0 |
-|         AuxiliarySystem::computeScalarVars   |   123 |      0.004 |      0.000 |   0.05 |       0 |      0.005 |      0.000 |   0.06 |       0 |
-|       SAMSimulation::computeResidualInternal |  4137 |      0.065 |      0.000 |   0.90 |       0 |      4.060 |      0.001 |  56.67 |       1 |
-|         SAMSimulation::computeUserObjects    |  8274 |      0.144 |      0.000 |   2.01 |       0 |      0.144 |      0.000 |   2.01 |       0 |
-|         AuxiliarySystem::computeScalarVars   |  4137 |      0.126 |      0.000 |   1.75 |       0 |      0.147 |      0.000 |   2.06 |       0 |
-|       SAMSimulation::computeJacobianInternal |   405 |      0.007 |      0.000 |   0.09 |       0 |      0.518 |      0.001 |   7.24 |       0 |
+|         AuxiliarySystem::computeScalarVars   |   123 |      0.004 |      0.000 |   0.05 |       0 |      0.004 |      0.000 |   0.06 |       0 |
+|       SAMSimulation::computeResidualInternal |  4137 |      0.067 |      0.000 |   0.93 |       0 |      4.093 |      0.001 |  56.67 |       1 |
+|         SAMSimulation::computeUserObjects    |  8274 |      0.142 |      0.000 |   1.97 |       0 |      0.142 |      0.000 |   1.97 |       0 |
+|         AuxiliarySystem::computeScalarVars   |  4137 |      0.125 |      0.000 |   1.74 |       0 |      0.147 |      0.000 |   2.04 |       0 |
+|       SAMSimulation::computeJacobianInternal |   405 |      0.007 |      0.000 |   0.09 |       0 |      0.518 |      0.001 |   7.17 |       0 |
 |         SAMSimulation::computeUserObjects    |   810 |      0.001 |      0.000 |   0.02 |       0 |      0.001 |      0.000 |   0.02 |       0 |
 |   Transient::final                           |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
 |     SAMSimulation::computeUserObjects        |     2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
 |     SAMSimulation::outputStep                |     1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
 --------------------------------------------------------------------------------------------------------------------------------------------------
-Finished Executing                                                                       [[33m  7.02 s[39m] [[33m  125 MB[39m]
+Finished Executing                                                                       [[33m  7.08 s[39m] [[33m  124 MB[39m]

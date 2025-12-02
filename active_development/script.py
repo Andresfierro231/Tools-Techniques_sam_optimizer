@@ -19,6 +19,8 @@ Now:
 
 from pathlib import Path
 from sam_tuner.run_launcher import run_sam_case
+from sam_tuner.config import CONFIG
+import numpy as np 
 
 
 # ---------- CONTROL PANEL FOR THIS SCRIPT ---------------------------------
@@ -26,11 +28,8 @@ from sam_tuner.run_launcher import run_sam_case
 # Templates to sweep over (must exist in Templates/)
 TEMPLATES = ["jsalt1.i", "jsalt2.i", "jsalt3.i", "jsalt4.i"]
 
-# Node multipliers to test
-NODE_MULT_LIST = [1, 2, 4, 6, 8, 12, 16, 24]
-
-# Orders: 1 = FIRST, 2 = SECOND
-ORDERS = [1, 2]
+NODE_MULT_LIST =    [6, 8, 12, 16, 24]          # Node multipliers to test
+ORDERS =            [1, 2]                      # Orders: 1 = FIRST, 2 = SECOND
 
 # Baseline HTC / IC / BC (global defaults, used if a case is missing)
 BASE_HYPERPARAMS = {
@@ -40,16 +39,10 @@ BASE_HYPERPARAMS = {
     "h_amb": 1.0e5,  # ambient HTC [W/m^2-K]
 }
 
-# TODO: Per-case baseline temperatures (FILL THESE from each jsalt*.i!) # FIXME 
-TEMP_BASE_BY_CASE = {
-    "jsalt1": {"T_c": 442.15, "T_h": 444.0, "T_0": 443.0},
-    "jsalt2": {"T_c": 442.15, "T_h": 444.0, "T_0": 443.0},  # edit per template
-    "jsalt3": {"T_c": 442.15, "T_h": 444.0, "T_0": 443.0},
-    "jsalt4": {"T_c": 442.15, "T_h": 444.0, "T_0": 443.0},
-}
-
-# Offsets around the baseline T_0 (in Kelvin)
-T0_OFFSET_LIST = [-3.0, 0.0, 3.0]
+# Per-case baseline temperatures pulled from jsalt*.i templates
+TEMP_BASE_BY_CASE = CONFIG["temps"]["base_by_case"]
+TEMP_DEFAULTS = CONFIG["temps"]["defaults"]
+T0_RANGE = CONFIG["temps"]["T0_range"]
 
 # HTC sweep values
 HAMB_LIST = [5.0e4, 1.0e5, 2.0e5]
@@ -63,26 +56,32 @@ def main() -> None:
 
     for order in ORDERS:
         for template_name in TEMPLATES:
-            case_name = Path(template_name).stem  # e.g., "jsalt1"
+            case_name = Path(template_name).stem  # e.g. "jsalt1"
 
-            # Get per-case baselines; fall back to global BASE_HYPERPARAMS if missing
-            temps_base = TEMP_BASE_BY_CASE.get(case_name, BASE_HYPERPARAMS)
-            T_c_base = temps_base.get("T_c", BASE_HYPERPARAMS["T_c"])
-            T_h_base = temps_base.get("T_h", BASE_HYPERPARAMS["T_h"])
-            T0_base = temps_base.get("T_0", BASE_HYPERPARAMS["T_0"])
+            temps_base = TEMP_BASE_BY_CASE.get(case_name, TEMP_DEFAULTS)
+            T_c_base = temps_base["T_c"]
+            T_h_base = temps_base["T_h"]
+            T0_base  = temps_base["T_0"]
 
-            for T0_offset in T0_OFFSET_LIST:
-                T0_value = T0_base + T0_offset
+            half_width = float(T0_RANGE["half_width"])
+            n_points   = int(T0_RANGE["n_points"])
 
+            T0_min = T0_base - half_width
+            T0_max = T0_base + half_width
+
+            # Option A: small grid in the range
+            T0_values = np.linspace(T0_min, T0_max, n_points)
+
+            # Option B (comment A out, uncomment B) for random sampling:
+            # T0_values = np.random.uniform(T0_min, T0_max, size=n_points)
+
+            for T0_value in T0_values:
                 for hamb in HAMB_LIST:
                     for nm in NODE_MULT_LIST:
-                        # Start from BASE_HYPERPARAMS and override temps per case
                         hyperparams = {
-                            **BASE_HYPERPARAMS,
                             "T_c": T_c_base,
                             "T_h": T_h_base,
-                            "T_0": T0_value,        # baseline + offset
-                            "T0_offset": T0_offset, # optional: logged in JSON
+                            "T_0": float(T0_value),
                             "h_amb": hamb,
                             "node_multiplier": nm,
                             "order": order,
@@ -93,14 +92,14 @@ def main() -> None:
                             f"order={order} | node_multiplier={nm} | "
                             f"h_amb={hamb} | "
                             f"T_c={T_c_base} | T_h={T_h_base} | "
-                            f"T_0={T0_value} (offset {T0_offset}) ==="
+                            f"T_0={T0_value:.2f} "
+                            f"(range [{T0_min:.2f}, {T0_max:.2f}]) ==="
                         )
 
                         result = run_sam_case(
                             case_name=case_name,
                             template_name=template_name,
                             hyperparams=hyperparams,
-                            # timeout_sec=None  # or use CONFIG runtime limit
                         )
 
                         run_count += 1

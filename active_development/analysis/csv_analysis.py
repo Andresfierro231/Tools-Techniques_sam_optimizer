@@ -34,7 +34,7 @@ import matplotlib.pyplot as plt
 # Which output files to generate
 write_paper = True
 write_summary = True
-make_plots = False 
+make_plots = True 
 
 # Which TP locations to compare between SAM and experiment
 #       # Script will automatically compute exp_value, sam_value, error, abs_error, rel_error
@@ -582,7 +582,6 @@ def make_convergence_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by
         print(f"[PLOT] Saved runtime plot for {prefix}:")
         print(f"       {out_path}")
 
-
 def make_runtime_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_prefix=None):
     """
     For each salt case (prefix jsalt1..4), make ONE runtime plot per prefix:
@@ -593,15 +592,20 @@ def make_runtime_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_pre
     The x-axis is shared for both orders, but we do NOT artificially
     truncate to the min(max(nodes_mult)) of each order; only the user caps
     (global/per-prefix) are applied.
+
+    This version is defensive:
+      - Skips prefixes with no rows.
+      - Skips prefixes where nodes_mult or script_runtime is missing/NaN.
     """
     plot_dir = out_dir / "plots" / "Runtime_plots"
     plot_dir.mkdir(parents=True, exist_ok=True)
 
+    # If script_runtime isn't present at all, just bail out
     if "script_runtime" not in full_df.columns:
         print("[RUNTIME PLOTS] 'script_runtime' column not found, skipping runtime plots.")
         return
 
-    prefixes = sorted(full_df["prefixes"].unique())
+    prefixes = sorted(full_df["prefixes"].dropna().unique())
 
     # Marker styles (can tweak if you like)
     order_styles = {
@@ -612,6 +616,12 @@ def make_runtime_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_pre
     for prefix in prefixes:
         df_p = full_df[full_df["prefixes"] == prefix].copy()
         if df_p.empty:
+            print(f"[RUNTIME PLOTS] Skipping prefix {prefix!r}: no rows.")
+            continue
+
+        # Require nodes_mult
+        if "nodes_mult" not in df_p.columns:
+            print(f"[RUNTIME PLOTS] Skipping prefix {prefix!r}: no 'nodes_mult' column.")
             continue
 
         # ---- 1) Apply global/per-prefix cap on nodes_mult (ONLY user caps) ----
@@ -624,20 +634,29 @@ def make_runtime_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_pre
         if cap is not None:
             df_p = df_p[df_p["nodes_mult"] <= cap].copy()
             if df_p.empty:
+                print(
+                    f"[RUNTIME PLOTS] Skipping prefix {prefix!r}: "
+                    f"no rows after applying max_nodes={cap}."
+                )
                 continue
+
+        # ---- 2) Clean numeric columns and drop NaNs ----
+        # nodes_mult
+        df_p["nodes_mult"] = pd.to_numeric(df_p["nodes_mult"], errors="coerce")
+        # script_runtime
+        df_p["script_runtime"] = pd.to_numeric(df_p["script_runtime"], errors="coerce")
+
+        df_p = df_p.dropna(subset=["nodes_mult", "script_runtime"])
+        if df_p.empty:
+            print(f"[RUNTIME PLOTS] Skipping prefix {prefix!r}: no valid nodes_mult/runtime rows.")
+            continue
 
         # Sort once by nodes_mult
         df_p = df_p.sort_values("nodes_mult")
 
         fig, ax = plt.subplots(figsize=(7, 5))
 
-        # ---- 2) Plot both orders overlain on same axes ----
-                
-        # --- Defensive fix: ensure script_runtime is numeric ---
-        if "script_runtime" in df_p.columns:
-            df_p["script_runtime"] = pd.to_numeric(df_p["script_runtime"], errors="coerce")
-            df_p = df_p.dropna(subset=["script_runtime"])
-
+        # ---- 3) Plot both orders overlain on same axes ----
         for order, df_po in df_p.groupby("order"):
             if df_po.empty:
                 continue
@@ -656,27 +675,39 @@ def make_runtime_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_pre
                 label=style["label"],
             )
 
+        # If nothing got plotted, skip saving
+        if not ax.lines:
+            plt.close(fig)
+            print(f"[RUNTIME PLOTS] Skipping prefix {prefix!r}: no data plotted for any order.")
+            continue
+
         # integer ticks, no minor ticks
         ax.xaxis.set_major_locator(MaxNLocator(integer=True))
         ax.xaxis.set_minor_locator(NullLocator())
 
-        # optional: explicitly set limits with a little padding
-        xmin = int(df_p["nodes_mult"].min())
-        xmax = int(df_p["nodes_mult"].max())
+        # ---- 4) Safe x-limits ----
+        nodes_series = df_p["nodes_mult"].dropna()
+        if nodes_series.empty:
+            plt.close(fig)
+            print(f"[RUNTIME PLOTS] Skipping prefix {prefix!r}: nodes_mult empty after cleaning.")
+            continue
+
+        xmin = int(nodes_series.min())
+        xmax = int(nodes_series.max())
         ax.set_xlim(xmin - 0.5, xmax + 0.5)
 
         ax.set_xlabel("nodes_mult")
         ax.set_ylabel("Script runtime [s]")
         ax.set_title(f"{prefix}: runtime vs mesh refinement\n{ERROR_MODE}")
-        ax.legend(fontsize=8)
 
-        fig.tight_layout()
+        ax.grid(True, which="both", linestyle=":", linewidth=0.5)
+        ax.legend()
+
         out_path = plot_dir / f"{prefix}_runtime_vs_nodes_mult.png"
-        fig.savefig(out_path, dpi=200)
+        fig.savefig(out_path, bbox_inches="tight")
         plt.close(fig)
 
-        print(f"[PLOT] Saved runtime plot (overlaid orders): {out_path}")
-
+        print(f"[RUNTIME PLOTS] Saved runtime plot for prefix {prefix!r}: {out_path}")
 
 
 # ---------- Main ----------
