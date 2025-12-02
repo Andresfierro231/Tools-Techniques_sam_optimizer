@@ -48,7 +48,7 @@ CONFIG = {
         #   T_0 ∈ [T0_base - half_width, T0_base + half_width]
         "T0_range": {
             "half_width": 5.0,   # +/- 5 K around the baseline
-            "n_points": 5,       # number of points in that range per case
+            "n_points": 3,       # number of points in that range per case
         },
     },
 
@@ -84,5 +84,9 @@ CONFIG = {
 
         # Experimental data
         "validation_data": str(ACTIVE_DEV_ROOT.parent / "Validation_Data" / "validation_data.csv"),
+    },
+    "analysis": {
+        # folder under analysis/analysis where results go
+        "case_identifier": "temp_test_analysis",
     },
 }

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """
+    csv_analysis.py
     Make validation CSVs comparing SAM vs experiment. Or SAM against finely refined versions of SAM 
 
     Inputs (defaults are aligned with your repo layout):
@@ -24,6 +25,7 @@ import argparse, pathlib, re
 
 import numpy as np
 import pandas as pd
+
 import matplotlib
 matplotlib.use("Agg")   
 from matplotlib.ticker import MaxNLocator, NullLocator
@@ -56,7 +58,7 @@ TOGGLE_MAX_ABS = True              # max_abs_err_K
 #   "exp"                  -> compare against experimental data
 #   "self_ref"             -> compare each (prefix, order) vs its own finest mesh
 #   "self_ref_second_order"-> compare all runs vs finest *second-order* SAM per prefix
-ERROR_MODE = "self_ref"   # "exp" or "self_ref" or "self_ref_second_order"
+ERROR_MODE = "exp"   # "exp" or "self_ref" or "self_ref_second_order"
 
 
 
@@ -709,6 +711,88 @@ def make_runtime_plots(full_df, out_dir, max_nodes_global=None, max_nodes_by_pre
 
         print(f"[RUNTIME PLOTS] Saved runtime plot for prefix {prefix!r}: {out_path}")
 
+def merge_runtime_from_master(full_df: pd.DataFrame,
+                              runtime_log_path: str = "runtimes_master.csv") -> pd.DataFrame:
+    """
+    Merge runtime information from runtimes_master.csv into the analysis DataFrame.
+
+    - Derives an 'input_basename' from full_df['source_file'], e.g.
+        'jsalt1_nodes_mult_by_6_ord2_csv.csv' -> 'jsalt1_nodes_mult_by_6_ord2.i'
+
+    - Derives an 'input_basename' from sam_input_path in runtimes_master.csv, e.g.
+        '/.../jsalt1_nodes_mult_by_6_ord2.i' -> 'jsalt1_nodes_mult_by_6_ord2.i'
+
+    - Groups runtimes by input_basename (median of runtime_sec over successes)
+
+    - Left-merges the median as 'runtime_merged_sec' into full_df.
+
+    If anything is missing, it will create 'runtime_merged_sec' filled with NaN.
+    """
+    path = pathlib.Path(runtime_log_path)
+    if not path.exists():
+        print(f"[RUNTIME MERGE] No runtime log found at {path}, skipping merge.")
+        full_df = full_df.copy()
+        full_df["runtime_merged_sec"] = pd.NA
+        return full_df
+
+    rt = pd.read_csv(path)
+    if "sam_input_path" not in rt.columns or "runtime_sec" not in rt.columns:
+        print("[RUNTIME MERGE] 'sam_input_path' or 'runtime_sec' missing in runtime log; "
+              "cannot merge. Creating runtime_merged_sec as NaN.")
+        full_df = full_df.copy()
+        full_df["runtime_merged_sec"] = pd.NA
+        return full_df
+
+    # Derive input_basename in runtimes_master
+    rt = rt.copy()
+    rt["input_basename"] = rt["sam_input_path"].astype(str).apply(
+        lambda s: pathlib.Path(s).name
+    )
+
+    # Filter to successful runs and non-NaN runtimes
+    mask_ok = (rt["status"] == "success") & rt["runtime_sec"].notna()
+    rt_ok = rt[mask_ok].copy()
+    if rt_ok.empty:
+        print("[RUNTIME MERGE] No successful runs with runtime_sec; "
+              "creating runtime_merged_sec as NaN.")
+        full_df = full_df.copy()
+        full_df["runtime_merged_sec"] = pd.NA
+        return full_df
+
+    grouped = (
+        rt_ok
+        .groupby("input_basename")["runtime_sec"]
+        .median()
+        .reset_index()
+        .rename(columns={"runtime_sec": "runtime_merged_sec"})
+    )
+
+    # Derive input_basename from source_file in the analysis DataFrame
+    def derive_input_basename_from_source_file(source_file: str) -> str:
+        s = str(source_file)
+        # Strip trailing '_csv.csv' or '.csv'
+        if s.endswith("_csv.csv"):
+            base = s[:-len("_csv.csv")]
+        elif s.endswith(".csv"):
+            base = s[:-len(".csv")]
+        else:
+            base = s
+        return base + ".i"
+
+    full_df = full_df.copy()
+    if "source_file" not in full_df.columns:
+        print("[RUNTIME MERGE] 'source_file' column missing in analysis DataFrame; "
+              "cannot merge runtime. Creating runtime_merged_sec as NaN.")
+        full_df["runtime_merged_sec"] = pd.NA
+        return full_df
+
+    full_df["input_basename"] = full_df["source_file"].astype(str).map(
+        derive_input_basename_from_source_file
+    )
+
+    full_df = full_df.merge(grouped, on="input_basename", how="left")
+
+    return full_df
 
 # ---------- Main ----------
 
@@ -918,6 +1002,20 @@ def main():
     full_df = pd.DataFrame(all_rows)
     # Force script_runtime to numeric (important!)
     full_df["script_runtime"] = pd.to_numeric(full_df["script_runtime"], errors="coerce")
+    
+    # Merge in runtimes from runtimes_master.csv, if available
+    full_df = merge_runtime_from_master(full_df, runtime_log_path="runtimes_master.csv")
+    
+    # If we have merged runtimes, use them to fill missing script_runtime.
+    if "runtime_merged_sec" in full_df.columns:
+        full_df["runtime_merged_sec"] = pd.to_numeric(
+            full_df["runtime_merged_sec"], errors="coerce"
+        )
+        # Prefer the merged runtime wherever script_runtime is NaN
+        full_df["script_runtime"] = full_df["script_runtime"].fillna(
+            full_df["runtime_merged_sec"]
+        )
+
 
 
     if "tracking_cols_keeping" in Debug: 

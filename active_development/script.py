@@ -28,8 +28,8 @@ import numpy as np
 # Templates to sweep over (must exist in Templates/)
 TEMPLATES = ["jsalt1.i", "jsalt2.i", "jsalt3.i", "jsalt4.i"]
 
-NODE_MULT_LIST =    [6, 8, 12, 16, 24]          # Node multipliers to test
-ORDERS =            [1, 2]                      # Orders: 1 = FIRST, 2 = SECOND
+NODE_MULT_LIST =    [6, 12] # [6, 8, 12, 16, 24]          # Node multipliers to test
+ORDERS =            [2]                      # Orders: 1 = FIRST, 2 = SECOND # I am not convinced I care about first order in singlephase
 
 # Baseline HTC / IC / BC (global defaults, used if a case is missing)
 BASE_HYPERPARAMS = {

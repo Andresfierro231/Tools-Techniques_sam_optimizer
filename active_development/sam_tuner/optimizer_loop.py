@@ -39,6 +39,7 @@ import argparse
 import numpy as np
 import pandas as pd
 import subprocess
+from .file_ops import organize_outputs
 from pathlib import Path
 
 
@@ -168,34 +169,21 @@ def _rerun_analysis_scripts() -> None:
     Re-run csv_maker.py and csv_analysis.py so that any new SAM runs launched
     by suggest_and_run_mode are incorporated into validation_analysis_full.csv.
     """
-    analysis_dir = _analysis_dir()
-    csv_maker = analysis_dir / "csv_maker.py"
-    csv_analysis = analysis_dir / "csv_analysis.py"
+    analysis_root = Path(CONFIG["paths"]["results_root"]) #/ "analysis"
+    templates_dir = Path(CONFIG["paths"]["templates_dir"])
+    case_identifier = CONFIG["analysis"]["case_identifier"]  # we will add this field in config.py
 
-    if not csv_maker.exists():
-        print(f"[suggest_and_run] WARNING: csv_maker.py not found in {analysis_dir}; "
-              "skipping automatic analysis.")
-        return
-    if not csv_analysis.exists():
-        print(f"[suggest_and_run] WARNING: csv_analysis.py not found in {analysis_dir}; "
-              "skipping automatic analysis.")
-        return
-
-    print("\n[suggest_and_run] Re-running csv_maker.py to update case_report.csv...")
-    subprocess.run(
-        ["python", csv_maker.name],
-        cwd=analysis_dir,
-        check=True,
+    print("[optimizer] Cleaning and organizing SAM outputs...")
+    organize_outputs(
+        templates_dir=templates_dir,
+        analysis_root=analysis_root,
+        case_identifier=case_identifier,
     )
 
-    print("[suggest_and_run] Re-running csv_analysis.py to update validation_analysis_full.csv...")
-    subprocess.run(
-        ["python", csv_analysis.name],
-        cwd=analysis_dir,
-        check=True,
-    )
 
-    print("[suggest_and_run] Analysis scripts completed.\n")
+    print("[optimizer] Re-running analysis scripts...")
+    subprocess.run(["python", "csv_maker.py"], cwd=str(analysis_root))
+    subprocess.run(["python", "csv_analysis.py"], cwd=str(analysis_root))
 
 
 # ---------------------------------------------------------------------------
