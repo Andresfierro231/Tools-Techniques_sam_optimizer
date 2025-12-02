@@ -26,7 +26,7 @@ MOOSE Version:           git commit 55e75e853e on 2025-01-29
 LibMesh Version:         
 PETSc Version:           3.22.1
 SLEPc Version:           3.22.1
-Current Time:            Mon Dec  1 20:14:03 2025
+Current Time:            Tue Dec  2 00:55:06 2025
 Executable Timestamp:    Tue Nov 25 17:43:31 2025
 
 Input File(s):
@@ -4453,9 +4453,9 @@ Time Step 63, time = 347.73, dt = 6.302
 12 Nonlinear |R| = [33m4.381124e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-Currently Executing
-  Finished Solving                                                                       [[33m  5.02 s[39m] [[33m  141 MB[39m]
-Aborting as solve did not converge
+Currently ExecutingAborting as solve did not converge
+
+  Finished Solving                                                                       [[33m  5.05 s[39m] [[33m  146 MB[39m]
 
 Solve failed, cutting timestep.
 
@@ -4487,7 +4487,7 @@ Time Step 63, time = 344.579, dt = 3.151
 12 Nonlinear |R| = [33m3.289268e-05[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.64 s[39m] [[33m  141 MB[39m]
+  Finished Solving                                                                       [[33m  7.67 s[39m] [[33m  146 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -4520,7 +4520,7 @@ Time Step 63, time = 343.003, dt = 1.5755
 12 Nonlinear |R| = [32m3.190735e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.23 s[39m] [[33m  141 MB[39m]
+  Finished Solving                                                                       [[33m  7.08 s[39m] [[33m  146 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -4710,7 +4710,7 @@ Time Step 65, time = 343.476, dt = 0.6302
 12 Nonlinear |R| = [33m1.003836e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.61 s[39m] [[33m  141 MB[39m]
+  Finished Solving                                                                       [[33m  7.38 s[39m] [[33m  148 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -4895,8 +4895,8 @@ Time Step 67, time = 343.703, dt = 0.289892
     Linear solve did not converge due to DIVERGED_ITS iterations 100
 12 Nonlinear |R| = [33m1.565400e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+  Finished Solving                                                                       [[33m  7.40 s[39m] [[33m  146 MB[39m]
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.63 s[39m] [[33m  141 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5151,8 +5151,8 @@ Time Step 70, time = 344.014, dt = 0.166688
 10 Nonlinear |R| = [33m1.029838e-06[39m
     Linear solve did not converge due to DIVERGED_ITS iterations 100
 11 Nonlinear |R| = [32m8.748260e-07[39m
-  Finished Solving                                                                       [[33m  7.00 s[39m] [[33m  141 MB[39m]
 [32m Solve Converged![39m
+  Finished Solving                                                                       [[33m  6.79 s[39m] [[33m  146 MB[39m]
 
 Outlier Variable Residual Norms:
   pressure: [31m8.709541e-07[39m
@@ -5249,7 +5249,7 @@ Time Step 71, time = 344.148, dt = 0.13335
 12 Nonlinear |R| = [33m1.043142e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.63 s[39m] [[33m  141 MB[39m]
+  Finished Solving                                                                       [[33m  7.41 s[39m] [[33m  146 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5283,7 +5283,7 @@ Time Step 71, time = 344.081, dt = 0.0666751
 12 Nonlinear |R| = [33m4.738581e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.65 s[39m] [[33m  141 MB[39m]
+  Finished Solving                                                                       [[33m  7.43 s[39m] [[33m  146 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5311,7 +5311,7 @@ Time Step 71, time = 344.048, dt = 0.0333376
 12 Nonlinear |R| = [32m1.745696e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  6.45 s[39m] [[33m  141 MB[39m]
+  Finished Solving                                                                       [[33m  6.26 s[39m] [[33m  146 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5945,7 +5945,7 @@ Time Step 79, time = 344.137, dt = 0.0221697
 12 Nonlinear |R| = [32m1.243423e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.46 s[39m] [[33m  141 MB[39m]
+  Finished Solving                                                                       [[33m  7.24 s[39m] [[33m  148 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -12031,7 +12031,7 @@ Time Step 160, time = 355.218, dt = 0.327543
     Linear solve did not converge due to DIVERGED_ITS iterations 100
  9 Nonlinear |R| = [32m7.462754e-07[39m
 [32m Solve Converged![39m
-  Finished Solving                                                                       [[33m  5.28 s[39m] [[33m  145 MB[39m]
+  Finished Solving                                                                       [[33m  5.31 s[39m] [[33m  149 MB[39m]
 
 Outlier Variable Residual Norms:
   pressure: [31m7.456060e-07[39m
@@ -12728,7 +12728,7 @@ Time Step 169, time = 357.404, dt = 0.221786
     Linear solve did not converge due to DIVERGED_ITS iterations 100
  9 Nonlinear |R| = [32m8.461689e-07[39m
 [32m Solve Converged![39m
-  Finished Solving                                                                       [[33m  5.37 s[39m] [[33m  145 MB[39m]
+  Finished Solving                                                                       [[33m  5.42 s[39m] [[33m  149 MB[39m]
 
 Outlier Variable Residual Norms:
   pressure: [31m8.461215e-07[39m
@@ -13143,7 +13143,7 @@ Time Step 174, time = 358.041, dt = 0.0908436
 12 Nonlinear |R| = [32m1.028482e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  6.70 s[39m] [[33m  145 MB[39m]
+  Finished Solving                                                                       [[33m  6.75 s[39m] [[33m  150 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -14865,7 +14865,7 @@ Time Step 197, time = 360.899, dt = 0.236544
 12 Nonlinear |R| = [32m1.214983e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.27 s[39m] [[33m  146 MB[39m]
+  Finished Solving                                                                       [[33m  7.32 s[39m] [[33m  150 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -17153,7 +17153,7 @@ Time Step 227, time = 368.022, dt = 0.362658
 12 Nonlinear |R| = [32m1.215102e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.33 s[39m] [[33m  146 MB[39m]
+  Finished Solving                                                                       [[33m  7.37 s[39m] [[33m  151 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -17630,7 +17630,7 @@ Time Step 233, time = 368.768, dt = 0.202973
     Linear solve did not converge due to DIVERGED_ITS iterations 100
  9 Nonlinear |R| = [32m5.887218e-07[39m
 [32m Solve Converged![39m
-  Finished Solving                                                                       [[33m  5.47 s[39m] [[33m  146 MB[39m]
+  Finished Solving                                                                       [[33m  5.50 s[39m] [[33m  151 MB[39m]
 
 Outlier Variable Residual Norms:
   pressure: [31m5.886917e-07[39m
@@ -19593,7 +19593,7 @@ Time Step 259, time = 375.73, dt = 0.38679
 12 Nonlinear |R| = [32m2.941163e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  7.38 s[39m] [[33m  147 MB[39m]
+  Finished Solving                                                                       [[33m  7.43 s[39m] [[33m  151 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -19705,7 +19705,7 @@ Time Step 260, time = 375.691, dt = 0.154716
     Linear solve did not converge due to DIVERGED_ITS iterations 100
  9 Nonlinear |R| = [32m3.606840e-07[39m
 [32m Solve Converged![39m
-  Finished Solving                                                                       [[33m  5.47 s[39m] [[33m  147 MB[39m]
+  Finished Solving                                                                       [[33m  5.50 s[39m] [[33m  151 MB[39m]
 
 Outlier Variable Residual Norms:
   pressure: [31m3.606695e-07[39m
@@ -20843,7 +20843,7 @@ Time Step 275, time = 377.613, dt = 0.104761
     Linear solve did not converge due to DIVERGED_ITS iterations 100
  9 Nonlinear |R| = [32m9.187186e-07[39m
 [32m Solve Converged![39m
-  Finished Solving                                                                       [[33m  5.49 s[39m] [[33m  147 MB[39m]
+  Finished Solving                                                                       [[33m  5.52 s[39m] [[33m  151 MB[39m]
 
 Outlier Variable Residual Norms:
   pressure: [31m9.186850e-07[39m
@@ -22101,3 +22101,76 @@ Time Step 292, time = 379.364, dt = 0.188691
  0 Nonlinear |R| = [32m2.471886e-05[39m
     Linear solve did not converge due to DIVERGED_ITS iterations 100
  1 Nonlinear |R| = [32m7.723920e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [32m3.514055e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  pressure: [31m3.513869e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            | TP_TS          | TS_vel         |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+:                :                :                :                :                :                :                :                :                :
+|   3.778478e+02 |   6.006027e+00 |   4.188989e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526369e+02 |   4.526369e+02 |   1.905882e-02 |
+|   3.779249e+02 |   6.005898e+00 |   4.188989e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526368e+02 |   4.526369e+02 |   1.905881e-02 |
+|   3.779866e+02 |   6.006087e+00 |   4.188989e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526370e+02 |   4.526369e+02 |   1.905880e-02 |
+|   3.780483e+02 |   6.006093e+00 |   4.188990e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526370e+02 |   4.526369e+02 |   1.905879e-02 |
+|   3.781192e+02 |   6.005954e+00 |   4.188990e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526369e+02 |   4.526369e+02 |   1.905879e-02 |
+|   3.782008e+02 |   6.005830e+00 |   4.188990e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526367e+02 |   4.526369e+02 |   1.905878e-02 |
+|   3.782946e+02 |   6.005699e+00 |   4.188991e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526366e+02 |   4.526369e+02 |   1.905877e-02 |
+|   3.783884e+02 |   6.005691e+00 |   4.188991e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526366e+02 |   4.526368e+02 |   1.905876e-02 |
+|   3.784963e+02 |   6.005559e+00 |   4.188992e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526365e+02 |   4.526368e+02 |   1.905875e-02 |
+|   3.786203e+02 |   6.005429e+00 |   4.188992e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526363e+02 |   4.526368e+02 |   1.905873e-02 |
+|   3.787444e+02 |   6.005416e+00 |   4.188993e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526363e+02 |   4.526368e+02 |   1.905872e-02 |
+|   3.788685e+02 |   6.005387e+00 |   4.188994e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526363e+02 |   4.526368e+02 |   1.905871e-02 |
+|   3.790112e+02 |   6.005258e+00 |   4.188994e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526361e+02 |   4.526368e+02 |   1.905870e-02 |
+|   3.791752e+02 |   6.005129e+00 |   4.188995e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526360e+02 |   4.526368e+02 |   1.905868e-02 |
+|   3.793639e+02 |   6.005015e+00 |   4.188996e+01 |   4.466309e+02 |   4.466309e+02 |   4.526363e+02 |   4.526359e+02 |   4.526368e+02 |   1.905866e-02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------------------+-----------------------------+--------------------+------------------------+
+| time           | TopL_velocity  | coolingJacket_T_in_primary | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity |
++----------------+----------------+----------------------------+-----------------------------+--------------------+------------------------+
+:                :                :                            :                             :                    :                        :
+|   3.778478e+02 |   1.905882e-02 |               4.526369e+02 |                4.466309e+02 |       6.006027e+00 |           1.901983e-02 |
+|   3.779249e+02 |   1.905881e-02 |               4.526368e+02 |                4.466309e+02 |       6.005898e+00 |           1.901982e-02 |
+|   3.779866e+02 |   1.905880e-02 |               4.526370e+02 |                4.466309e+02 |       6.006087e+00 |           1.901981e-02 |
+|   3.780483e+02 |   1.905880e-02 |               4.526370e+02 |                4.466309e+02 |       6.006093e+00 |           1.901981e-02 |
+|   3.781192e+02 |   1.905879e-02 |               4.526369e+02 |                4.466309e+02 |       6.005954e+00 |           1.901980e-02 |
+|   3.782008e+02 |   1.905878e-02 |               4.526367e+02 |                4.466309e+02 |       6.005830e+00 |           1.901979e-02 |
+|   3.782946e+02 |   1.905877e-02 |               4.526366e+02 |                4.466309e+02 |       6.005699e+00 |           1.901978e-02 |
+|   3.783884e+02 |   1.905876e-02 |               4.526366e+02 |                4.466309e+02 |       6.005691e+00 |           1.901977e-02 |
+|   3.784963e+02 |   1.905875e-02 |               4.526365e+02 |                4.466309e+02 |       6.005559e+00 |           1.901976e-02 |
+|   3.786203e+02 |   1.905873e-02 |               4.526363e+02 |                4.466309e+02 |       6.005429e+00 |           1.901975e-02 |
+|   3.787444e+02 |   1.905872e-02 |               4.526363e+02 |                4.466309e+02 |       6.005416e+00 |           1.901974e-02 |
+|   3.788685e+02 |   1.905871e-02 |               4.526363e+02 |                4.466309e+02 |       6.005387e+00 |           1.901973e-02 |
+|   3.790112e+02 |   1.905869e-02 |               4.526361e+02 |                4.466309e+02 |       6.005258e+00 |           1.901971e-02 |
+|   3.791752e+02 |   1.905868e-02 |               4.526360e+02 |                4.466309e+02 |       6.005129e+00 |           1.901969e-02 |
+|   3.793639e+02 |   1.905866e-02 |               4.526359e+02 |                4.466309e+02 |       6.005015e+00 |           1.901968e-02 |
++----------------+----------------+----------------------------+-----------------------------+--------------------+------------------------+
++----------------+----------------+----------------+
+| time           | dt             | massFlowRate   |
++----------------+----------------+----------------+
+:                :                :                :
+|   3.778478e+02 |   6.704718e-02 |   1.428455e-02 |
+|   3.779249e+02 |   7.710426e-02 |   1.428454e-02 |
+|   3.779866e+02 |   6.168341e-02 |   1.428454e-02 |
+|   3.780483e+02 |   6.168341e-02 |   1.428453e-02 |
+|   3.781192e+02 |   7.093592e-02 |   1.428453e-02 |
+|   3.782008e+02 |   8.157631e-02 |   1.428452e-02 |
+|   3.782946e+02 |   9.381275e-02 |   1.428452e-02 |
+|   3.783884e+02 |   9.381275e-02 |   1.428451e-02 |
+|   3.784963e+02 |   1.078847e-01 |   1.428450e-02 |
+|   3.786203e+02 |   1.240674e-01 |   1.428449e-02 |
+|   3.787444e+02 |   1.240674e-01 |   1.428448e-02 |
+|   3.788685e+02 |   1.240674e-01 |   1.428447e-02 |
+|   3.790112e+02 |   1.426775e-01 |   1.428446e-02 |
+|   3.791752e+02 |   1.640791e-01 |   1.428445e-02 |
+|   3.793639e+02 |   1.886910e-01 |   1.428444e-02 |
++----------------+----------------+----------------+
+
+
+Time Step 293, time = 379.553, dt = 0.188691
+ * Nonlinear |R| = [32m2.306739e-05[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m2.306739e-05[39m

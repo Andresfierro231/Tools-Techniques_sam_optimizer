@@ -42,7 +42,7 @@ CONFIG = {
             "jsalt3": {"T_c": 459.0,  "T_h": 466.0,  "T_0": 460.0},
             "jsalt4": {"T_c": 475.74, "T_h": 480.0,  "T_0": 478.0},
         },
-        # Global defaults if a case isn’t in base_by_case
+        # fallback if case key is missing:
         "defaults": {"T_c": 442.15, "T_h": 444.0, "T_0": 443.0},
         # Instead of discrete offsets, define a range around T0_base:
         #   T_0 ∈ [T0_base - half_width, T0_base + half_width]
@@ -84,6 +84,9 @@ CONFIG = {
 
         # Experimental data
         "validation_data": str(ACTIVE_DEV_ROOT.parent / "Validation_Data" / "validation_data.csv"),
+
+        # Analysis Subdirectory
+        "analysis_subdir": "temp_test",
     },
     "analysis": {
         # folder under analysis/analysis where results go

@@ -26,7 +26,7 @@ MOOSE Version:           git commit 55e75e853e on 2025-01-29
 LibMesh Version:         
 PETSc Version:           3.22.1
 SLEPc Version:           3.22.1
-Current Time:            Mon Dec  1 20:08:37 2025
+Current Time:            Tue Dec  2 00:49:43 2025
 Executable Timestamp:    Tue Nov 25 17:43:31 2025
 
 Input File(s):
@@ -4899,7 +4899,7 @@ Time Step 69, time = 458.904, dt = 12.6756
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
 Currently Executing
-  Finished Solving                                                                       [[33m  5.64 s[39m] [[33m  136 MB[39m]
+  Finished Solving                                                                       [[33m  5.60 s[39m] [[33m  136 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -4932,8 +4932,8 @@ Time Step 69, time = 452.567, dt = 6.33778
     Linear solve did not converge due to DIVERGED_ITS iterations 100
 12 Nonlinear |R| = [33m2.330785e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+  Finished Solving                                                                       [[33m  5.52 s[39m] [[33m  136 MB[39m]
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.58 s[39m] [[33m  136 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -4967,7 +4967,7 @@ Time Step 69, time = 449.398, dt = 3.16889
 12 Nonlinear |R| = [33m4.640037e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.49 s[39m] [[33m  136 MB[39m]
+  Finished Solving                                                                       [[33m  5.44 s[39m] [[33m  136 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5000,8 +5000,8 @@ Time Step 69, time = 447.813, dt = 1.58445
     Linear solve did not converge due to DIVERGED_ITS iterations 100
 12 Nonlinear |R| = [32m2.424935e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+  Finished Solving                                                                       [[33m  5.41 s[39m] [[33m  136 MB[39m]
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.46 s[39m] [[33m  136 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5035,7 +5035,7 @@ Time Step 69, time = 447.021, dt = 0.792223
 12 Nonlinear |R| = [33m1.554005e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.46 s[39m] [[33m  136 MB[39m]
+  Finished Solving                                                                       [[33m  5.41 s[39m] [[33m  136 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5068,8 +5068,8 @@ Time Step 69, time = 446.625, dt = 0.396112
     Linear solve did not converge due to DIVERGED_ITS iterations 100
 12 Nonlinear |R| = [32m2.609925e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+  Finished Solving                                                                       [[33m  5.43 s[39m] [[33m  137 MB[39m]
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.47 s[39m] [[33m  136 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5396,7 +5396,7 @@ Time Step 73, time = 447.416, dt = 0.301218
 12 Nonlinear |R| = [33m1.145133e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.46 s[39m] [[33m  136 MB[39m]
+  Finished Solving                                                                       [[33m  5.41 s[39m] [[33m  137 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -5804,7 +5804,7 @@ Time Step 78, time = 447.987, dt = 0.183246
 12 Nonlinear |R| = [32m2.648291e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.70 s[39m] [[33m  136 MB[39m]
+  Finished Solving                                                                       [[33m  5.40 s[39m] [[33m  137 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -6205,7 +6205,7 @@ Time Step 83, time = 448.397, dt = 0.121171
 12 Nonlinear |R| = [33m1.394813e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.39 s[39m] [[33m  136 MB[39m]
+  Finished Solving                                                                       [[33m  5.20 s[39m] [[33m  137 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -8346,8 +8346,8 @@ Time Step 111, time = 452.317, dt = 0.291921
     Linear solve did not converge due to DIVERGED_ITS iterations 100
 12 Nonlinear |R| = [32m1.799874e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+  Finished Solving                                                                       [[33m  5.20 s[39m] [[33m  138 MB[39m]
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.43 s[39m] [[33m  137 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -8910,7 +8910,7 @@ Time Step 118, time = 452.906, dt = 0.168808
 12 Nonlinear |R| = [33m5.044524e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.31 s[39m] [[33m  137 MB[39m]
+  Finished Solving                                                                       [[33m  5.08 s[39m] [[33m  138 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -9233,7 +9233,6 @@ Time Step 122, time = 453.243, dt = 0.128368
 12 Nonlinear |R| = [33m4.750283e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.12 s[39m] [[33m  140 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -11928,7 +11927,6 @@ Time Step 157, time = 455.745, dt = 0.124405
     Linear solve did not converge due to DIVERGED_ITS iterations 100
 12 Nonlinear |R| = [32m9.799862e-07[39m
 [32m Solve Converged![39m
-  Finished Solving                                                                       [[33m  5.03 s[39m] [[33m  143 MB[39m]
 
 Outlier Variable Residual Norms:
   pressure: [31m9.784425e-07[39m
@@ -12544,7 +12542,7 @@ Time Step 165, time = 456.646, dt = 0.160143
 12 Nonlinear |R| = [33m1.358618e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.29 s[39m] [[33m  143 MB[39m]
+  Finished Solving                                                                       [[33m  5.27 s[39m] [[33m  139 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -18246,7 +18244,7 @@ Time Step 241, time = 497.184, dt = 3.31055
 12 Nonlinear |R| = [33m1.206521e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.36 s[39m] [[33m  144 MB[39m]
+  Finished Solving                                                                       [[33m  5.32 s[39m] [[33m  140 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -18500,7 +18498,7 @@ Time Step 244, time = 501.277, dt = 2.1891
 12 Nonlinear |R| = [33m1.644698e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.27 s[39m] [[33m  144 MB[39m]
+  Finished Solving                                                                       [[33m  5.25 s[39m] [[33m  140 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -18995,7 +18993,7 @@ Time Step 250, time = 505.716, dt = 0.805588
 12 Nonlinear |R| = [33m1.045800e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.28 s[39m] [[33m  144 MB[39m]
+  Finished Solving                                                                       [[33m  5.26 s[39m] [[33m  140 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -19108,7 +19106,7 @@ Time Step 251, time = 505.636, dt = 0.322235
 12 Nonlinear |R| = [32m1.256190e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.26 s[39m] [[33m  144 MB[39m]
+  Finished Solving                                                                       [[33m  5.23 s[39m] [[33m  140 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -19434,7 +19432,7 @@ Time Step 255, time = 506.279, dt = 0.24504
 12 Nonlinear |R| = [33m2.189901e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.26 s[39m] [[33m  144 MB[39m]
+  Finished Solving                                                                       [[33m  5.22 s[39m] [[33m  140 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -19687,7 +19685,7 @@ Time Step 258, time = 506.582, dt = 0.162033
 12 Nonlinear |R| = [32m1.925587e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.15 s[39m] [[33m  144 MB[39m]
+  Finished Solving                                                                       [[33m  5.11 s[39m] [[33m  140 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -23840,7 +23838,7 @@ Time Step 313, time = 531.062, dt = 2.06281
 12 Nonlinear |R| = [33m1.452392e-06[39m
   Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
 [31m Solve Did NOT Converge![39m
-  Finished Solving                                                                       [[33m  5.34 s[39m] [[33m  145 MB[39m]
+  Finished Solving                                                                       [[33m  5.31 s[39m] [[33m  141 MB[39m]
 Aborting as solve did not converge
 
 Solve failed, cutting timestep.
@@ -26162,25 +26160,25 @@ Performance Graph:
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 |                    Section                   |  Calls |   Self(s)  |   Avg(s)   |    %   | Mem(MB) |  Total(s)  |   Avg(s)   |    %   | Mem(MB) |
 ---------------------------------------------------------------------------------------------------------------------------------------------------
-| SamApp (main)                                |      1 |      0.006 |      0.006 |   0.00 |       3 |    325.949 |    325.949 | 100.00 |      59 |
+| SamApp (main)                                |      1 |      0.006 |      0.006 |   0.00 |       3 |    321.695 |    321.695 | 100.00 |      54 |
 |   SAMSimulation::computeUserObjects          |      2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
 |   SAMSimulation::computeUserObjects          |      3 |      0.001 |      0.000 |   0.00 |       0 |      0.001 |      0.000 |   0.00 |       0 |
-|   SAMSimulation::outputStep                  |    345 |      0.033 |      0.000 |   0.01 |       0 |      7.700 |      0.022 |   2.36 |       0 |
-|   Transient::PicardSolve                     |    376 |      0.205 |      0.001 |   0.06 |       0 |    317.963 |      0.846 |  97.55 |      16 |
-|     SAMSimulation::computeUserObjects        |   2880 |      0.407 |      0.000 |   0.12 |       0 |      0.407 |      0.000 |   0.12 |       0 |
-|     SAMSimulation::outputStep                |   1128 |      0.031 |      0.000 |   0.01 |       0 |      0.035 |      0.000 |   0.01 |       0 |
-|     SAMSimulation::solve                     |    376 |     20.495 |      0.055 |   6.29 |       7 |    317.162 |      0.844 |  97.30 |      15 |
+|   SAMSimulation::outputStep                  |    345 |      0.033 |      0.000 |   0.01 |       0 |      8.511 |      0.025 |   2.65 |       0 |
+|   Transient::PicardSolve                     |    376 |      0.205 |      0.001 |   0.06 |       0 |    312.897 |      0.832 |  97.27 |      11 |
+|     SAMSimulation::computeUserObjects        |   2880 |      0.401 |      0.000 |   0.12 |       0 |      0.401 |      0.000 |   0.12 |       0 |
+|     SAMSimulation::outputStep                |   1128 |      0.032 |      0.000 |   0.01 |       0 |      0.036 |      0.000 |   0.01 |       0 |
+|     SAMSimulation::solve                     |    376 |     20.192 |      0.054 |   6.28 |       8 |    312.106 |      0.830 |  97.02 |      10 |
 |       SAMSimulation::computeUserObjects      |   2944 |      0.005 |      0.000 |   0.00 |       0 |      0.005 |      0.000 |   0.00 |       0 |
-|       SAMSimulation::computeResidualInternal |    376 |      0.006 |      0.000 |   0.00 |       0 |      1.510 |      0.004 |   0.46 |       0 |
-|         SAMSimulation::computeUserObjects    |    752 |      0.015 |      0.000 |   0.00 |       0 |      0.015 |      0.000 |   0.00 |       0 |
+|       SAMSimulation::computeResidualInternal |    376 |      0.006 |      0.000 |   0.00 |       0 |      1.496 |      0.004 |   0.47 |       0 |
+|         SAMSimulation::computeUserObjects    |    752 |      0.016 |      0.000 |   0.00 |       0 |      0.016 |      0.000 |   0.00 |       0 |
 |         AuxiliarySystem::computeScalarVars   |    376 |      0.012 |      0.000 |   0.00 |       0 |      0.014 |      0.000 |   0.00 |       0 |
-|       SAMSimulation::computeResidualInternal |  73045 |      1.155 |      0.000 |   0.35 |       0 |    284.054 |      0.004 |  87.15 |       8 |
-|         SAMSimulation::computeUserObjects    | 146090 |      2.720 |      0.000 |   0.83 |       0 |      2.720 |      0.000 |   0.83 |       0 |
-|         AuxiliarySystem::computeScalarVars   |  73045 |      2.180 |      0.000 |   0.67 |       0 |      2.565 |      0.000 |   0.79 |       1 |
-|       SAMSimulation::computeJacobianInternal |   1096 |      0.019 |      0.000 |   0.01 |       0 |      9.888 |      0.009 |   3.03 |       0 |
-|         SAMSimulation::computeUserObjects    |   2192 |      0.003 |      0.000 |   0.00 |       0 |      0.003 |      0.000 |   0.00 |       0 |
+|       SAMSimulation::computeResidualInternal |  73045 |      1.175 |      0.000 |   0.37 |       0 |    279.388 |      0.004 |  86.85 |       2 |
+|         SAMSimulation::computeUserObjects    | 146090 |      2.750 |      0.000 |   0.85 |       0 |      2.750 |      0.000 |   0.85 |       0 |
+|         AuxiliarySystem::computeScalarVars   |  73045 |      2.181 |      0.000 |   0.68 |       0 |      2.567 |      0.000 |   0.80 |       0 |
+|       SAMSimulation::computeJacobianInternal |   1096 |      0.019 |      0.000 |   0.01 |       0 |      9.805 |      0.009 |   3.05 |       0 |
+|         SAMSimulation::computeUserObjects    |   2192 |      0.004 |      0.000 |   0.00 |       0 |      0.004 |      0.000 |   0.00 |       0 |
 |   Transient::final                           |      1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
 |     SAMSimulation::computeUserObjects        |      2 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
 |     SAMSimulation::outputStep                |      1 |      0.000 |      0.000 |   0.00 |       0 |      0.000 |      0.000 |   0.00 |       0 |
 ---------------------------------------------------------------------------------------------------------------------------------------------------
-Finished Executing                                                                       [[33m325.76 s[39m] [[33m  146 MB[39m]
+Finished Executing                                                                       [[33m321.51 s[39m] [[33m  141 MB[39m]

@@ -29,18 +29,15 @@ Usage (from active_development):
     # Suggest and then actually run the top 3 candidates for jsalt1 and jsalt2:
     python -m sam_tuner.optimizer_loop --mode suggest_and_run --top-k 10 --n-run 3 --cases jsalt1 jsalt2
 """
-
 from __future__ import annotations
-
 from itertools import product
 from typing import List, Dict, Any, Tuple, Optional
-
-import argparse
-import numpy as np
-import pandas as pd
-import subprocess
 from .file_ops import organize_outputs
 from pathlib import Path
+
+import argparse, subprocess, shutil
+import numpy as np
+import pandas as pd
 
 
 from .config import CONFIG
@@ -182,6 +179,30 @@ def _rerun_analysis_scripts() -> None:
 
 
     print("[optimizer] Re-running analysis scripts...")
+    # Clean & move files inside Templates/
+    templates_dir = Path(CONFIG["paths"]["templates_dir"]).resolve()
+
+    analysis_subdir = CONFIG["paths"]["analysis_subdir"]
+
+    case_dir = Path(analysis_root) / "analysis" / analysis_subdir  # you must know the case name
+    case_dir.mkdir(parents=True, exist_ok=True)
+
+    # 1. Remove *_cp* files
+    for f in templates_dir.glob("*_cp*"):
+        print(f"[optimizer] Removing leftover file: {f.name}")
+        try:
+            f.unlink()
+        except Exception as e:
+            print(f"[optimizer] WARNING: Could not delete {f.name}: {e}")
+
+    # 2. Move *_nodes_mult* files to analysis/<case>/
+    for f in templates_dir.glob("*_nodes_mult*"):
+        dest = case_dir / f.name
+        print(f"[optimizer] Moving {f.name} → {dest}")
+        try:
+            shutil.move(str(f), str(dest))
+        except Exception as e:
+            print(f"[optimizer] WARNING: Could not move {f.name}: {e}")
     subprocess.run(["python", "csv_maker.py"], cwd=str(analysis_root))
     subprocess.run(["python", "csv_analysis.py"], cwd=str(analysis_root))
 
@@ -223,7 +244,8 @@ def run_optimizer_v0(
         error_col=ERROR_COLUMN,
         runtime_col=RUNTIME_COLUMN_DEFAULT,
         drop_na_targets=True,
-        merge_runtime=False,
+        # merge_runtime=True,
+        merge_hyperparams=True, 
     )
 
     print(f"[optimizer] Loaded dataset with {len(X)} rows.")

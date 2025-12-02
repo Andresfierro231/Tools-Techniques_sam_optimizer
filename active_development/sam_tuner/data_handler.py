@@ -309,14 +309,70 @@ def _merge_runtime_from_log(df_val: pd.DataFrame) -> pd.DataFrame:
     df = df.merge(grouped, on="input_basename", how="left")
     return df
 
+# === Hyperparameter HELPERS =================================================
+def _build_hyperparam_table_from_runtime() -> Optional[pd.DataFrame]:
+    """
+    Build a table of hyperparameters per input_basename by parsing
+    'hyperparams_json' from runtimes_master.csv.
+
+    Returns
+    -------
+    pd.DataFrame or None
+
+    Columns will include:
+      - 'input_basename'
+      - any keys found in hyperparams_json (e.g., T_c, T_h, T_0, h_amb, node_multiplier, order)
+    """
+    rt = load_runtime_log()
+    if rt is None:
+        print("[data_handler] No runtime log available; skipping hyperparam merge.")
+        return None
+
+    if "hyperparams_json" not in rt.columns:
+        print("[data_handler] 'hyperparams_json' column missing in runtime log; "
+              "cannot build hyperparam table.")
+        return None
+
+    df = rt[["sam_input_path", "hyperparams_json"]].dropna().copy()
+    if df.empty:
+        print("[data_handler] Runtime log has no rows with hyperparams_json; "
+              "skipping hyperparam merge.")
+        return None
+
+    # Derive input_basename from sam_input_path
+    df["input_basename"] = df["sam_input_path"].astype(str).apply(
+        lambda s: Path(s).name
+    )
+
+    # Parse hyperparams_json into columns
+    def _parse_hp(s: str) -> dict:
+        try:
+            return json.loads(s)
+        except Exception:
+            return {}
+
+    hp_dicts = df["hyperparams_json"].apply(_parse_hp)
+    hp_df = pd.json_normalize(hp_dicts)
+
+    # Combine and deduplicate by input_basename
+    df_hp = pd.concat([df[["input_basename"]], hp_df], axis=1)
+    df_hp = df_hp.groupby("input_basename", as_index=False).first()
+
+    print("[data_handler] Hyperparam table built from runtime log:")
+    print(df_hp.head())
+
+    return df_hp
+
 
 # === DATASET BUILDER =======================================================
+
 def build_basic_dataset(
     error_col: str = ERROR_COLUMN,
     runtime_col: str = RUNTIME_COLUMN_DEFAULT,
     feature_cols: Optional[list] = None,
     drop_na_targets: bool = True,
-    merge_runtime: bool = True,
+    merge_runtime: bool = True, 
+    merge_hyperparams: bool = True,
 ) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """
     Build a basic (X, y_error, y_runtime) dataset from validation_analysis_full.csv
@@ -341,6 +397,38 @@ def build_basic_dataset(
     (X, y_error, y_runtime) : (pd.DataFrame, pd.Series, pd.Series)
     """
     df = load_validation_analysis()
+
+    # Optionally merge hyperparameters parsed from runtimes_master.csv
+    if merge_hyperparams:
+        hp_table = _build_hyperparam_table_from_runtime()
+        if hp_table is not None:
+            # Make sure we have input_basename to join on.
+            if "input_basename" not in df.columns:
+                # Rebuild the same input_basename used in csv_analysis
+                def _derive_input_basename(source_file: str) -> str:
+                    s = str(source_file)
+                    if s.endswith("_csv.csv"):
+                        base = s[:-len("_csv.csv")]
+                    elif s.endswith(".csv"):
+                        base = s[:-len(".csv")]
+                    else:
+                        base = s
+                    return base + ".i"
+
+                if "source_file" not in df.columns:
+                    print("[data_handler] No 'input_basename' or 'source_file' in "
+                          "validation_analysis_full.csv; cannot merge hyperparams.")
+                else:
+                    df = df.copy()
+                    df["input_basename"] = df["source_file"].astype(str).map(
+                        _derive_input_basename
+                    )
+
+            if "input_basename" in df.columns:
+                df = df.merge(hp_table, on="input_basename", how="left")
+        else:
+            print("[data_handler] Hyperparam table not available; "
+                  "proceeding without hyperparam features.")
 
     if merge_runtime:
         df = _merge_runtime_from_log(df)
