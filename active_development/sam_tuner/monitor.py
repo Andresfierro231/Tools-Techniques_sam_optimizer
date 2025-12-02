@@ -5,12 +5,12 @@ Simple live monitor for SAM optimizer runs.
 
 Usage (from active_development/ or anywhere in the repo):
 
-    python -m sam_opt.monitor
+    python -m sam_tuner.monitor
 
 or
 
     cd active_development
-    python sam_opt/monitor.py
+    python sam_tuner/monitor.py
 
 This will:
 - Re-read the central runtime log every few seconds

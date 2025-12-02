@@ -1,5 +1,5 @@
 """
-sam_opt package
+sam_tuner package
 
 Optimizer utilities for SAM molten-salt loop project.
 

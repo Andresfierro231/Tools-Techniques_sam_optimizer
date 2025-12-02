@@ -34,7 +34,7 @@ your actual 'validation_analysis_full.csv' content.
 
 from pathlib import Path
 from typing import Tuple, Optional, List
-
+import json  
 import pandas as pd
 
 from .config import CONFIG
@@ -60,6 +60,20 @@ FEATURE_COLUMNS: List[str] = [
     # "order",  # we'll add 'order' later when the analysis CSV actually has 1/2 here
 ]
 
+# Default file name for the full validation analysis CSV.
+VALIDATION_ANALYSIS_FILENAME = "validation_analysis_full.csv"
+
+# Names of the default target columns in the validation analysis CSV.
+ERROR_COLUMN = "rmse_K"                 # main accuracy metric
+RUNTIME_COLUMN_DEFAULT = "runtime_merged_sec"  # runtime from merged log
+
+# Minimal feature set:
+#   - nodes_mult: from csv_analysis (parsed from filenames)
+#   - h_amb     : from hyperparams_json in runtimes_master.csv
+FEATURE_COLUMNS: List[str] = [
+    "nodes_mult",
+    "h_amb",
+]
 
 # === PATH HELPERS ==========================================================
 
@@ -148,6 +162,10 @@ def _derive_input_basename_from_source_file(source_file: str) -> str:
     """
     Map a validation 'source_file' to an input basename used in runtimes_master.
 
+    Given a 'source_file' from validation_analysis (e.g.
+    'jsalt1_nodes_mult_by_6_ord2_csv.csv'), derive the corresponding .i input basename:
+    'jsalt1_nodes_mult_by_6_ord2.i'
+
     Example:
       source_file = 'jsalt1_nodes_mult_by_6_ord2_csv.csv'
       -> 'jsalt1_nodes_mult_by_6_ord2.i'
@@ -163,7 +181,78 @@ def _derive_input_basename_from_source_file(source_file: str) -> str:
     else:
         base = s
     return base + ".i"
+def _merge_runtime_from_log(df_val: pd.DataFrame) -> pd.DataFrame:
+    """
+    Merge runtime information from runtimes_master.csv into the validation DataFrame.
 
+    We:
+      - compute 'input_basename' from 'source_file' in df_val
+      - compute 'input_basename' from sam_input_path in runtimes_master
+      - group runtimes by input_basename:
+          * median runtime_sec -> runtime_merged_sec
+          * first hp_* values (e.g. hp_h_amb, hp_T_c, etc.)
+      - left-merge onto df_val
+
+    Returns
+    -------
+    pd.DataFrame
+        The validation DataFrame with:
+          - 'runtime_merged_sec'
+          - 'h_amb' (if present in hyperparams_json)
+          - possibly other IC/BC columns (T_c, T_h, T_0, ...)
+    """
+    df = df_val.copy()
+
+    if "source_file" not in df.columns:
+        print("[data_handler] WARNING: 'source_file' column missing in validation data; "
+              "cannot merge runtime. Creating runtime_merged_sec as NaN.")
+        df["runtime_merged_sec"] = pd.NA
+        return df
+
+    runtime_df = _load_runtime_log_with_hyperparams()
+    if runtime_df is None:
+        df["runtime_merged_sec"] = pd.NA
+        return df
+
+    # Derive input_basename in runtime log
+    runtime_df = runtime_df.copy()
+    runtime_df["input_basename"] = runtime_df["sam_input_path"].astype(str).map(
+        lambda p: Path(p).name
+    )
+
+    # Build aggregation dict
+    agg_dict = {"runtime_sec": "median"}
+    # For hyperparameter columns, take the first value (we assume each .i has consistent hyperparams)
+    for col in runtime_df.columns:
+        if col.startswith("hp_"):
+            agg_dict[col] = "first"
+
+    grouped = runtime_df.groupby("input_basename", as_index=False).agg(agg_dict)
+    grouped = grouped.rename(columns={"runtime_sec": "runtime_merged_sec"})
+
+    # Map validation source_file -> input_basename
+    df["input_basename"] = df["source_file"].astype(str).map(
+        _derive_input_basename_from_source_file
+    )
+
+    # Merge in runtime + hp_* columns
+    df = df.merge(grouped, on="input_basename", how="left")
+
+    # Convenience: if hp_h_amb exists, expose it as 'h_amb'
+    if "hp_h_amb" in df.columns and "h_amb" not in df.columns:
+        df["h_amb"] = df["hp_h_amb"]
+
+    # (Optional) same idea for T_c, T_h, T_0 if you want:
+    for hp_name, out_name in [
+        ("hp_T_c", "T_c"),
+        ("hp_T_h", "T_h"),
+        ("hp_T_0", "T_0"),
+        ("hp_node_multiplier", "node_multiplier_hp"),
+    ]:
+        if hp_name in df.columns and out_name not in df.columns:
+            df[out_name] = df[hp_name]
+
+    return df
 
 def _merge_runtime_from_log(df_val: pd.DataFrame) -> pd.DataFrame:
     """
@@ -226,7 +315,6 @@ def _merge_runtime_from_log(df_val: pd.DataFrame) -> pd.DataFrame:
 
 
 # === DATASET BUILDER =======================================================
-
 def build_basic_dataset(
     error_col: str = ERROR_COLUMN,
     runtime_col: str = RUNTIME_COLUMN_DEFAULT,
@@ -235,7 +323,8 @@ def build_basic_dataset(
     merge_runtime: bool = True,
 ) -> Tuple[pd.DataFrame, pd.Series, pd.Series]:
     """
-    Build a basic (X, y_error, y_runtime) dataset from validation_analysis_full.csv.
+    Build a basic (X, y_error, y_runtime) dataset from validation_analysis_full.csv
+    and runtimes_master.csv.
 
     Parameters
     ----------
@@ -243,27 +332,20 @@ def build_basic_dataset(
         Column name to use as the main error target (default: 'rmse_K').
     runtime_col : str
         Column name to use as the runtime target (default: 'runtime_merged_sec').
-        You can override this to 'script_runtime' if you want to use the
-        values computed inside csv_analysis.py instead.
     feature_cols : list or None
-        List of column names to use as features. If None, uses FEATURE_COLUMNS
-        defined at the top of this module.
+        List of column names to use as features. If None, uses FEATURE_COLUMNS.
     drop_na_targets : bool
         If True, drop rows where either error_col or runtime_col is NaN.
     merge_runtime : bool
-        If True, attempt to merge runtime_sec from runtimes_master.csv
-        into the validation DataFrame before building the dataset.
+        If True, call _merge_runtime_from_log to bring in runtime_merged_sec
+        and h_amb from runtimes_master.csv.
 
     Returns
     -------
     (X, y_error, y_runtime) : (pd.DataFrame, pd.Series, pd.Series)
-        - X: feature matrix
-        - y_error: error target (e.g. rmse_K)
-        - y_runtime: runtime target (e.g. runtime_merged_sec)
     """
     df = load_validation_analysis()
 
-    # Optionally merge runtime from the centralized log
     if merge_runtime:
         df = _merge_runtime_from_log(df)
 
@@ -276,16 +358,16 @@ def build_basic_dataset(
 
     if missing_features:
         raise KeyError(
-            f"Missing feature columns in validation_analysis_full.csv: {missing_features}\n"
+            f"Missing feature columns in validation_analysis_full.csv after merge: {missing_features}\n"
             f"Available columns are:\n{list(df.columns)}"
         )
     if missing_targets:
         raise KeyError(
-            f"Missing target columns in validation_analysis_full.csv: {missing_targets}\n"
+            f"Missing target columns in validation_analysis_full.csv after merge: {missing_targets}\n"
             f"Available columns are:\n{list(df.columns)}"
         )
 
-    # Debug: how many rows have valid targets?
+    # Diagnostics
     total_rows = len(df)
     non_na_error = df[error_col].notna().sum()
     non_na_runtime = df[runtime_col].notna().sum()
@@ -293,11 +375,10 @@ def build_basic_dataset(
     both_non_na_count = both_non_na.sum()
 
     print(f"[data_handler] Total rows in validation_analysis_full: {total_rows}")
-    print(f"[data_handler] Rows with non-NaN {error_col}      : {non_na_error}")
-    print(f"[data_handler] Rows with non-NaN {runtime_col}   : {non_na_runtime}")
+    print(f"[data_handler] Rows with non-NaN {error_col:>15}: {non_na_error}")
+    print(f"[data_handler] Rows with non-NaN {runtime_col:>15}: {non_na_runtime}")
     print(f"[data_handler] Rows with both non-NaN targets   : {both_non_na_count}")
 
-    # Optionally drop rows with invalid targets
     if drop_na_targets:
         df = df[both_non_na].copy()
         print(f"[data_handler] After drop_na_targets, rows kept: {len(df)}")

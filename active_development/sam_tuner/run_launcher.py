@@ -51,13 +51,18 @@ def _apply_hyperparams_to_text(text: str, hyperparams: Dict[str, Any]) -> str:
       - node_multiplier := <node_multiplier>
       - quad_order := FIRST/SECOND based on 'order'
       - p_order_quadPnts := 1 or 2 (matching 'order')
+      - T_c, T_h, T_0 (IC/BC temperatures)
+      - h_amb (HTC / ambient heat transfer coefficient)
 
-    We can extend this later for IC/BC knobs (e.g. HTC, inlet temperatures).
 
     NOTE: This assumes the template has lines like:
         node_multiplier := 8
         quad_order := FIRST
         p_order_quadPnts := 1
+        T_c := 442.15
+        T_h := 444
+        T_0 := 443
+        h_amb := 1e5
     """
     new_text = text
 
@@ -90,14 +95,42 @@ def _apply_hyperparams_to_text(text: str, hyperparams: Dict[str, Any]) -> str:
             new_text,
         )
 
-    # HTC or other IC/BC knobs can be wired in here later, e.g.:
-    # if "htc" in hyperparams:
-    #     htc_val = float(hyperparams["htc"])
-    #     new_text = re.sub(
-    #         r"(some_htc_param\s*:=\s*)\S+",
-    #         lambda m: f"{m.group(1)}{htc_val}",
-    #         new_text,
-    #     )
+ # --- HTC / IC / BC tuning -------------------------------------------
+    # h_amb := <value>
+    if "h_amb" in hyperparams:
+        h_val = float(hyperparams["h_amb"])
+        new_text = re.sub(
+            r"(h_amb\s*:=\s*)\S+",
+            lambda m: f"{m.group(1)}{h_val}",
+            new_text,
+        )
+
+    # T_c := <value>
+    if "T_c" in hyperparams:
+        Tc = float(hyperparams["T_c"])
+        new_text = re.sub(
+            r"(T_c\s*:=\s*)\S+",
+            lambda m: f"{m.group(1)}{Tc}",
+            new_text,
+        )
+
+    # T_h := <value>
+    if "T_h" in hyperparams:
+        Th = float(hyperparams["T_h"])
+        new_text = re.sub(
+            r"(T_h\s*:=\s*)\S+",
+            lambda m: f"{m.group(1)}{Th}",
+            new_text,
+        )
+
+    # T_0 := <value>
+    if "T_0" in hyperparams:
+        T0 = float(hyperparams["T_0"])
+        new_text = re.sub(
+            r"(T_0\s*:=\s*)\S+",
+            lambda m: f"{m.group(1)}{T0}",
+            new_text,
+        )
 
     return new_text
 

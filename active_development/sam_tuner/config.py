@@ -14,19 +14,19 @@ from pathlib import Path
 # Resolve paths relative to this file, so things work no matter
 # where you run Python from (as long as you are inside the repo).
 _THIS_DIR = Path(__file__).resolve().parent
-# active_development directory (one level up from sam_opt/)
+# active_development directory (one level up from sam_tuner/)
 ACTIVE_DEV_ROOT = _THIS_DIR.parent
 
 CONFIG = {
     # Hyperparameter search space (just a starting point).
     # We will extend this as we formalize IC/BC knobs.
     "hyperparams_space": {
-        # Effective heat transfer coefficient [W/m^2-K] (example range).
-        "htc": (100.0, 5000.0),
+        # Ambient HTC (h_amb) – choose a reasonable discrete set or range
+       
+        "h_amb": (100, 2.0e5),   # interpreted as (min, max)  # Continuous range instead of discrete list:
+        # "h_amb": [100, 15.0e4, 1.0e5, 2.0e5], # discrete set
 
         # Node multiplier used in your existing scripts.
-        # IMPORTANT: use the same name as in validation_analysis_full.csv (nodes_mult)
-        # so the optimizer can generate candidates correctly.
         "nodes_mult": [1, 2, 4, 6, 8, 12, 16, 24],
 
         # You can keep this as a legacy alias for now if you still use it elsewhere:
