@@ -6,7 +6,7 @@ q_net := 230.47 # W # Note, I don't think she is using Q_heater
 
 
 T_h := 466.0  # Turns out simulation stability is incredibly sensitive to value chosen here, but not numerical result for some strange reason # Maybe not highest temp, but avg temp of loop? 
-T_0 := 460.0 # T_0 := 460.0 # 441.37 # 430 # Kelvin # Initial System, start a bit warmer than T_c
+T_0 := 465.0 # T_0 := 465.0 # 441.37 # 430 # Kelvin # Initial System, start a bit warmer than T_c
 
 
 p_0 := 1.1e5 # 1.01e5 # try change to 1.5 or 2 # Initial pressure, and ambient

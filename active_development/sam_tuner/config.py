@@ -27,10 +27,10 @@ CONFIG = {
         # Node multiplier used in your existing scripts.
         "nodes_mult": [6, 8, 12, 16, 24],
 
-        # Optional: global T_0 range for optimizer candidates.
-        # For now we let script.py control T_0 via per-case T0_range,
-        # so we don't need to tune T_0 in the optimizer yet.
-        # "T_0": (438.0, 462.0),
+        # Global ranges for temperatures (optimizer will make a small grid in each range)
+        "T_0": (440.0, 482.0),
+        "T_c": (440.0, 480.0),
+        "T_h": (442.0, 484.0),
     },
 
     # Per-case temperatures & T0 range for script.py

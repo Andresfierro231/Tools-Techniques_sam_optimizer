@@ -57,7 +57,7 @@ RUNTIME_COLUMN_DEFAULT = "runtime_merged_sec"
 #   - h_amb     : from hyperparams_json in runtimes_master.csv
 # You can add more (e.g., 'case', 'prefix', etc.) as needed.
 FEATURE_COLUMNS: List[str] = [
-    "nodes_mult",
+    "nodes_mult",  "h_amb", "T_0", 'T_c', 'T_h',
     # "order",  # we'll add 'order' later when the analysis CSV actually has 1/2 here
 ]
 
@@ -350,13 +350,30 @@ def build_basic_dataset(
 
     # Check that necessary columns exist
     missing_features = [c for c in feature_cols if c not in df.columns]
-    missing_targets = [c for c in [error_col, runtime_col] if c not in df.columns]
 
     if missing_features:
-        raise KeyError(
-            f"Missing feature columns in validation_analysis_full.csv after merge: {missing_features}\n"
-            f"Available columns are:\n{list(df.columns)}"
-        )
+        print("[data_handler] WARNING: missing feature columns ", f"{missing_features}; they will be ignored for now.")
+        
+        feature_cols = [c for c in feature_cols if c in df.columns]
+        if not feature_cols:
+            raise KeyError(
+                "No requested feature columns found in validation_analysis_full.csv.\n"
+                f"Available columns are:\n{list(df.columns)}")
+    # Handle runtime column name quirks (runtime_merged_sec_x / _y)
+    # If caller asked for 'runtime_merged_sec' but the CSV only has
+    # 'runtime_merged_sec_x' or '_y', pick the first available.
+    if runtime_col == "runtime_merged_sec" and runtime_col not in df.columns:
+        candidates = [c for c in ["runtime_merged_sec", "runtime_merged_sec_x", "runtime_merged_sec_y"]
+                      if c in df.columns]
+        if candidates:
+            new_runtime_col = candidates[0]
+            print(
+                f"[data_handler] INFO: '{runtime_col}' not found; "
+                f"using '{new_runtime_col}' as runtime column."
+            )
+            runtime_col = new_runtime_col
+    
+    missing_targets = [c for c in [error_col, runtime_col] if c not in df.columns]
     if missing_targets:
         raise KeyError(
             f"Missing target columns in validation_analysis_full.csv after merge: {missing_targets}\n"

@@ -223,7 +223,7 @@ def run_optimizer_v0(
         error_col=ERROR_COLUMN,
         runtime_col=RUNTIME_COLUMN_DEFAULT,
         drop_na_targets=True,
-        merge_runtime=True,
+        merge_runtime=False,
     )
 
     print(f"[optimizer] Loaded dataset with {len(X)} rows.")
