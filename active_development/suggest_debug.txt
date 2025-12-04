@@ -1,0 +1,73 @@
+=== SAM Optimizer v0: Surrogate-based recommender ===
+[data_handler] Loaded validation analysis from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/validation_analysis_full.csv
+[data_handler] Shape: (40, 53)
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (362, 11)
+[data_handler] Hyperparam table built from runtime log:
+                   input_basename  htc  node_multiplier  ...     T_c    T_h    h_amb
+0       jsalt1_nodes_mult_by_12.i  NaN               12  ...  442.15  444.0  50000.0
+1  jsalt1_nodes_mult_by_12_ord1.i  NaN               12  ...  442.15  444.0  50000.0
+2  jsalt1_nodes_mult_by_12_ord2.i  NaN               12  ...  442.15  444.0  50000.0
+3  jsalt1_nodes_mult_by_16_ord1.i  NaN               16  ...  442.15  444.0  50000.0
+4  jsalt1_nodes_mult_by_16_ord2.i  NaN               16  ...     NaN    NaN      NaN
+
+[5 rows x 8 columns]
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (362, 11)
+[data_handler] Runtime aggregation by input_basename:
+                   input_basename  runtime_merged_sec
+0       jsalt1_nodes_mult_by_12.i           26.905124
+1  jsalt1_nodes_mult_by_12_ord1.i           10.032998
+2  jsalt1_nodes_mult_by_12_ord2.i           40.484778
+3  jsalt1_nodes_mult_by_16_ord1.i           12.326543
+4  jsalt1_nodes_mult_by_16_ord2.i           31.904634
+[data_handler] INFO: 'runtime_merged_sec' not found; using 'runtime_merged_sec_x' as runtime column.
+[data_handler] Total rows in validation_analysis_full: 40
+[data_handler] Rows with non-NaN          rmse_K: 40
+[data_handler] Rows with non-NaN runtime_merged_sec_x: 40
+[data_handler] Rows with both non-NaN targets   : 40
+[data_handler] After drop_na_targets, rows kept: 40
+[optimizer] Loaded dataset with 40 rows.
+[models] Training surrogates on 40 samples with features: ['nodes_mult', 'h_amb', 'T_0', 'T_c', 'T_h']
+[models] Error range   : [3.493, 4.865]
+[models] Runtime range : [4.324, 290.1]
+[optimizer] Generated 3125 candidate hyperparameter combos.
+   nodes_mult    h_amb    T_0    T_c    T_h
+0           6  50000.0  440.0  440.0  442.0
+1           6  50000.0  440.0  440.0  452.5
+2           6  50000.0  440.0  440.0  463.0
+3           6  50000.0  440.0  440.0  473.5
+4           6  50000.0  440.0  440.0  484.0
+[optimizer] Runtime cap: 420.00 s
+[optimizer] Feasible candidates (pred runtime <= cap): 3125/3125
+
+=== Top candidate hyperparameters (surrogate-based) ===
+    nodes_mult     h_amb    T_0  ...  pred_runtime     score  feasible_runtime
+0           12   50000.0  471.5  ...     68.728427  0.161682              True
+1           12   50000.0  471.5  ...     68.728427  0.161682              True
+2           12   50000.0  471.5  ...     68.728427  0.161682              True
+3           12   50000.0  471.5  ...     68.728427  0.161682              True
+4           12   50000.0  482.0  ...     68.728427  0.161682              True
+5           12   50000.0  482.0  ...     68.728427  0.161682              True
+6           12   50000.0  482.0  ...     68.728427  0.161682              True
+7           12   50000.0  482.0  ...     68.728427  0.161682              True
+8           12   87500.0  471.5  ...     68.728427  0.161682              True
+9           12   87500.0  471.5  ...     68.728427  0.161682              True
+10          12   87500.0  471.5  ...     68.728427  0.161682              True
+11          12   87500.0  471.5  ...     68.728427  0.161682              True
+12          12   87500.0  482.0  ...     68.728427  0.161682              True
+13          12   87500.0  482.0  ...     68.728427  0.161682              True
+14          12   87500.0  482.0  ...     68.728427  0.161682              True
+15          12   87500.0  482.0  ...     68.728427  0.161682              True
+16          12  125000.0  471.5  ...     68.728427  0.161682              True
+17          12  125000.0  471.5  ...     68.728427  0.161682              True
+18          12  125000.0  471.5  ...     68.728427  0.161682              True
+19          12  125000.0  471.5  ...     68.728427  0.161682              True
+
+[20 rows x 9 columns]
+
+Interpretation:
+  - 'pred_error'   : surrogate-predicted error (e.g., RMSE in K).
+  - 'pred_runtime' : surrogate-predicted runtime in seconds.
+  - 'score'        : weighted combination of normalized error and runtime; lower is better.
+  - 'feasible_runtime' : True if pred_runtime <= runtime cap.

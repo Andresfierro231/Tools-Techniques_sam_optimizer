@@ -1,0 +1,5 @@
+I learned that I no longer need to have many versions of things. Just having the main files and Git will version control for me. 
+
+Trying to develop code in a more modern way
+
+I don't know how I would develop test-driven coding for this yet... but it is in my mind

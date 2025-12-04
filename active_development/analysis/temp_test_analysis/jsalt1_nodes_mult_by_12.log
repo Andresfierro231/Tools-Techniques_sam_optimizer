@@ -1,0 +1,1313 @@
+
+[33m
+*** Warning, This code is deprecated and will be removed in future versions:
+/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt_base_case.i:329: (Postprocessors/delta_Temp_TP6-TP2/function):
+'function' has been deprecated and will be removed on 05/01/2025. Please use 'expression' instead.
+[39m
+Add SAM Component: PBOneDFluidComponent up1
+Add SAM Component: PBPipe CoolingJacket
+Add SAM Component: PBOneDFluidComponent Melter
+Add SAM Component: PBOneDFluidComponent downcomer
+Add SAM Component: PBOneDFluidComponent Heater
+Add SAM Component: PBBranch TopLeft
+Add SAM Component: PBSingleJunction TopRight
+Add SAM Component: PBTDV pipe5_out_pressure_pin
+Add SAM Component: PBSingleJunction BottomRight
+Add SAM Component: PBSingleJunction BottomLeft
+Initialize SAM SAMSimulation:
+SAM Version: derived from v0.9.5.1, git commit c2afbe17f on 2025-01-29
+Create mesh...   Building internal mesh...OK
+Build SAM Displaced Mesh... OK
+Checking system connections... Add Variables... OK
+Initialize Variable Values... OK
+Add SAM Component Physics... OK
+Framework Information:
+MOOSE Version:           git commit 55e75e853e on 2025-01-29
+LibMesh Version:         
+PETSc Version:           3.22.1
+SLEPc Version:           3.22.1
+Current Time:            Tue Dec  2 11:51:22 2025
+Executable Timestamp:    Tue Nov 25 17:43:31 2025
+
+Input File(s):
+  /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+
+Checkpoint:
+  Wall Time Interval:      Every 3600 s
+  User Checkpoint:         Outputs/checkpoint
+  # Checkpoints Kept:      2
+  Execute On:              TIMESTEP_END 
+
+Parallelism:
+  Num Processors:          1
+  Num Threads:             1
+
+Mesh: 
+  Parallel Type:           replicated
+  Mesh Dimension:          2
+  Spatial Dimension:       3
+  Nodes:                   1064
+  Elems:                   384
+  Num Subdomains:          6
+
+Nonlinear System:
+  Num DOFs:                2167
+  Num Local DOFs:          2167
+  Variables:               { "BottomLeft:pressure" "BottomLeft:temperature" "BottomLeft:velocity" "BottomRight:pressure" 
+                             "BottomRight:temperature" "BottomRight:velocity" } "T_solid" { "TopLeft:pressure" 
+                             "TopLeft:temperature" "TopLeft:velocity" "TopRight:pressure" "TopRight:temperature" 
+                             "TopRight:velocity" } "Tw" { "pressure" "temperature" } "velocity" 
+  Finite Element Types:    "SCALAR" "LAGRANGE" "SCALAR" "LAGRANGE" "LAGRANGE" "LAGRANGE" 
+  Approximation Orders:    "FIRST" "SECOND" "FIRST" "SECOND" "SECOND" "FIRST" 
+
+Auxiliary System:
+  Num DOFs:                1407
+  Num Local DOFs:          1407
+  Variables:               { "BottomLeft:rho" "BottomRight:rho" } "JxW" { "TopLeft:rho" "TopRight:rho" 
+                             } "heat_transfer_coefficient" "rho" 
+  Finite Element Types:    "SCALAR" "LAGRANGE" "SCALAR" "LAGRANGE" "LAGRANGE" 
+  Approximation Orders:    "FIRST" "SECOND" "FIRST" "SECOND" "SECOND" 
+
+Execution Information:
+  Executioner:             Transient
+  TimeStepper:             IterationAdaptiveDT
+  TimeIntegrator(s):       ImplicitEuler
+  Solver Mode:             Preconditioned JFNK
+  PETSc Preconditioner:    lu 
+  MOOSE Preconditioner:    SMP
+
+[31mLEGACY MODES ENABLED:[39m
+ This application uses the legacy material output option: material properties are output only on TIMESTEP_END, not INITIAL. To remove this message, set 'use_legacy_material_output' to false in this application. If there are gold output files that contain material property output for which output occurs on INITIAL, then these will generate diffs due to zero values being stored, and these tests should be re-golded.
+[39m
+[31mLEGACY MODES ENABLED:[39m
+ This application uses the legacy initial residual evaluation behavior. The legacy behavior performs an often times redundant residual evaluation before the solution modifying objects are executed prior to the initial (0th nonlinear iteration) residual evaluation. The new behavior skips that redundant residual evaluation unless the parameter Executioner/use_pre_smo_residual is set to true. To remove this message and enable the new behavior, set the parameter 'use_legacy_initial_residual_evaluation_behavior' to false in *App.C. Some tests that rely on the side effects of the legacy behavior may fail/diff and should be re-golded.
+[39m
+
+Time Step 0, time = 0
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 1, time = 0.01, dt = 0.01
+ * Nonlinear |R| = [32m2.658317e+01[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m2.658317e+01[39m
+ 1 Nonlinear |R| = [32m2.250881e+01[39m
+ 2 Nonlinear |R| = [32m7.248738e-01[39m
+ 3 Nonlinear |R| = [32m7.311920e-03[39m
+ 4 Nonlinear |R| = [32m3.713458e-05[39m
+ 5 Nonlinear |R| = [32m3.339036e-08[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  pressure: [31m3.338654e-08[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 2, time = 0.0215, dt = 0.0115
+ * Nonlinear |R| = [32m8.143157e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m8.143157e+00[39m
+ 1 Nonlinear |R| = [32m7.349189e+00[39m
+ 2 Nonlinear |R| = [32m6.014995e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m6.014991e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m6.014903e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m6.014894e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m6.014853e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m6.014825e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m6.014824e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m6.014777e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.014730e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.014722e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.014084e-02[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+Currently Executing
+  Finished Solving                                                                       [[33m  6.61 s[39m] [[33m  141 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 2, time = 0.01575, dt = 0.00575
+ * Nonlinear |R| = [32m8.143204e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m8.143204e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [32m2.054117e+00[39m
+ 2 Nonlinear |R| = [32m1.666389e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m1.434958e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m1.433582e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m9.511928e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m9.511856e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m9.511856e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m9.511856e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m9.511856e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m9.511856e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+  Nonlinear solve did not converge due to DIVERGED_LINE_SEARCH iterations 10
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  6.70 s[39m] [[33m  144 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 2, time = 0.012875, dt = 0.002875
+ * Nonlinear |R| = [32m8.143228e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m8.143228e+00[39m
+ 1 Nonlinear |R| = [33m7.997723e+00[39m
+ 2 Nonlinear |R| = [32m9.475609e-02[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m6.967505e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m2.581982e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m2.307153e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m2.269687e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [32m1.837866e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [32m1.491689e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m1.491689e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m1.491688e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m1.491688e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m1.491688e-03[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  6.82 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 2, time = 0.0114375, dt = 0.0014375
+ * Nonlinear |R| = [32m8.143240e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m8.143240e+00[39m
+ 1 Nonlinear |R| = [33m8.138341e+00[39m
+ 2 Nonlinear |R| = [32m2.141280e-01[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m9.786180e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m9.116332e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m2.130741e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [32m1.927763e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m1.927763e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m1.921397e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m1.919003e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m1.859365e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m1.859362e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m1.859306e-03[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  7.05 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 2, time = 0.0107188, dt = 0.00071875
+ * Nonlinear |R| = [32m8.143246e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m8.143246e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m7.751251e+00[39m
+ 2 Nonlinear |R| = [32m1.606266e+00[39m
+ 3 Nonlinear |R| = [32m5.145157e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m2.821180e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m2.816579e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m2.816579e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m2.815775e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m2.815775e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m2.810690e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m2.805573e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m2.676563e-03[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m2.675663e-03[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  6.56 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 2, time = 0.0103594, dt = 0.000359375
+ * Nonlinear |R| = [32m8.143249e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m8.143249e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [33m8.124957e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [32m6.172202e+00[39m
+ 3 Nonlinear |R| = [32m5.841243e-02[39m
+ 4 Nonlinear |R| = [32m4.537647e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m6.809479e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [32m8.408898e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  pressure: [33m4.796367e-07[39m
+  temperature: [33m6.892314e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 3, time = 0.0106469, dt = 0.0002875
+ * Nonlinear |R| = [32m8.055095e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m8.055095e+00[39m
+ 1 Nonlinear |R| = [32m4.178325e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [32m1.062823e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m1.181782e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m9.991882e-08[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  pressure: [33m4.171955e-08[39m
+  temperature: [31m9.060194e-08[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 4, time = 0.0109344, dt = 0.0002875
+ * Nonlinear |R| = [32m7.985270e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.985270e+00[39m
+ 1 Nonlinear |R| = [32m4.102497e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [32m3.261156e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m4.803769e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m8.020692e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  pressure: [33m3.623711e-07[39m
+  temperature: [33m7.143590e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 5, time = 0.0112219, dt = 0.0002875
+ * Nonlinear |R| = [32m7.916099e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.916099e+00[39m
+ 1 Nonlinear |R| = [32m3.997400e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [32m2.923712e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m9.026281e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m1.451911e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  pressure: [33m6.485740e-08[39m
+  temperature: [33m1.296618e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
+|   1.122187e-02 |  -6.405119e-04 |   2.847927e+01 |   4.713244e+02 |   4.715003e+02 |   4.715014e+02 |   4.714997e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
+|   1.122187e-02 |   4.715002e+02 |   9.983406e-03 |   9.983406e-03 |               4.714997e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
+|   1.122187e-02 |                4.713244e+02 |      -6.405119e-04 |           9.983406e-03 |   2.875000e-04 |   7.427554e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 6, time = 0.0115094, dt = 0.0002875
+ * Nonlinear |R| = [32m7.847578e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.847578e+00[39m
+ 1 Nonlinear |R| = [32m3.907318e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [32m1.248210e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m5.882148e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m1.077209e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m1.543356e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  pressure: [33m6.957082e-08[39m
+  temperature: [33m1.374776e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
+|   1.122187e-02 |  -6.405119e-04 |   2.847927e+01 |   4.713244e+02 |   4.715003e+02 |   4.715014e+02 |   4.714997e+02 |
+|   1.150937e-02 |  -7.237514e-04 |   2.847918e+01 |   4.713196e+02 |   4.715005e+02 |   4.715015e+02 |   4.714998e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
+|   1.122187e-02 |   4.715002e+02 |   9.983406e-03 |   9.983406e-03 |               4.714997e+02 |
+|   1.150937e-02 |   4.715003e+02 |   9.982981e-03 |   9.982981e-03 |               4.714998e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
+|   1.122187e-02 |                4.713244e+02 |      -6.405119e-04 |           9.983406e-03 |   2.875000e-04 |   7.427554e-03 |
+|   1.150937e-02 |                4.713197e+02 |      -7.237514e-04 |           9.982981e-03 |   2.875000e-04 |   7.427238e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 7, time = 0.0117394, dt = 0.00023
+ * Nonlinear |R| = [32m7.779702e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.779702e+00[39m
+ 1 Nonlinear |R| = [32m3.074063e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [32m2.510181e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m1.964002e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m1.424669e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m2.220497e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [32m5.865855e-08[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  temperature: [31m5.640714e-08[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
+|   1.122187e-02 |  -6.405119e-04 |   2.847927e+01 |   4.713244e+02 |   4.715003e+02 |   4.715014e+02 |   4.714997e+02 |
+|   1.150937e-02 |  -7.237514e-04 |   2.847918e+01 |   4.713196e+02 |   4.715005e+02 |   4.715015e+02 |   4.714998e+02 |
+|   1.173937e-02 |  -8.223448e-04 |   2.847908e+01 |   4.713158e+02 |   4.715008e+02 |   4.715017e+02 |   4.715000e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
+|   1.122187e-02 |   4.715002e+02 |   9.983406e-03 |   9.983406e-03 |               4.714997e+02 |
+|   1.150937e-02 |   4.715003e+02 |   9.982981e-03 |   9.982981e-03 |               4.714998e+02 |
+|   1.173937e-02 |   4.715005e+02 |   9.982641e-03 |   9.982641e-03 |               4.715000e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
+|   1.122187e-02 |                4.713244e+02 |      -6.405119e-04 |           9.983406e-03 |   2.875000e-04 |   7.427554e-03 |
+|   1.150937e-02 |                4.713197e+02 |      -7.237514e-04 |           9.982981e-03 |   2.875000e-04 |   7.427238e-03 |
+|   1.173937e-02 |                4.713159e+02 |      -8.223448e-04 |           9.982641e-03 |   2.300000e-04 |   7.426985e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 8, time = 0.0119234, dt = 0.000184
+ * Nonlinear |R| = [32m7.725817e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.725817e+00[39m
+ 1 Nonlinear |R| = [32m2.431731e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [32m5.319364e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m1.051770e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  temperature: [31m1.020045e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
+|   1.122187e-02 |  -6.405119e-04 |   2.847927e+01 |   4.713244e+02 |   4.715003e+02 |   4.715014e+02 |   4.714997e+02 |
+|   1.150937e-02 |  -7.237514e-04 |   2.847918e+01 |   4.713196e+02 |   4.715005e+02 |   4.715015e+02 |   4.714998e+02 |
+|   1.173937e-02 |  -8.223448e-04 |   2.847908e+01 |   4.713158e+02 |   4.715008e+02 |   4.715017e+02 |   4.715000e+02 |
+|   1.192337e-02 |  -9.296754e-04 |   2.847902e+01 |   4.713128e+02 |   4.715010e+02 |   4.715019e+02 |   4.715000e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
+|   1.122187e-02 |   4.715002e+02 |   9.983406e-03 |   9.983406e-03 |               4.714997e+02 |
+|   1.150937e-02 |   4.715003e+02 |   9.982981e-03 |   9.982981e-03 |               4.714998e+02 |
+|   1.173937e-02 |   4.715005e+02 |   9.982641e-03 |   9.982641e-03 |               4.715000e+02 |
+|   1.192337e-02 |   4.715006e+02 |   9.982369e-03 |   9.982369e-03 |               4.715000e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
+|   1.122187e-02 |                4.713244e+02 |      -6.405119e-04 |           9.983406e-03 |   2.875000e-04 |   7.427554e-03 |
+|   1.150937e-02 |                4.713197e+02 |      -7.237514e-04 |           9.982981e-03 |   2.875000e-04 |   7.427238e-03 |
+|   1.173937e-02 |                4.713159e+02 |      -8.223448e-04 |           9.982641e-03 |   2.300000e-04 |   7.426985e-03 |
+|   1.192337e-02 |                4.713128e+02 |      -9.296754e-04 |           9.982369e-03 |   1.840000e-04 |   7.426783e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 9, time = 0.0121074, dt = 0.000184
+ * Nonlinear |R| = [32m7.682974e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.682974e+00[39m
+ 1 Nonlinear |R| = [32m2.373695e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m2.330337e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m2.123508e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m4.159323e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m5.083265e-08[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  temperature: [31m4.974171e-08[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
+|   1.122187e-02 |  -6.405119e-04 |   2.847927e+01 |   4.713244e+02 |   4.715003e+02 |   4.715014e+02 |   4.714997e+02 |
+|   1.150937e-02 |  -7.237514e-04 |   2.847918e+01 |   4.713196e+02 |   4.715005e+02 |   4.715015e+02 |   4.714998e+02 |
+|   1.173937e-02 |  -8.223448e-04 |   2.847908e+01 |   4.713158e+02 |   4.715008e+02 |   4.715017e+02 |   4.715000e+02 |
+|   1.192337e-02 |  -9.296754e-04 |   2.847902e+01 |   4.713128e+02 |   4.715010e+02 |   4.715019e+02 |   4.715000e+02 |
+|   1.210737e-02 |  -1.076487e-03 |   2.847898e+01 |   4.713097e+02 |   4.715012e+02 |   4.715020e+02 |   4.715001e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
+|   1.122187e-02 |   4.715002e+02 |   9.983406e-03 |   9.983406e-03 |               4.714997e+02 |
+|   1.150937e-02 |   4.715003e+02 |   9.982981e-03 |   9.982981e-03 |               4.714998e+02 |
+|   1.173937e-02 |   4.715005e+02 |   9.982641e-03 |   9.982641e-03 |               4.715000e+02 |
+|   1.192337e-02 |   4.715006e+02 |   9.982369e-03 |   9.982369e-03 |               4.715000e+02 |
+|   1.210737e-02 |   4.715006e+02 |   9.982097e-03 |   9.982097e-03 |               4.715001e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
+|   1.122187e-02 |                4.713244e+02 |      -6.405119e-04 |           9.983406e-03 |   2.875000e-04 |   7.427554e-03 |
+|   1.150937e-02 |                4.713197e+02 |      -7.237514e-04 |           9.982981e-03 |   2.875000e-04 |   7.427238e-03 |
+|   1.173937e-02 |                4.713159e+02 |      -8.223448e-04 |           9.982641e-03 |   2.300000e-04 |   7.426985e-03 |
+|   1.192337e-02 |                4.713128e+02 |      -9.296754e-04 |           9.982369e-03 |   1.840000e-04 |   7.426783e-03 |
+|   1.210737e-02 |                4.713097e+02 |      -1.076487e-03 |           9.982097e-03 |   1.840000e-04 |   7.426580e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 10, time = 0.0122546, dt = 0.0001472
+ * Nonlinear |R| = [32m7.640392e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.640392e+00[39m
+ 1 Nonlinear |R| = [32m1.898613e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m1.815470e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m1.532032e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m5.527032e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m5.457019e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m5.342357e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [32m5.607328e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  temperature: [31m5.546179e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
+|   1.122187e-02 |  -6.405119e-04 |   2.847927e+01 |   4.713244e+02 |   4.715003e+02 |   4.715014e+02 |   4.714997e+02 |
+|   1.150937e-02 |  -7.237514e-04 |   2.847918e+01 |   4.713196e+02 |   4.715005e+02 |   4.715015e+02 |   4.714998e+02 |
+|   1.173937e-02 |  -8.223448e-04 |   2.847908e+01 |   4.713158e+02 |   4.715008e+02 |   4.715017e+02 |   4.715000e+02 |
+|   1.192337e-02 |  -9.296754e-04 |   2.847902e+01 |   4.713128e+02 |   4.715010e+02 |   4.715019e+02 |   4.715000e+02 |
+|   1.210737e-02 |  -1.076487e-03 |   2.847898e+01 |   4.713097e+02 |   4.715012e+02 |   4.715020e+02 |   4.715001e+02 |
+|   1.225457e-02 |  -1.206352e-03 |   2.847891e+01 |   4.713073e+02 |   4.715014e+02 |   4.715021e+02 |   4.715002e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
+|   1.122187e-02 |   4.715002e+02 |   9.983406e-03 |   9.983406e-03 |               4.714997e+02 |
+|   1.150937e-02 |   4.715003e+02 |   9.982981e-03 |   9.982981e-03 |               4.714998e+02 |
+|   1.173937e-02 |   4.715005e+02 |   9.982641e-03 |   9.982641e-03 |               4.715000e+02 |
+|   1.192337e-02 |   4.715006e+02 |   9.982369e-03 |   9.982369e-03 |               4.715000e+02 |
+|   1.210737e-02 |   4.715006e+02 |   9.982097e-03 |   9.982097e-03 |               4.715001e+02 |
+|   1.225457e-02 |   4.715008e+02 |   9.981879e-03 |   9.981879e-03 |               4.715002e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
+|   1.122187e-02 |                4.713244e+02 |      -6.405119e-04 |           9.983406e-03 |   2.875000e-04 |   7.427554e-03 |
+|   1.150937e-02 |                4.713197e+02 |      -7.237514e-04 |           9.982981e-03 |   2.875000e-04 |   7.427238e-03 |
+|   1.173937e-02 |                4.713159e+02 |      -8.223448e-04 |           9.982641e-03 |   2.300000e-04 |   7.426985e-03 |
+|   1.192337e-02 |                4.713128e+02 |      -9.296754e-04 |           9.982369e-03 |   1.840000e-04 |   7.426783e-03 |
+|   1.210737e-02 |                4.713097e+02 |      -1.076487e-03 |           9.982097e-03 |   1.840000e-04 |   7.426580e-03 |
+|   1.225457e-02 |                4.713073e+02 |      -1.206352e-03 |           9.981879e-03 |   1.472000e-04 |   7.426418e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 11, time = 0.0123723, dt = 0.00011776
+ * Nonlinear |R| = [32m7.606494e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.606494e+00[39m
+ 1 Nonlinear |R| = [32m1.512977e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m1.503896e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [32m1.365721e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m1.361848e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m7.654683e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [32m1.233667e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [32m6.639987e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  temperature: [31m6.589647e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
+|   1.122187e-02 |  -6.405119e-04 |   2.847927e+01 |   4.713244e+02 |   4.715003e+02 |   4.715014e+02 |   4.714997e+02 |
+|   1.150937e-02 |  -7.237514e-04 |   2.847918e+01 |   4.713196e+02 |   4.715005e+02 |   4.715015e+02 |   4.714998e+02 |
+|   1.173937e-02 |  -8.223448e-04 |   2.847908e+01 |   4.713158e+02 |   4.715008e+02 |   4.715017e+02 |   4.715000e+02 |
+|   1.192337e-02 |  -9.296754e-04 |   2.847902e+01 |   4.713128e+02 |   4.715010e+02 |   4.715019e+02 |   4.715000e+02 |
+|   1.210737e-02 |  -1.076487e-03 |   2.847898e+01 |   4.713097e+02 |   4.715012e+02 |   4.715020e+02 |   4.715001e+02 |
+|   1.225457e-02 |  -1.206352e-03 |   2.847891e+01 |   4.713073e+02 |   4.715014e+02 |   4.715021e+02 |   4.715002e+02 |
+|   1.237233e-02 |  -1.322792e-03 |   2.847888e+01 |   4.713053e+02 |   4.715015e+02 |   4.715022e+02 |   4.715002e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
+|   1.122187e-02 |   4.715002e+02 |   9.983406e-03 |   9.983406e-03 |               4.714997e+02 |
+|   1.150937e-02 |   4.715003e+02 |   9.982981e-03 |   9.982981e-03 |               4.714998e+02 |
+|   1.173937e-02 |   4.715005e+02 |   9.982641e-03 |   9.982641e-03 |               4.715000e+02 |
+|   1.192337e-02 |   4.715006e+02 |   9.982369e-03 |   9.982369e-03 |               4.715000e+02 |
+|   1.210737e-02 |   4.715006e+02 |   9.982097e-03 |   9.982097e-03 |               4.715001e+02 |
+|   1.225457e-02 |   4.715008e+02 |   9.981879e-03 |   9.981879e-03 |               4.715002e+02 |
+|   1.237233e-02 |   4.715008e+02 |   9.981705e-03 |   9.981705e-03 |               4.715002e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
+|   1.122187e-02 |                4.713244e+02 |      -6.405119e-04 |           9.983406e-03 |   2.875000e-04 |   7.427554e-03 |
+|   1.150937e-02 |                4.713197e+02 |      -7.237514e-04 |           9.982981e-03 |   2.875000e-04 |   7.427238e-03 |
+|   1.173937e-02 |                4.713159e+02 |      -8.223448e-04 |           9.982641e-03 |   2.300000e-04 |   7.426985e-03 |
+|   1.192337e-02 |                4.713128e+02 |      -9.296754e-04 |           9.982369e-03 |   1.840000e-04 |   7.426783e-03 |
+|   1.210737e-02 |                4.713097e+02 |      -1.076487e-03 |           9.982097e-03 |   1.840000e-04 |   7.426580e-03 |
+|   1.225457e-02 |                4.713073e+02 |      -1.206352e-03 |           9.981879e-03 |   1.472000e-04 |   7.426418e-03 |
+|   1.237233e-02 |                4.713054e+02 |      -1.322792e-03 |           9.981705e-03 |   1.177600e-04 |   7.426289e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 12, time = 0.0124665, dt = 9.4208e-05
+ * Nonlinear |R| = [32m7.579484e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.579484e+00[39m
+ 1 Nonlinear |R| = [32m1.200830e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m1.199156e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m1.162477e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m1.130862e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [32m9.894278e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [32m9.026597e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [32m3.644636e-07[39m
+[32m Solve Converged![39m
+
+Outlier Variable Residual Norms:
+  temperature: [31m3.627594e-07[39m
+
+Postprocessor Values:
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+| time           | 00_DeltaT      | 00_TS_Pr       | TP1            | TP2            | TP3            | TP6            |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
+|   0.000000e+00 |   0.000000e+00 |   2.847937e+01 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |   4.715000e+02 |
+|   1.000000e-02 |  -1.774886e-03 |   2.847924e+01 |   4.713436e+02 |   4.714998e+02 |   4.715012e+02 |   4.714980e+02 |
+|   1.035938e-02 |  -7.404526e-04 |   2.847832e+01 |   4.713403e+02 |   4.715018e+02 |   4.715028e+02 |   4.715011e+02 |
+|   1.064688e-02 |  -6.532760e-04 |   2.847940e+01 |   4.713338e+02 |   4.715001e+02 |   4.715011e+02 |   4.714994e+02 |
+|   1.093437e-02 |  -6.201301e-04 |   2.847935e+01 |   4.713291e+02 |   4.715001e+02 |   4.715012e+02 |   4.714995e+02 |
+|   1.122187e-02 |  -6.405119e-04 |   2.847927e+01 |   4.713244e+02 |   4.715003e+02 |   4.715014e+02 |   4.714997e+02 |
+|   1.150937e-02 |  -7.237514e-04 |   2.847918e+01 |   4.713196e+02 |   4.715005e+02 |   4.715015e+02 |   4.714998e+02 |
+|   1.173937e-02 |  -8.223448e-04 |   2.847908e+01 |   4.713158e+02 |   4.715008e+02 |   4.715017e+02 |   4.715000e+02 |
+|   1.192337e-02 |  -9.296754e-04 |   2.847902e+01 |   4.713128e+02 |   4.715010e+02 |   4.715019e+02 |   4.715000e+02 |
+|   1.210737e-02 |  -1.076487e-03 |   2.847898e+01 |   4.713097e+02 |   4.715012e+02 |   4.715020e+02 |   4.715001e+02 |
+|   1.225457e-02 |  -1.206352e-03 |   2.847891e+01 |   4.713073e+02 |   4.715014e+02 |   4.715021e+02 |   4.715002e+02 |
+|   1.237233e-02 |  -1.322792e-03 |   2.847888e+01 |   4.713053e+02 |   4.715015e+02 |   4.715022e+02 |   4.715002e+02 |
+|   1.246654e-02 |  -1.424027e-03 |   2.847885e+01 |   4.713038e+02 |   4.715017e+02 |   4.715023e+02 |   4.715002e+02 |
++----------------+----------------+----------------+----------------+----------------+----------------+----------------+
++----------------+----------------+----------------+----------------+----------------------------+
+| time           | TP_TS          | TS_vel         | TopL_velocity  | coolingJacket_T_in_primary |
++----------------+----------------+----------------+----------------+----------------------------+
+|   0.000000e+00 |   4.715000e+02 |   1.000000e-02 |   1.000000e-02 |               4.715000e+02 |
+|   1.000000e-02 |   4.715002e+02 |   9.985212e-03 |   9.985212e-03 |               4.714980e+02 |
+|   1.035938e-02 |   4.715017e+02 |   9.984681e-03 |   9.984681e-03 |               4.715011e+02 |
+|   1.064688e-02 |   4.715000e+02 |   9.984256e-03 |   9.984256e-03 |               4.714994e+02 |
+|   1.093437e-02 |   4.715000e+02 |   9.983831e-03 |   9.983831e-03 |               4.714995e+02 |
+|   1.122187e-02 |   4.715002e+02 |   9.983406e-03 |   9.983406e-03 |               4.714997e+02 |
+|   1.150937e-02 |   4.715003e+02 |   9.982981e-03 |   9.982981e-03 |               4.714998e+02 |
+|   1.173937e-02 |   4.715005e+02 |   9.982641e-03 |   9.982641e-03 |               4.715000e+02 |
+|   1.192337e-02 |   4.715006e+02 |   9.982369e-03 |   9.982369e-03 |               4.715000e+02 |
+|   1.210737e-02 |   4.715006e+02 |   9.982097e-03 |   9.982097e-03 |               4.715001e+02 |
+|   1.225457e-02 |   4.715008e+02 |   9.981879e-03 |   9.981879e-03 |               4.715002e+02 |
+|   1.237233e-02 |   4.715008e+02 |   9.981705e-03 |   9.981705e-03 |               4.715002e+02 |
+|   1.246654e-02 |   4.715009e+02 |   9.981566e-03 |   9.981566e-03 |               4.715002e+02 |
++----------------+----------------+----------------+----------------+----------------------------+
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+| time           | coolingJacket_T_out_primary | delta_Temp_TP6-TP2 | downcomer_out_velocity | dt             | massFlowRate   |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+|   0.000000e+00 |                4.715000e+02 |       0.000000e+00 |           1.000000e-02 |   0.000000e+00 |   7.439900e-03 |
+|   1.000000e-02 |                4.713436e+02 |      -1.774886e-03 |           9.985212e-03 |   1.000000e-02 |   7.428898e-03 |
+|   1.035938e-02 |                4.713403e+02 |      -7.404526e-04 |           9.984681e-03 |   3.593750e-04 |   7.428503e-03 |
+|   1.064688e-02 |                4.713339e+02 |      -6.532760e-04 |           9.984256e-03 |   2.875000e-04 |   7.428186e-03 |
+|   1.093437e-02 |                4.713291e+02 |      -6.201301e-04 |           9.983831e-03 |   2.875000e-04 |   7.427870e-03 |
+|   1.122187e-02 |                4.713244e+02 |      -6.405119e-04 |           9.983406e-03 |   2.875000e-04 |   7.427554e-03 |
+|   1.150937e-02 |                4.713197e+02 |      -7.237514e-04 |           9.982981e-03 |   2.875000e-04 |   7.427238e-03 |
+|   1.173937e-02 |                4.713159e+02 |      -8.223448e-04 |           9.982641e-03 |   2.300000e-04 |   7.426985e-03 |
+|   1.192337e-02 |                4.713128e+02 |      -9.296754e-04 |           9.982369e-03 |   1.840000e-04 |   7.426783e-03 |
+|   1.210737e-02 |                4.713097e+02 |      -1.076487e-03 |           9.982097e-03 |   1.840000e-04 |   7.426580e-03 |
+|   1.225457e-02 |                4.713073e+02 |      -1.206352e-03 |           9.981879e-03 |   1.472000e-04 |   7.426418e-03 |
+|   1.237233e-02 |                4.713054e+02 |      -1.322792e-03 |           9.981705e-03 |   1.177600e-04 |   7.426289e-03 |
+|   1.246654e-02 |                4.713038e+02 |      -1.424027e-03 |           9.981566e-03 |   9.420800e-05 |   7.426185e-03 |
++----------------+-----------------------------+--------------------+------------------------+----------------+----------------+
+
+
+Time Step 13, time = 0.0125419, dt = 7.53664e-05
+ * Nonlinear |R| = [32m7.557944e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557944e+00[39m
+ 1 Nonlinear |R| = [32m1.006155e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m9.990602e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m9.729448e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m9.467392e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m9.359871e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [32m7.955281e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [32m7.258589e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m7.248848e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [32m6.445993e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m6.371136e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m6.147575e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m6.062560e-06[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  6.62 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0125042, dt = 3.76832e-05
+ * Nonlinear |R| = [32m7.557944e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557944e+00[39m
+ 1 Nonlinear |R| = [32m5.141214e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m5.131906e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m5.018958e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m4.980920e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m4.980909e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m4.977083e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m4.882005e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m4.880164e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m4.867847e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m4.866635e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m4.862695e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m4.862681e-06[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  6.70 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0124854, dt = 1.88416e-05
+ * Nonlinear |R| = [32m7.557944e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557944e+00[39m
+ 1 Nonlinear |R| = [32m2.121543e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m2.120841e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m2.120757e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m2.120733e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m2.120067e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m2.118853e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m2.118757e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m2.118746e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m2.118501e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m2.118477e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m2.118469e-06[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m2.117914e-06[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  6.69 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.012476, dt = 9.4208e-06
+ * Nonlinear |R| = [32m7.557945e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557945e+00[39m
+ 1 Nonlinear |R| = [32m3.153910e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m3.153903e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m3.153290e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m3.150445e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m3.150431e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m3.147807e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m3.141093e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m3.139920e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m3.139917e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m3.127145e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m3.125733e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m3.125561e-05[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  6.75 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0124713, dt = 4.7104e-06
+ * Nonlinear |R| = [32m7.557945e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557945e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [32m1.390135e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m1.390135e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m1.390126e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m1.390110e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m1.390108e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m1.390101e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m1.390095e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m1.390095e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m1.390083e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m1.390039e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m1.390033e-05[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m1.389917e-05[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  7.36 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0124689, dt = 2.3552e-06
+ * Nonlinear |R| = [32m7.557945e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557945e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [32m2.960077e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m2.959980e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m2.959772e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m2.959770e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m2.959769e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m2.959768e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m2.959768e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m2.959767e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m2.958804e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m2.958351e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m2.958350e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m2.958076e-04[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  7.48 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0124677, dt = 1.1776e-06
+ * Nonlinear |R| = [32m7.557945e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557945e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [32m1.259493e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m1.259398e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m1.259395e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m1.259393e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m1.259390e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m1.259388e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m1.259380e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m1.259377e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m1.258783e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m1.258774e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m1.258772e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m1.258771e-04[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  7.37 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0124671, dt = 5.888e-07
+ * Nonlinear |R| = [32m7.557945e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557945e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [32m1.104921e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m1.104918e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m1.104909e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m1.104908e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m1.104891e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m1.104881e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m1.104864e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m1.104858e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m1.104852e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m1.104849e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m1.104834e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m1.104822e-04[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  7.40 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0124668, dt = 2.944e-07
+ * Nonlinear |R| = [32m7.557945e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557945e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [32m5.816351e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m5.816339e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m5.815998e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m5.815298e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m5.815296e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m5.812825e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m5.812583e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m5.812438e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m5.809558e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m5.748496e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m5.748066e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m5.745683e-04[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  7.32 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0124667, dt = 1.472e-07
+ * Nonlinear |R| = [32m7.557945e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557945e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [32m4.565018e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m4.444027e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m4.432240e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [32m3.972379e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m3.967702e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m3.939784e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m3.930993e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m3.864020e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [32m3.668795e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m3.660888e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m3.625024e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m3.622594e-04[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  7.20 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+Solve failed, cutting timestep.
+
+Time Step 13, time = 0.0124666, dt = 1e-07
+ * Nonlinear |R| = [32m7.557945e+00[39m (Before preset BCs, predictors, correctors, and constraints)
+ 0 Nonlinear |R| = [32m7.557945e+00[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 1 Nonlinear |R| = [32m3.047250e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 2 Nonlinear |R| = [33m3.047217e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 3 Nonlinear |R| = [33m3.047195e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 4 Nonlinear |R| = [33m3.047134e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 5 Nonlinear |R| = [33m3.047094e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 6 Nonlinear |R| = [33m3.047037e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 7 Nonlinear |R| = [33m3.047004e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 8 Nonlinear |R| = [33m3.046969e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+ 9 Nonlinear |R| = [33m3.046949e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+10 Nonlinear |R| = [33m3.046939e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+11 Nonlinear |R| = [33m3.046916e-04[39m
+    Linear solve did not converge due to DIVERGED_ITS iterations 100
+12 Nonlinear |R| = [33m3.046915e-04[39m
+  Nonlinear solve did not converge due to DIVERGED_MAX_IT iterations 12
+[31m Solve Did NOT Converge![39m
+  Finished Solving                                                                       [[33m  7.38 s[39m] [[33m  147 MB[39m]
+Aborting as solve did not converge
+
+[31m
+*** ERROR ***
+/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt_base_case.i:390.3:
+The following error occurred in the TimeStepper 'IterationAdaptiveDT' of type IterationAdaptiveDT.
+
+Solve failed and timestep already at dtmin, cannot continue![39m
+
+Stack frames: 12
+0: libMesh::print_trace(std::ostream&)
+1: moose::internal::mooseErrorRaw(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >)
+2: MooseBase::callMooseError(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >, bool) const
+3: /work/09748/andresfierro231/ls6/miniforge/envs/SAM/sam/bin/../lib/sam/libmoose-opt.so.0(+0x10acf6d) [0x14d152f62f6d]
+4: IterationAdaptiveDT::computeFailedDT()
+5: TimeStepper::computeStep()
+6: TransientBase::execute()
+7: MooseApp::executeExecutioner()
+8: MooseApp::run()
+9: sam-opt(+0x60e8) [0x558da5f130e8]
+10: __libc_start_main
+11: sam-opt(+0x63cf) [0x558da5f133cf]
+Abort(1) on node 0 (rank 0 in comm 0): application called MPI_Abort(MPI_COMM_WORLD, 1) - process 0

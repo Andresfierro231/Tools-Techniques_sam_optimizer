@@ -1,0 +1,55 @@
+
+=== Case: jsalt1 ===
+Best by RMSE:
+ nodes_mult   h_amb   T_0    T_c   T_h   rmse_K  runtime_merged_sec    score
+          6 50000.0 438.0 442.15 444.0 4.825241           20.021227 0.696082
+          4     NaN   NaN    NaN   NaN 4.825429           12.035569 0.687795
+          8     NaN   NaN    NaN   NaN 4.825519           20.394028 0.696615
+
+Best by combined score (error + runtime):
+ nodes_mult   h_amb   T_0    T_c   T_h   rmse_K  runtime_merged_sec    score
+          2     NaN   NaN    NaN   NaN 4.825868            8.777346 0.684599
+          8 50000.0 438.0 442.15 444.0 4.830013            8.430786 0.686350
+          4     NaN   NaN    NaN   NaN 4.825429           12.035569 0.687795
+
+
+=== Case: jsalt2 ===
+Best by RMSE:
+ nodes_mult   h_amb   T_0    T_c   T_h   rmse_K  runtime_merged_sec    score
+         12 50000.0 445.0 446.63 452.0 4.386851           59.057268 0.513402
+         24     NaN   NaN    NaN   NaN 4.386874           48.200581 0.502017
+         16     NaN   NaN    NaN   NaN 4.386875          290.102095 0.755957
+
+Best by combined score (error + runtime):
+ nodes_mult   h_amb   T_0    T_c   T_h   rmse_K  runtime_merged_sec    score
+         16 50000.0 445.0 446.63 452.0 4.388078           23.250030 0.476439
+          2     NaN   NaN    NaN   NaN 4.391132           23.224878 0.477971
+         24 50000.0 450.0 446.63 452.0 4.387066           33.269570 0.486441
+
+
+=== Case: jsalt3 ===
+Best by RMSE:
+ nodes_mult   h_amb   T_0   T_c   T_h   rmse_K  runtime_merged_sec    score
+         12 50000.0 455.0 459.0 466.0 4.010113           20.264165 0.280474
+          6 50000.0 455.0 459.0 466.0 4.010273           73.275731 0.336205
+         24     NaN   NaN   NaN   NaN 4.010370           37.532214 0.298732
+
+Best by combined score (error + runtime):
+ nodes_mult   h_amb   T_0   T_c   T_h   rmse_K  runtime_merged_sec    score
+          2     NaN   NaN   NaN   NaN 4.025067            9.980572 0.277308
+         12 50000.0 455.0 459.0 466.0 4.010113           20.264165 0.280474
+          1     NaN   NaN   NaN   NaN 4.049915            4.323707 0.284046
+
+
+=== Case: jsalt4 ===
+Best by RMSE:
+ nodes_mult   h_amb   T_0    T_c   T_h   rmse_K  runtime_merged_sec    score
+         12 50000.0 473.0 475.74 480.0 3.493160           87.938044 0.087775
+          2     NaN   NaN    NaN   NaN 3.493593            5.672921 0.001637
+          4     NaN   NaN    NaN   NaN 3.493783           10.481193 0.006782
+
+Best by combined score (error + runtime):
+ nodes_mult  h_amb  T_0  T_c  T_h   rmse_K  runtime_merged_sec    score
+          2    NaN  NaN  NaN  NaN 3.493593            5.672921 0.001637
+          4    NaN  NaN  NaN  NaN 3.493783           10.481193 0.006782
+          1    NaN  NaN  NaN  NaN 3.497247           17.294761 0.015702
