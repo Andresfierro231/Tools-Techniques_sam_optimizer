@@ -4,18 +4,7 @@ This is the main place I should do my python harness for SAM. No longer use the 
 
 opt tuner in active development
 
-Absolutely — here is a polished, **submission-ready `README.md`** for your project.
-It is written in a professional, academic tone suitable for a computational engineering course or research submission.
 
-If you'd like, I can tailor it further using your exact course name, professor name, or assignment prompt.
-
----
-
-# 📄 **README.md (Submission-Ready)**
-
-*(You can copy & paste this directly into your repository.)*
-
----
 
 # **SAM Optimizer for Molten-Salt Loop Modeling**
 
