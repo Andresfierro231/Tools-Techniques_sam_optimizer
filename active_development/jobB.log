@@ -23128,3 +23128,966 @@ Name: 2, dtype: object
 [optimizer] Moving jsalt1_nodes_mult_by_12_out_cp → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp
 [optimizer] WARNING: Could not move jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
 === [JOB B] Iteration 97 ===
+[INFO] Loaded total 0 runtime entries.
+[WARN] runtime_by_source is empty – check that your sam_runtime.csv or sam_runtimes.txt is in the working directory.
+currently on file of case : analysis/temp_test ; run : jsalt1 
+
+[OK] Wrote 17 rows → analysis/temp_test_analysis/combined_last_lines_jsalt1.csv 
+
+[REPORT] analysis/temp_test: 12/17 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt2 
+
+[OK] Wrote 17 rows → analysis/temp_test_analysis/combined_last_lines_jsalt2.csv 
+
+[REPORT] analysis/temp_test: 23/34 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt3 
+
+[OK] Wrote 15 rows → analysis/temp_test_analysis/combined_last_lines_jsalt3.csv 
+
+[REPORT] analysis/temp_test: 31/49 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt4 
+
+[OK] Wrote 15 rows → analysis/temp_test_analysis/combined_last_lines_jsalt4.csv 
+
+[REPORT] analysis/temp_test: 40/64 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+
+--- LOADED FILE: analysis/temp_test_analysis/case_report.csv ---
+['case', 'source_file', 'reached_end_any', 'last_time', 'matched_end_time', 'prefixes', 'script_runtime', 'TP1', 'TP2', 'TP3', 'TP6', 'TP_TS', 'TS_vel', 'TopL_velocity', 'delta_Temp_TP6-TP2', 'downcomer_out_velocity', 'massFlowRate']
+Num rows: 64
+
+DEBUG BEFORE reached_end_any FILTER:
+Second-order nodes_mult available (raw CSVs):
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+
+DEBUG AFTER reached_end_any FILTER:
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+
+DEBUG nodes_mult PARSING — NaN rows:
+Empty DataFrame
+Columns: [prefixes, order, source_file]
+Index: []
+Total NaN rows: 0
+---------------------------------------
+
+DEBUG second-order nodes_mult that reached FULL_DF:
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+[RUNTIME PLOT] Skipping prefix 'jsalt1': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt2': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt3': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt4': no data for any order.
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt1': analysis/plots/Runtime_plots/jsalt1_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt2': analysis/plots/Runtime_plots/jsalt2_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt3': analysis/plots/Runtime_plots/jsalt3_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt4': analysis/plots/Runtime_plots/jsalt4_runtime_vs_nodes_mult.png
+Wrote full analysis to: analysis/validation_analysis_full.csv
+Wrote paper table to: analysis/validation_analysis_paper_table.csv
+Wrote summary to: analysis/validation_analysis_summary.csv
+=== SAM Optimizer v0: suggest_and_run mode ===
+[suggest_and_run] Cases to run: ['jsalt1']
+[suggest_and_run] Will consider top 3 candidates and run up to 3 of them.
+=== SAM Optimizer v0: Surrogate-based recommender ===
+[data_handler] Loaded validation analysis from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/validation_analysis_full.csv
+[data_handler] Shape: (40, 53)
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (2008, 11)
+[data_handler] Hyperparam table built from runtime log:
+                   input_basename  htc  node_multiplier  ...     T_c    T_h    h_amb
+0       jsalt1_nodes_mult_by_12.i  NaN               12  ...  442.15  444.0  50000.0
+1  jsalt1_nodes_mult_by_12_ord1.i  NaN               12  ...  442.15  444.0  50000.0
+2  jsalt1_nodes_mult_by_12_ord2.i  NaN               12  ...  442.15  444.0  50000.0
+3  jsalt1_nodes_mult_by_16_ord1.i  NaN               16  ...  442.15  444.0  50000.0
+4  jsalt1_nodes_mult_by_16_ord2.i  NaN               16  ...     NaN    NaN      NaN
+
+[5 rows x 8 columns]
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (2008, 11)
+[data_handler] Runtime aggregation by input_basename:
+                   input_basename  runtime_merged_sec
+0       jsalt1_nodes_mult_by_12.i           26.905124
+1  jsalt1_nodes_mult_by_12_ord1.i           10.032998
+2  jsalt1_nodes_mult_by_12_ord2.i           40.484778
+3  jsalt1_nodes_mult_by_16_ord1.i           12.326543
+4  jsalt1_nodes_mult_by_16_ord2.i           31.904634
+[data_handler] INFO: 'runtime_merged_sec' not found; using 'runtime_merged_sec_x' as runtime column.
+[data_handler] Total rows in validation_analysis_full: 40
+[data_handler] Rows with non-NaN          rmse_K: 40
+[data_handler] Rows with non-NaN runtime_merged_sec_x: 40
+[data_handler] Rows with both non-NaN targets   : 40
+[data_handler] After drop_na_targets, rows kept: 40
+[optimizer] Loaded dataset with 40 rows.
+[models] Training surrogates on 40 samples with features: ['nodes_mult', 'h_amb', 'T_0', 'T_c', 'T_h']
+[models] Error range   : [3.493, 4.865]
+[models] Runtime range : [4.324, 290.1]
+[optimizer] Generated 3125 candidate hyperparameter combos.
+   nodes_mult    h_amb    T_0    T_c    T_h
+0           6  50000.0  440.0  440.0  442.0
+1           6  50000.0  440.0  440.0  452.5
+2           6  50000.0  440.0  440.0  463.0
+3           6  50000.0  440.0  440.0  473.5
+4           6  50000.0  440.0  440.0  484.0
+[optimizer] Runtime cap: 420.00 s
+[optimizer] Feasible candidates (pred runtime <= cap): 3125/3125
+
+=== Top candidate hyperparameters (surrogate-based) ===
+   nodes_mult    h_amb    T_0  ...  pred_runtime     score  feasible_runtime
+0          12  50000.0  471.5  ...     68.728427  0.161682              True
+1          12  50000.0  471.5  ...     68.728427  0.161682              True
+2          12  50000.0  471.5  ...     68.728427  0.161682              True
+
+[3 rows x 9 columns]
+
+Interpretation:
+  - 'pred_error'   : surrogate-predicted error (e.g., RMSE in K).
+  - 'pred_runtime' : surrogate-predicted runtime in seconds.
+  - 'score'        : weighted combination of normalized error and runtime; lower is better.
+  - 'feasible_runtime' : True if pred_runtime <= runtime cap.
+[suggest_and_run] Selected 3 candidate(s) to run.
+
+--------------------------------------------------
+[suggest_and_run] Candidate #1:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 470.0
+T_h                 473.5
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 0, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 0dec2780-86e7-4669-87da-f1a82daba2e2
+  timestamp_start: 2025-12-02T17:24:45Z
+  timestamp_end: 2025-12-02T17:27:08Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 142.86154680897016
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+
+--------------------------------------------------
+[suggest_and_run] Candidate #2:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 470.0
+T_h                 484.0
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 1, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: f0b74327-b2de-4d38-b9c8-d019a073d9c2
+  timestamp_start: 2025-12-02T17:27:08Z
+  timestamp_end: 2025-12-02T17:29:32Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 144.21051484090276
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+
+--------------------------------------------------
+[suggest_and_run] Candidate #3:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 480.0
+T_h                 473.5
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 2, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 8be7126a-f596-4f7b-bd02-ac8aee1b955d
+  timestamp_start: 2025-12-02T17:29:32Z
+  timestamp_end: 2025-12-02T17:31:56Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 143.90958549198695
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+[optimizer] Cleaning and organizing SAM outputs...
+[cleanup] Failed to remove /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp: [Errno 21] Is a directory: '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp'
+[move] Moved jsalt1_nodes_mult_by_12_csv.csv → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Moved jsalt1_nodes_mult_by_12.i → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Moved jsalt1_nodes_mult_by_12.log → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Failed to move /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
+[optimizer] Re-running analysis scripts...
+[optimizer] Removing leftover file: jsalt1_nodes_mult_by_12_out_cp
+[optimizer] WARNING: Could not delete jsalt1_nodes_mult_by_12_out_cp: [Errno 21] Is a directory: '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp'
+[optimizer] Moving jsalt1_nodes_mult_by_12_out_cp → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp
+[optimizer] WARNING: Could not move jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
+=== [JOB B] Iteration 98 ===
+[INFO] Loaded total 0 runtime entries.
+[WARN] runtime_by_source is empty – check that your sam_runtime.csv or sam_runtimes.txt is in the working directory.
+currently on file of case : analysis/temp_test ; run : jsalt1 
+
+[OK] Wrote 17 rows → analysis/temp_test_analysis/combined_last_lines_jsalt1.csv 
+
+[REPORT] analysis/temp_test: 12/17 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt2 
+
+[OK] Wrote 17 rows → analysis/temp_test_analysis/combined_last_lines_jsalt2.csv 
+
+[REPORT] analysis/temp_test: 23/34 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt3 
+
+[OK] Wrote 15 rows → analysis/temp_test_analysis/combined_last_lines_jsalt3.csv 
+
+[REPORT] analysis/temp_test: 31/49 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt4 
+
+[OK] Wrote 15 rows → analysis/temp_test_analysis/combined_last_lines_jsalt4.csv 
+
+[REPORT] analysis/temp_test: 40/64 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+
+--- LOADED FILE: analysis/temp_test_analysis/case_report.csv ---
+['case', 'source_file', 'reached_end_any', 'last_time', 'matched_end_time', 'prefixes', 'script_runtime', 'TP1', 'TP2', 'TP3', 'TP6', 'TP_TS', 'TS_vel', 'TopL_velocity', 'delta_Temp_TP6-TP2', 'downcomer_out_velocity', 'massFlowRate']
+Num rows: 64
+
+DEBUG BEFORE reached_end_any FILTER:
+Second-order nodes_mult available (raw CSVs):
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+
+DEBUG AFTER reached_end_any FILTER:
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+
+DEBUG nodes_mult PARSING — NaN rows:
+Empty DataFrame
+Columns: [prefixes, order, source_file]
+Index: []
+Total NaN rows: 0
+---------------------------------------
+
+DEBUG second-order nodes_mult that reached FULL_DF:
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+[RUNTIME PLOT] Skipping prefix 'jsalt1': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt2': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt3': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt4': no data for any order.
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt1': analysis/plots/Runtime_plots/jsalt1_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt2': analysis/plots/Runtime_plots/jsalt2_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt3': analysis/plots/Runtime_plots/jsalt3_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt4': analysis/plots/Runtime_plots/jsalt4_runtime_vs_nodes_mult.png
+Wrote full analysis to: analysis/validation_analysis_full.csv
+Wrote paper table to: analysis/validation_analysis_paper_table.csv
+Wrote summary to: analysis/validation_analysis_summary.csv
+=== SAM Optimizer v0: suggest_and_run mode ===
+[suggest_and_run] Cases to run: ['jsalt1']
+[suggest_and_run] Will consider top 3 candidates and run up to 3 of them.
+=== SAM Optimizer v0: Surrogate-based recommender ===
+[data_handler] Loaded validation analysis from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/validation_analysis_full.csv
+[data_handler] Shape: (40, 53)
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (2014, 11)
+[data_handler] Hyperparam table built from runtime log:
+                   input_basename  htc  node_multiplier  ...     T_c    T_h    h_amb
+0       jsalt1_nodes_mult_by_12.i  NaN               12  ...  442.15  444.0  50000.0
+1  jsalt1_nodes_mult_by_12_ord1.i  NaN               12  ...  442.15  444.0  50000.0
+2  jsalt1_nodes_mult_by_12_ord2.i  NaN               12  ...  442.15  444.0  50000.0
+3  jsalt1_nodes_mult_by_16_ord1.i  NaN               16  ...  442.15  444.0  50000.0
+4  jsalt1_nodes_mult_by_16_ord2.i  NaN               16  ...     NaN    NaN      NaN
+
+[5 rows x 8 columns]
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (2014, 11)
+[data_handler] Runtime aggregation by input_basename:
+                   input_basename  runtime_merged_sec
+0       jsalt1_nodes_mult_by_12.i           26.905124
+1  jsalt1_nodes_mult_by_12_ord1.i           10.032998
+2  jsalt1_nodes_mult_by_12_ord2.i           40.484778
+3  jsalt1_nodes_mult_by_16_ord1.i           12.326543
+4  jsalt1_nodes_mult_by_16_ord2.i           31.904634
+[data_handler] INFO: 'runtime_merged_sec' not found; using 'runtime_merged_sec_x' as runtime column.
+[data_handler] Total rows in validation_analysis_full: 40
+[data_handler] Rows with non-NaN          rmse_K: 40
+[data_handler] Rows with non-NaN runtime_merged_sec_x: 40
+[data_handler] Rows with both non-NaN targets   : 40
+[data_handler] After drop_na_targets, rows kept: 40
+[optimizer] Loaded dataset with 40 rows.
+[models] Training surrogates on 40 samples with features: ['nodes_mult', 'h_amb', 'T_0', 'T_c', 'T_h']
+[models] Error range   : [3.493, 4.865]
+[models] Runtime range : [4.324, 290.1]
+[optimizer] Generated 3125 candidate hyperparameter combos.
+   nodes_mult    h_amb    T_0    T_c    T_h
+0           6  50000.0  440.0  440.0  442.0
+1           6  50000.0  440.0  440.0  452.5
+2           6  50000.0  440.0  440.0  463.0
+3           6  50000.0  440.0  440.0  473.5
+4           6  50000.0  440.0  440.0  484.0
+[optimizer] Runtime cap: 420.00 s
+[optimizer] Feasible candidates (pred runtime <= cap): 3125/3125
+
+=== Top candidate hyperparameters (surrogate-based) ===
+   nodes_mult    h_amb    T_0  ...  pred_runtime     score  feasible_runtime
+0          12  50000.0  471.5  ...     68.728427  0.161682              True
+1          12  50000.0  471.5  ...     68.728427  0.161682              True
+2          12  50000.0  471.5  ...     68.728427  0.161682              True
+
+[3 rows x 9 columns]
+
+Interpretation:
+  - 'pred_error'   : surrogate-predicted error (e.g., RMSE in K).
+  - 'pred_runtime' : surrogate-predicted runtime in seconds.
+  - 'score'        : weighted combination of normalized error and runtime; lower is better.
+  - 'feasible_runtime' : True if pred_runtime <= runtime cap.
+[suggest_and_run] Selected 3 candidate(s) to run.
+
+--------------------------------------------------
+[suggest_and_run] Candidate #1:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 470.0
+T_h                 473.5
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 0, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: c495a232-2766-446e-9cce-a2d3b9240118
+  timestamp_start: 2025-12-02T17:31:59Z
+  timestamp_end: 2025-12-02T17:34:22Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 142.37126096501015
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+
+--------------------------------------------------
+[suggest_and_run] Candidate #2:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 470.0
+T_h                 484.0
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 1, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 5067a1c6-fd79-4b22-8ff3-c166b993898c
+  timestamp_start: 2025-12-02T17:34:22Z
+  timestamp_end: 2025-12-02T17:36:47Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 145.320481943083
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+
+--------------------------------------------------
+[suggest_and_run] Candidate #3:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 480.0
+T_h                 473.5
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 2, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 329321a2-732b-4ec2-ad62-0f50d9518a99
+  timestamp_start: 2025-12-02T17:36:47Z
+  timestamp_end: 2025-12-02T17:39:11Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 143.9722151189344
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+[optimizer] Cleaning and organizing SAM outputs...
+[cleanup] Failed to remove /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp: [Errno 21] Is a directory: '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp'
+[move] Moved jsalt1_nodes_mult_by_12_csv.csv → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Moved jsalt1_nodes_mult_by_12.i → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Moved jsalt1_nodes_mult_by_12.log → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Failed to move /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
+[optimizer] Re-running analysis scripts...
+[optimizer] Removing leftover file: jsalt1_nodes_mult_by_12_out_cp
+[optimizer] WARNING: Could not delete jsalt1_nodes_mult_by_12_out_cp: [Errno 21] Is a directory: '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp'
+[optimizer] Moving jsalt1_nodes_mult_by_12_out_cp → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp
+[optimizer] WARNING: Could not move jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
+=== [JOB B] Iteration 99 ===
+[INFO] Loaded total 0 runtime entries.
+[WARN] runtime_by_source is empty – check that your sam_runtime.csv or sam_runtimes.txt is in the working directory.
+currently on file of case : analysis/temp_test ; run : jsalt1 
+
+[OK] Wrote 17 rows → analysis/temp_test_analysis/combined_last_lines_jsalt1.csv 
+
+[REPORT] analysis/temp_test: 12/17 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt2 
+
+[OK] Wrote 17 rows → analysis/temp_test_analysis/combined_last_lines_jsalt2.csv 
+
+[REPORT] analysis/temp_test: 23/34 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt3 
+
+[OK] Wrote 15 rows → analysis/temp_test_analysis/combined_last_lines_jsalt3.csv 
+
+[REPORT] analysis/temp_test: 31/49 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt4 
+
+[OK] Wrote 15 rows → analysis/temp_test_analysis/combined_last_lines_jsalt4.csv 
+
+[REPORT] analysis/temp_test: 40/64 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+
+--- LOADED FILE: analysis/temp_test_analysis/case_report.csv ---
+['case', 'source_file', 'reached_end_any', 'last_time', 'matched_end_time', 'prefixes', 'script_runtime', 'TP1', 'TP2', 'TP3', 'TP6', 'TP_TS', 'TS_vel', 'TopL_velocity', 'delta_Temp_TP6-TP2', 'downcomer_out_velocity', 'massFlowRate']
+Num rows: 64
+
+DEBUG BEFORE reached_end_any FILTER:
+Second-order nodes_mult available (raw CSVs):
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+
+DEBUG AFTER reached_end_any FILTER:
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+
+DEBUG nodes_mult PARSING — NaN rows:
+Empty DataFrame
+Columns: [prefixes, order, source_file]
+Index: []
+Total NaN rows: 0
+---------------------------------------
+
+DEBUG second-order nodes_mult that reached FULL_DF:
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+[RUNTIME PLOT] Skipping prefix 'jsalt1': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt2': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt3': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt4': no data for any order.
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt1': analysis/plots/Runtime_plots/jsalt1_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt2': analysis/plots/Runtime_plots/jsalt2_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt3': analysis/plots/Runtime_plots/jsalt3_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt4': analysis/plots/Runtime_plots/jsalt4_runtime_vs_nodes_mult.png
+Wrote full analysis to: analysis/validation_analysis_full.csv
+Wrote paper table to: analysis/validation_analysis_paper_table.csv
+Wrote summary to: analysis/validation_analysis_summary.csv
+=== SAM Optimizer v0: suggest_and_run mode ===
+[suggest_and_run] Cases to run: ['jsalt1']
+[suggest_and_run] Will consider top 3 candidates and run up to 3 of them.
+=== SAM Optimizer v0: Surrogate-based recommender ===
+[data_handler] Loaded validation analysis from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/validation_analysis_full.csv
+[data_handler] Shape: (40, 53)
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (2020, 11)
+[data_handler] Hyperparam table built from runtime log:
+                   input_basename  htc  node_multiplier  ...     T_c    T_h    h_amb
+0       jsalt1_nodes_mult_by_12.i  NaN               12  ...  442.15  444.0  50000.0
+1  jsalt1_nodes_mult_by_12_ord1.i  NaN               12  ...  442.15  444.0  50000.0
+2  jsalt1_nodes_mult_by_12_ord2.i  NaN               12  ...  442.15  444.0  50000.0
+3  jsalt1_nodes_mult_by_16_ord1.i  NaN               16  ...  442.15  444.0  50000.0
+4  jsalt1_nodes_mult_by_16_ord2.i  NaN               16  ...     NaN    NaN      NaN
+
+[5 rows x 8 columns]
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (2020, 11)
+[data_handler] Runtime aggregation by input_basename:
+                   input_basename  runtime_merged_sec
+0       jsalt1_nodes_mult_by_12.i           26.905124
+1  jsalt1_nodes_mult_by_12_ord1.i           10.032998
+2  jsalt1_nodes_mult_by_12_ord2.i           40.484778
+3  jsalt1_nodes_mult_by_16_ord1.i           12.326543
+4  jsalt1_nodes_mult_by_16_ord2.i           31.904634
+[data_handler] INFO: 'runtime_merged_sec' not found; using 'runtime_merged_sec_x' as runtime column.
+[data_handler] Total rows in validation_analysis_full: 40
+[data_handler] Rows with non-NaN          rmse_K: 40
+[data_handler] Rows with non-NaN runtime_merged_sec_x: 40
+[data_handler] Rows with both non-NaN targets   : 40
+[data_handler] After drop_na_targets, rows kept: 40
+[optimizer] Loaded dataset with 40 rows.
+[models] Training surrogates on 40 samples with features: ['nodes_mult', 'h_amb', 'T_0', 'T_c', 'T_h']
+[models] Error range   : [3.493, 4.865]
+[models] Runtime range : [4.324, 290.1]
+[optimizer] Generated 3125 candidate hyperparameter combos.
+   nodes_mult    h_amb    T_0    T_c    T_h
+0           6  50000.0  440.0  440.0  442.0
+1           6  50000.0  440.0  440.0  452.5
+2           6  50000.0  440.0  440.0  463.0
+3           6  50000.0  440.0  440.0  473.5
+4           6  50000.0  440.0  440.0  484.0
+[optimizer] Runtime cap: 420.00 s
+[optimizer] Feasible candidates (pred runtime <= cap): 3125/3125
+
+=== Top candidate hyperparameters (surrogate-based) ===
+   nodes_mult    h_amb    T_0  ...  pred_runtime     score  feasible_runtime
+0          12  50000.0  471.5  ...     68.728427  0.161682              True
+1          12  50000.0  471.5  ...     68.728427  0.161682              True
+2          12  50000.0  471.5  ...     68.728427  0.161682              True
+
+[3 rows x 9 columns]
+
+Interpretation:
+  - 'pred_error'   : surrogate-predicted error (e.g., RMSE in K).
+  - 'pred_runtime' : surrogate-predicted runtime in seconds.
+  - 'score'        : weighted combination of normalized error and runtime; lower is better.
+  - 'feasible_runtime' : True if pred_runtime <= runtime cap.
+[suggest_and_run] Selected 3 candidate(s) to run.
+
+--------------------------------------------------
+[suggest_and_run] Candidate #1:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 470.0
+T_h                 473.5
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 0, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 01ed4615-8a05-4450-8ebc-369ebdc5a691
+  timestamp_start: 2025-12-02T17:39:15Z
+  timestamp_end: 2025-12-02T17:41:39Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 143.667298150016
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+
+--------------------------------------------------
+[suggest_and_run] Candidate #2:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 470.0
+T_h                 484.0
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 1, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 02b68153-b311-454a-a989-6c64b1978f52
+  timestamp_start: 2025-12-02T17:41:39Z
+  timestamp_end: 2025-12-02T17:44:05Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 146.0188345409697
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+
+--------------------------------------------------
+[suggest_and_run] Candidate #3:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 480.0
+T_h                 473.5
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 2, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 509d0728-03a9-424c-9b76-d02f1d68211d
+  timestamp_start: 2025-12-02T17:44:05Z
+  timestamp_end: 2025-12-02T17:46:29Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 143.87088238599245
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+[optimizer] Cleaning and organizing SAM outputs...
+[cleanup] Failed to remove /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp: [Errno 21] Is a directory: '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp'
+[move] Moved jsalt1_nodes_mult_by_12_csv.csv → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Moved jsalt1_nodes_mult_by_12.i → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Moved jsalt1_nodes_mult_by_12.log → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Failed to move /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
+[optimizer] Re-running analysis scripts...
+[optimizer] Removing leftover file: jsalt1_nodes_mult_by_12_out_cp
+[optimizer] WARNING: Could not delete jsalt1_nodes_mult_by_12_out_cp: [Errno 21] Is a directory: '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp'
+[optimizer] Moving jsalt1_nodes_mult_by_12_out_cp → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp
+[optimizer] WARNING: Could not move jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
+=== [JOB B] Iteration 100 ===
+[INFO] Loaded total 0 runtime entries.
+[WARN] runtime_by_source is empty – check that your sam_runtime.csv or sam_runtimes.txt is in the working directory.
+currently on file of case : analysis/temp_test ; run : jsalt1 
+
+[OK] Wrote 17 rows → analysis/temp_test_analysis/combined_last_lines_jsalt1.csv 
+
+[REPORT] analysis/temp_test: 12/17 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt2 
+
+[OK] Wrote 17 rows → analysis/temp_test_analysis/combined_last_lines_jsalt2.csv 
+
+[REPORT] analysis/temp_test: 23/34 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt3 
+
+[OK] Wrote 15 rows → analysis/temp_test_analysis/combined_last_lines_jsalt3.csv 
+
+[REPORT] analysis/temp_test: 31/49 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+currently on file of case : analysis/temp_test ; run : jsalt4 
+
+[OK] Wrote 15 rows → analysis/temp_test_analysis/combined_last_lines_jsalt4.csv 
+
+[REPORT] analysis/temp_test: 40/64 files reached an allowed end_time.
+
+[OK] Wrote per-case report → analysis/temp_test_analysis/case_report.csv
+[OK] Wrote summary → analysis/temp_test_analysis/summary.txt
+
+
+--- LOADED FILE: analysis/temp_test_analysis/case_report.csv ---
+['case', 'source_file', 'reached_end_any', 'last_time', 'matched_end_time', 'prefixes', 'script_runtime', 'TP1', 'TP2', 'TP3', 'TP6', 'TP_TS', 'TS_vel', 'TopL_velocity', 'delta_Temp_TP6-TP2', 'downcomer_out_velocity', 'massFlowRate']
+Num rows: 64
+
+DEBUG BEFORE reached_end_any FILTER:
+Second-order nodes_mult available (raw CSVs):
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+
+DEBUG AFTER reached_end_any FILTER:
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+
+DEBUG nodes_mult PARSING — NaN rows:
+Empty DataFrame
+Columns: [prefixes, order, source_file]
+Index: []
+Total NaN rows: 0
+---------------------------------------
+
+DEBUG second-order nodes_mult that reached FULL_DF:
+  min / max / nunique by prefix:
+Empty DataFrame
+Columns: [min, max, nunique]
+Index: []
+
+  full unique nodes_mult by prefix:
+Series([], Name: nodes_mult, dtype: int64)
+---------------------------------------
+[RUNTIME PLOT] Skipping prefix 'jsalt1': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt2': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt3': no data for any order.
+[RUNTIME PLOT] Skipping prefix 'jsalt4': no data for any order.
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt1': analysis/plots/Runtime_plots/jsalt1_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt2': analysis/plots/Runtime_plots/jsalt2_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt3': analysis/plots/Runtime_plots/jsalt3_runtime_vs_nodes_mult.png
+[RUNTIME PLOTS] Saved runtime plot for prefix 'jsalt4': analysis/plots/Runtime_plots/jsalt4_runtime_vs_nodes_mult.png
+Wrote full analysis to: analysis/validation_analysis_full.csv
+Wrote paper table to: analysis/validation_analysis_paper_table.csv
+Wrote summary to: analysis/validation_analysis_summary.csv
+=== SAM Optimizer v0: suggest_and_run mode ===
+[suggest_and_run] Cases to run: ['jsalt1']
+[suggest_and_run] Will consider top 3 candidates and run up to 3 of them.
+=== SAM Optimizer v0: Surrogate-based recommender ===
+[data_handler] Loaded validation analysis from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/validation_analysis_full.csv
+[data_handler] Shape: (40, 53)
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (2026, 11)
+[data_handler] Hyperparam table built from runtime log:
+                   input_basename  htc  node_multiplier  ...     T_c    T_h    h_amb
+0       jsalt1_nodes_mult_by_12.i  NaN               12  ...  442.15  444.0  50000.0
+1  jsalt1_nodes_mult_by_12_ord1.i  NaN               12  ...  442.15  444.0  50000.0
+2  jsalt1_nodes_mult_by_12_ord2.i  NaN               12  ...  442.15  444.0  50000.0
+3  jsalt1_nodes_mult_by_16_ord1.i  NaN               16  ...  442.15  444.0  50000.0
+4  jsalt1_nodes_mult_by_16_ord2.i  NaN               16  ...     NaN    NaN      NaN
+
+[5 rows x 8 columns]
+[data_handler] Loaded runtime log from: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/runtimes_master.csv
+[data_handler] Runtime log shape: (2026, 11)
+[data_handler] Runtime aggregation by input_basename:
+                   input_basename  runtime_merged_sec
+0       jsalt1_nodes_mult_by_12.i           26.905124
+1  jsalt1_nodes_mult_by_12_ord1.i           10.032998
+2  jsalt1_nodes_mult_by_12_ord2.i           40.484778
+3  jsalt1_nodes_mult_by_16_ord1.i           12.326543
+4  jsalt1_nodes_mult_by_16_ord2.i           31.904634
+[data_handler] INFO: 'runtime_merged_sec' not found; using 'runtime_merged_sec_x' as runtime column.
+[data_handler] Total rows in validation_analysis_full: 40
+[data_handler] Rows with non-NaN          rmse_K: 40
+[data_handler] Rows with non-NaN runtime_merged_sec_x: 40
+[data_handler] Rows with both non-NaN targets   : 40
+[data_handler] After drop_na_targets, rows kept: 40
+[optimizer] Loaded dataset with 40 rows.
+[models] Training surrogates on 40 samples with features: ['nodes_mult', 'h_amb', 'T_0', 'T_c', 'T_h']
+[models] Error range   : [3.493, 4.865]
+[models] Runtime range : [4.324, 290.1]
+[optimizer] Generated 3125 candidate hyperparameter combos.
+   nodes_mult    h_amb    T_0    T_c    T_h
+0           6  50000.0  440.0  440.0  442.0
+1           6  50000.0  440.0  440.0  452.5
+2           6  50000.0  440.0  440.0  463.0
+3           6  50000.0  440.0  440.0  473.5
+4           6  50000.0  440.0  440.0  484.0
+[optimizer] Runtime cap: 420.00 s
+[optimizer] Feasible candidates (pred runtime <= cap): 3125/3125
+
+=== Top candidate hyperparameters (surrogate-based) ===
+   nodes_mult    h_amb    T_0  ...  pred_runtime     score  feasible_runtime
+0          12  50000.0  471.5  ...     68.728427  0.161682              True
+1          12  50000.0  471.5  ...     68.728427  0.161682              True
+2          12  50000.0  471.5  ...     68.728427  0.161682              True
+
+[3 rows x 9 columns]
+
+Interpretation:
+  - 'pred_error'   : surrogate-predicted error (e.g., RMSE in K).
+  - 'pred_runtime' : surrogate-predicted runtime in seconds.
+  - 'score'        : weighted combination of normalized error and runtime; lower is better.
+  - 'feasible_runtime' : True if pred_runtime <= runtime cap.
+[suggest_and_run] Selected 3 candidate(s) to run.
+
+--------------------------------------------------
+[suggest_and_run] Candidate #1:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 470.0
+T_h                 473.5
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 0, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 8e8b0506-0455-4217-a766-af0a8841df5b
+  timestamp_start: 2025-12-02T17:46:32Z
+  timestamp_end: 2025-12-02T17:48:56Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 143.31264304800425
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+
+--------------------------------------------------
+[suggest_and_run] Candidate #2:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 470.0
+T_h                 484.0
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 1, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 1a5eedc0-7ab0-493c-8605-1436b1e614c3
+  timestamp_start: 2025-12-02T17:48:56Z
+  timestamp_end: 2025-12-02T17:51:21Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 145.61846468399744
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+
+--------------------------------------------------
+[suggest_and_run] Candidate #3:
+nodes_mult             12
+h_amb             50000.0
+T_0                 471.5
+T_c                 480.0
+T_h                 473.5
+pred_error        3.67755
+pred_runtime    68.728427
+score            0.161682
+Name: 2, dtype: object
+[suggest_and_run] Launching SAM run for case=jsalt1, template=jsalt1.i, hyperparams={'T_c': 442.15, 'T_h': 444.0, 'T_0': 471.5, 'h_amb': 50000.0, 'node_multiplier': 12}, timeout=420.0s
+[suggest_and_run] Run summary for jsalt1:
+  run_id: 027072f5-d40b-4f56-a6ac-e71c88824deb
+  timestamp_start: 2025-12-02T17:51:21Z
+  timestamp_end: 2025-12-02T17:53:42Z
+  case: jsalt1
+  sam_input_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.i
+  output_dir: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development
+  status: fail
+  return_code: 1
+  runtime_sec: 141.11641340900678
+  timeout_sec: None
+  hyperparams_json: {"T_0": 471.5, "T_c": 442.15, "T_h": 444.0, "h_amb": 50000.0, "node_multiplier": 12}
+  log_file_path: /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12.log
+[optimizer] Cleaning and organizing SAM outputs...
+[cleanup] Failed to remove /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp: [Errno 21] Is a directory: '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp'
+[move] Moved jsalt1_nodes_mult_by_12_csv.csv → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Moved jsalt1_nodes_mult_by_12.i → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Moved jsalt1_nodes_mult_by_12.log → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis
+[move] Failed to move /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/temp_test_analysis/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
+[optimizer] Re-running analysis scripts...
+[optimizer] Removing leftover file: jsalt1_nodes_mult_by_12_out_cp
+[optimizer] WARNING: Could not delete jsalt1_nodes_mult_by_12_out_cp: [Errno 21] Is a directory: '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/Templates/jsalt1_nodes_mult_by_12_out_cp'
+[optimizer] Moving jsalt1_nodes_mult_by_12_out_cp → /work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp
+[optimizer] WARNING: Could not move jsalt1_nodes_mult_by_12_out_cp: Destination path '/work/09748/andresfierro231/ls6/projects/physor2026_andrew/active_development/analysis/analysis/temp_test/jsalt1_nodes_mult_by_12_out_cp/jsalt1_nodes_mult_by_12_out_cp' already exists
