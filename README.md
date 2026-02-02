@@ -1,6 +1,9 @@
 
 
 # This repo is a frozen version of the physor26 repo
+This repo is not final form of project, has critical mistake in naming of files. Will fix in Physor26. 
+
+Do not use anymore.
 ## **SAM Optimizer for Molten-Salt Loop Modeling**
 
 **Author:** Andrés Nicolás Fierro López
